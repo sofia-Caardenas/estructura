@@ -16,7 +16,7 @@
             <ul>
                 <li><a href="#" onclick="showProfile(); return false;">Perfil de Usuario</a></li>
                 <li><a href="#" onclick="showMenu(); return false;">Ver Menú</a></li>
-                <li><a href="#" onclick="placeOrder(); return false;">Carrito de compras</a></li>
+                <li><a href="#" onclick="showCart(); return false;">Carrito de compras</a></li>
                 <li><a href="#" onclick="checkOrderStatus(); return false;">Pedidos</a></li>
                 <button class="logout-button" onclick="logout()">Cerrar Sesión</button>
             </ul>
@@ -80,7 +80,7 @@
                             <img src="/img/empanada.png" alt="Empanada de carne">
                             <div class="product-title">Empanada de carne</div>
                             <div class="product-price">$1.000</div>
-                            <a href="#" class="product-button">Añadir al carrito</a>
+                            <a href="#" class="product-button" onclick="addToCart('Empanada de carne', 1000, '/img/empanada.png'); return false;">Añadir al carrito</a>
                         </div>
                         <div class="product">
                             <img src="/img/buñuelo.png" alt="Buñuelos rellenos de arequipe">
@@ -88,7 +88,7 @@
                             <div class="product-old-price">$2.199.000</div>
                             <div class="product-price">$1.908.900</div>
                             <div class="product-discount">13% OFF</div>
-                            <a href="#" class="product-button">Añadir al carrito</a>
+                            <a href="#" class="product-button" onclick="addToCart('Buñuelos rellenos de arequipe', 1908900, '/img/buñuelo.png'); return false;">Añadir al carrito</a>
                         </div>
                         <div class="product">
                             <img src="/img/arepadehuevo.png" alt="Arepa de huevo">
@@ -96,7 +96,7 @@
                             <div class="product-old-price">$2.099.000</div>
                             <div class="product-price">$1.826.000</div>
                             <div class="product-discount">13% OFF</div>
-                            <a href="#" class="product-button">Añadir al carrito</a>
+                            <a href="#" class="product-button" onclick="addToCart('Arepa de huevo', 1826000, '/img/arepadehuevo.png'); return false;">Añadir al carrito</a>
                         </div>
                         <div class="product">
                             <img src="/img/hamburguesa.png" alt="Hamburguesa tres carnes">
@@ -104,7 +104,7 @@
                             <div class="product-old-price">$117.990</div>
                             <div class="product-price">$79.990</div>
                             <div class="product-discount">32% OFF</div>
-                            <a href="#" class="product-button">Añadir al carrito</a>
+                            <a href="#" class="product-button" onclick="addToCart('Hamburguesa tres carnes', 79990, '/img/hamburguesa.png'); return false;">Añadir al carrito</a>
                         </div>
                         <div class="product">
                             <img src="/img/cafe.png" alt="Cafe con deditos de queso">
@@ -112,7 +112,7 @@
                             <div class="product-old-price">$117.990</div>
                             <div class="product-price">$79.990</div>
                             <div class="product-discount">32% OFF</div>
-                            <a href="#" class="product-button">Añadir al carrito</a>
+                            <a href="#" class="product-button" onclick="addToCart('Cafe con deditos de queso', 79990, '/img/cafe.png'); return false;">Añadir al carrito</a>
                         </div>
                         <div class="product">
                             <img src="/img/pan de bono.png" alt="Pan de bono con trozitos de chocolate">
@@ -120,7 +120,7 @@
                             <div class="product-old-price">$117.990</div>
                             <div class="product-price">$79.990</div>
                             <div class="product-discount">32% OFF</div>
-                            <a href="#" class="product-button">Añadir al carrito</a>
+                            <a href="#" class="product-button" onclick="addToCart('Pan de bono con trozitos de chocolate', 79990, '/img/pan de bono.png'); return false;">Añadir al carrito</a>
                         </div>
                     </div>
                     <h2 class="section-title">Platos del día</h2>
@@ -129,7 +129,7 @@
                             <img src="/img/carneasada.png" alt="Carne asada">
                             <div class="product-title">Carne asada</div>
                             <div class="product-price">$1.891.900</div>
-                            <a href="#" class="product-button">Añadir al carrito</a>
+                            <a href="#" class="product-button" onclick="addToCart('Carne asada', 1891900, '/img/carneasada.png'); return false;">Añadir al carrito</a>
                         </div>
                         <div class="product">
                             <img src="/img/costillas de cerdo.png" alt="Costillas de cerdo con salsa BBQ">
@@ -137,7 +137,7 @@
                             <div class="product-old-price">$2.199.000</div>
                             <div class="product-price">$1.908.900</div>
                             <div class="product-discount">13% OFF</div>
-                            <a href="#" class="product-button">Añadir al carrito</a>
+                            <a href="#" class="product-button" onclick="addToCart('Costillas de cerdo con salsa BBQ', 1908900, '/img/costillas de cerdo.png'); return false;">Añadir al carrito</a>
                         </div>
                         <div class="product">
                             <img src="/img/bandeja paisa.png" alt="Bandeja Paisa">
@@ -145,7 +145,7 @@
                             <div class="product-old-price">$2.095.000</div>
                             <div class="product-price">$1.969.300</div>
                             <div class="product-discount">6% OFF</div>
-                            <a href="#" class="product-button">Añadir al carrito</a>
+                            <a href="#" class="product-button" onclick="addToCart('Bandeja Paisa', 1969300, '/img/bandeja paisa.png'); return false;">Añadir al carrito</a>
                         </div>
                         <div class="product">
                             <img src="/img/chuleta valluna.png" alt="Chuleta valluna">
@@ -153,7 +153,7 @@
                             <div class="product-old-price">$2.199.000</div>
                             <div class="product-price">$1.908.900</div>
                             <div class="product-discount">13% OFF</div>
-                            <a href="#" class="product-button">Añadir al carrito</a>
+                            <a href="#" class="product-button" onclick="addToCart('Chuleta valluna', 1908900, '/img/chuleta valluna.png'); return false;">Añadir al carrito</a>
                         </div>
                         <div class="product">
                             <img src="/img/frijolada.png" alt="Frijolada">
@@ -161,7 +161,7 @@
                             <div class="product-old-price">$2.199.000</div>
                             <div class="product-price">$1.908.900</div>
                             <div class="product-discount">13% OFF</div>
-                            <a href="#" class="product-button">Añadir al carrito</a>
+                            <a href="#" class="product-button" onclick="addToCart('Frijolada', 1908900, '/img/frijolada.png'); return false;">Añadir al carrito</a>
                         </div>
                         <div class="product">
                             <img src="/img/pescado.png" alt="Mojarra frita">
@@ -169,7 +169,7 @@
                             <div class="product-old-price">$2.199.000</div>
                             <div class="product-price">$1.908.900</div>
                             <div class="product-discount">13% OFF</div>
-                            <a href="#" class="product-button">Añadir al carrito</a>
+                            <a href="#" class="product-button" onclick="addToCart('Mojarra frita', 1908900, '/img/pescado.png'); return false;">Añadir al carrito</a>
                         </div>
                     </div>
                 </section>
@@ -177,23 +177,81 @@
             document.getElementById('content').innerHTML = menuContent;
         }
 
-        function placeOrder() {
-            const cartContent = `
+        function addToCart(product, price, imageUrl) {
+            cart.push({ product, price, imageUrl });
+            alert(`${product} ha sido añadido al carrito.`);
+        }
+
+        function showCart() {
+            let cartContent = `
                 <section class="cart-section">
                     <h2>Carrito de compras</h2>
-                    <p>No tienes productos en el carrito.</p>
-                </section>
+                    ${cart.length === 0 ? '<p>No tienes productos en el carrito.</p>' : '<ul>'}
             `;
+
+            cart.forEach((item, index) => {
+                cartContent += `
+                    <li>
+                        <img src="${item.imageUrl}" alt="${item.product}" style="width:50px; height:50px;">
+                        ${item.product} - $${item.price}
+                        <button onclick="removeFromCart(${index})">Eliminar</button>
+                    </li>
+                `;
+            });
+
+            if (cart.length > 0) {
+                cartContent += `
+                    </ul>
+                    <button onclick="placeOrder()">Realizar Pedido</button>
+                `;
+            }
+
+            cartContent += `</section>`;
+
             document.getElementById('content').innerHTML = cartContent;
         }
 
+        function removeFromCart(index) {
+            cart.splice(index, 1);
+            showCart();
+        }
+
+        function placeOrder() {
+            if (cart.length === 0) {
+                alert('No tienes productos en el carrito.');
+                return;
+            }
+
+            orders.push([...cart]);
+            cart = [];
+
+            alert('Pedido realizado con éxito.');
+
+            showCart();
+        }
+
         function checkOrderStatus() {
-            const ordersContent = `
+            let ordersContent = `
                 <section class="orders-section">
                     <h2>Pedidos</h2>
-                    <p>No tienes pedidos recientes.</p>
-                </section>
+                    ${orders.length === 0 ? '<p>No tienes pedidos recientes.</p>' : '<ul>'}
             `;
+
+            orders.forEach((order, index) => {
+                ordersContent += `<li>Pedido ${index + 1}<ul>`;
+                order.forEach(item => {
+                    ordersContent += `
+                        <li>
+                            <img src="${item.imageUrl}" alt="${item.product}" style="width:50px; height:50px;">
+                            ${item.product} - $${item.price}
+                        </li>
+                    `;
+                });
+                ordersContent += `</ul></li>`;
+            });
+
+            ordersContent += `</ul></section>`;
+
             document.getElementById('content').innerHTML = ordersContent;
         }
 
