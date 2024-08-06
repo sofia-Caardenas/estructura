@@ -23,7 +23,6 @@
     <main>
         <h1>Panel de Administración</h1>
 
-        <!-- Sección Usuarios -->
         <section id="usuarios" class="menu-section">
             <h2 class="section-title">Usuarios</h2>
             <table id="usuarios-table">
@@ -38,12 +37,10 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <!-- Datos de usuarios se cargarán aquí -->
                 </tbody>
             </table>
         </section>
 
-        <!-- Sección Productos -->
         <section id="productos" class="menu-section">
             <h2 class="section-title">Productos</h2>
             <table id="productos-table">
@@ -58,12 +55,10 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <!-- Datos de productos se cargarán aquí -->
                 </tbody>
             </table>
         </section>
 
-        <!-- Sección Pedidos -->
         <section id="pedidos" class="menu-section">
             <h2 class="section-title">Pedidos</h2>
             <table id="pedidos-table">
@@ -77,12 +72,10 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <!-- Datos de pedidos se cargarán aquí -->
                 </tbody>
             </table>
         </section>
 
-        <!-- Sección Historial -->
         <section id="historial" class="menu-section">
             <h2 class="section-title">Historial de Pedidos</h2>
             <table id="historial-table">
@@ -97,12 +90,10 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <!-- Datos del historial se cargarán aquí -->
                 </tbody>
             </table>
         </section>
 
-        <!-- Sección Notificaciones -->
         <section id="notificaciones" class="menu-section">
             <h2 class="section-title">Notificaciones</h2>
             <table id="notificaciones-table">
@@ -116,7 +107,6 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <!-- Datos de notificaciones se cargarán aquí -->
                 </tbody>
             </table>
         </section>
@@ -129,7 +119,6 @@
             window.location.href = '../index.html';
         }
 
-        // Datos de muestra
         const usuarios = [
             { idUsuario: 1, nombre: 'Juan Perez', email: 'juan.perez@example.com', telefono: '3001234567', direccion: 'Calle 123 #45-67', fechaRegistro: '2024-01-15 08:00:00' },
             { idUsuario: 2, nombre: 'Maria Gomez', email: 'maria.gomez@example.com', telefono: '3102345678', direccion: 'Carrera 12 #34-56', fechaRegistro: '2024-02-20 09:00:00' }
@@ -155,7 +144,6 @@
             { idNotificacion: 2, idUsuario: 2, mensaje: 'Tu pedido está en preparación.', fechaNotificacion: '2024-04-02 13:00:00', leida: true }
         ];
 
-        // Función para llenar tablas con datos
         function fillTable(tableId, data) {
             const tbody = document.querySelector(`#${tableId} tbody`);
             tbody.innerHTML = '';
@@ -169,7 +157,6 @@
             });
         }
 
-        // Llenar tablas al cargar la página
         document.addEventListener('DOMContentLoaded', () => {
             fillTable('usuarios-table', usuarios);
             fillTable('productos-table', productos);
