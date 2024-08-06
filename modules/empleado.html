@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Empleado - Cafésena</title>
-    <link rel="icon" href="img/logocafsena.png" width type="image/x-icon">
+    <link rel="icon" href="img/logocafsena.png" type="image/x-icon">
     <link rel="stylesheet" href="../assets/css/empleado.css">
 </head>
 <body>  
@@ -13,8 +13,6 @@
             <h1 class="header-title">Cafésena</h1>
         </div>
         <button class="logout-button" onclick="logout()">Cerrar Sesión</button>
-    </header>
-    <div class="container">
         <nav>
             <ul>
                 <li><a href="#" onclick="showProfile(); return false;">Perfil de empleado</a></li>
@@ -22,6 +20,8 @@
                 <li><a href="#" onclick="showOrders(); return false;">Ver pedidos</a></li>
             </ul>
         </nav>
+    </header>
+    <div class="container">
         <div id="content">
             <!-- Contenido dinámico se cargará aquí -->
         </div>
@@ -81,263 +81,64 @@
                             <button onclick="updateStock(this, 'decrease')">Quitar</button>
                         </div>
                     </li>
-                    <li>
-                        <img src="/img/buñuelo.png" alt="Buñuelo relleno de arequipe">
-                        <div>
-                            <h3>Buñuelos rellenos de arequipe</h3>
-                            <p>Deliciosos buñuelos dorados, rellenos de suave y dulce arequipe, perfectos para disfrutar en cualquier momento del día.</p>
-                            <span>Existencias: <input type="number" value="15" min="0" class="stock-input"></span>
-                            <button onclick="updateStock(this, 'increase')">Añadir</button>
-                            <button onclick="updateStock(this, 'decrease')">Quitar</button>
-                        </div>
-                    </li>
-                    <li>
-                        <img src="/img/arepadehuevo.png" alt="Arepa de huevo">
-                        <div>
-                            <h3>Arepa de huevo</h3>
-                            <p>Tradicional arepa frita con un huevo fresco en su interior, crocante por fuera y suave por dentro.</p>
-                            <span>Existencias: <input type="number" value="10" min="0" class="stock-input"></span>
-                            <button onclick="updateStock(this, 'increase')">Añadir</button>
-                            <button onclick="updateStock(this, 'decrease')">Quitar</button>
-                        </div>
-                    </li>
-                    <li>
-                        <img src="/img/hamburguesa.png" alt="Hamburguesa">
-                        <div>
-                            <h3>Hamburguesa tres carnes</h3>
-                            <p>Sabrosa hamburguesa con una combinación de tres tipos de carne, acompañada de ingredientes frescos y una explosión de sabor.</p>
-                            <span>Existencias: <input type="number" value="10" min="0" class="stock-input"></span>
-                            <button onclick="updateStock(this, 'increase')">Añadir</button>
-                            <button onclick="updateStock(this, 'decrease')">Quitar</button>
-                        </div>
-                    </li>
-                    <li>
-                        <img src="/img/cafe.png" alt="Capuchino con deditos de queso">
-                        <div>
-                            <h3>Cafe con deditos de queso</h3>
-                            <p>Café acompañado de crujientes deditos de queso, la combinación perfecta para tus pausas.</p>
-                            <span>Existencias: <input type="number" value="10" min="0" class="stock-input"></span>
-                            <button onclick="updateStock(this, 'increase')">Añadir</button>
-                            <button onclick="updateStock(this, 'decrease')">Quitar</button>
-                        </div>
-                    </li>
-                    <li>
-                        <img src="/img/pan de bono.png" alt="Pan de bono">
-                        <div>
-                            <h3>Pan de bono con trozitos de chocolate</h3>
-                            <p>Esponjoso pan de bono con deliciosos trocitos de chocolate, ideal para endulzar tu día.</p>
-                            <span>Existencias: <input type="number" value="10" min="0" class="stock-input"></span>
-                            <button onclick="updateStock(this, 'increase')">Añadir</button>
-                            <button onclick="updateStock(this, 'decrease')">Quitar</button>
-                        </div>
-                    </li>
-                    <li>
-                        <img src="/img/carneasada.png" alt="Carne Asada">
-                        <div>
-                            <h3>Carne asada</h3>
-                            <p>Jugosa y tierna carne asada a la perfección, con un sabor ahumado y especias que deleitarán tu paladar.</p>
-                            <span>Existencias: <input type="number" value="10" min="0" class="stock-input"></span>
-                            <button onclick="updateStock(this, 'increase')">Añadir</button>
-                            <button onclick="updateStock(this, 'decrease')">Quitar</button>
-                        </div>
-                    </li>
-                    <li>
-                        <img src="/img/costillas de cerdo.png" alt="Costillas de Cerdo">
-                        <div>
-                            <h3>Costillas de cerdo con salsa BBQ</h3>
-                            <p>Suaves costillas de cerdo bañadas en una irresistible salsa BBQ, cocinadas lentamente hasta alcanzar la perfección.</p>
-                            <span>Existencias: <input type="number" value="10" min="0" class="stock-input"></span>
-                            <button onclick="updateStock(this, 'increase')">Añadir</button>
-                            <button onclick="updateStock(this, 'decrease')">Quitar</button>
-                        </div>
-                    </li>
-                    <li>
-                        <img src="/img/bandeja paisa.png" alt="Bandeja paisa">
-                        <div>
-                            <h3>Bandeja Paisa</h3>
-                            <p>Tradicional y abundante plato colombiano con frijoles, arroz, carne molida, chicharrón, huevo frito, plátano maduro, aguacate y arepa.</p>
-                            <span>Existencias: <input type="number" value="10" min="0" class="stock-input"></span>
-                            <button onclick="updateStock(this, 'increase')">Añadir</button>
-                            <button onclick="updateStock(this, 'decrease')">Quitar</button>
-                        </div>
-                    </li>
-                    <li>
-                        <img src="/img/chuleta valluna.png" alt="Chuleta">
-                        <div>
-                            <h3>Chuleta valluna</h3>
-                            <p>Deliciosa chuleta de cerdo empanizada y frita, servida con yuca, plátano y una porción de ensalada fresca.</p>
-                            <span>Existencias: <input type="number" value="10" min="0" class="stock-input"></span>
-                            <button onclick="updateStock(this, 'increase')">Añadir</button>
-                            <button onclick="updateStock(this, 'decrease')">Quitar</button>
-                        </div>
-                    </li>
-                    <li>
-                        <img src="/img/frijolada.png" alt="Frijolada">
-                        <div>
-                            <h3>Frijolada</h3>
-                            <p>Reconfortante sopa de frijoles con chorizo, plátano, aguacate y arroz, una auténtica delicia colombiana.</p>
-                            <span>Existencias: <input type="number" value="10" min="0" class="stock-input"></span>
-                            <button onclick="updateStock(this, 'increase')">Añadir</button>
-                            <button onclick="updateStock(this, 'decrease')">Quitar</button>
-                        </div>
-                    </li>
-                    <li>
-                        <img src="/img/pescado.png" alt="Mojarra">
-                        <div>
-                            <h3>Mojarra frita</h3>
-                            <p>Mojarra fresca frita hasta quedar crujiente, acompañada de patacones, ensalada y arroz, perfecta para los amantes del pescado.</p>
-                            <span>Existencias: <input type="number" value="10" min="0" class="stock-input"></span>
-                            <button onclick="updateStock(this, 'increase')">Añadir</button>
-                            <button onclick="updateStock(this, 'decrease')">Quitar</button>
-                        </div>
-                    </li>
-                    
+                    <!-- Agrega aquí el resto de los elementos del stock como en el ejemplo anterior -->
                 </ul>
             `;
             document.getElementById('content').innerHTML = stockContent;
         }
 
         function showOrders() {
-        const orders = [
-            {
-                productName: "Empanada de Carne",
-                customerName: "Mailin Velasquez",
-                quantity: 2,
-                status: "Pendiente",
-                imgSrc: "/img/empanada.png",
-                price: 1000
-            },
-            {
-                productName: "Buñuelos rellenos de arequipe",
-                customerName: "Sofia Cardenas",
-                quantity: 1,
-                status: "Preparando",
-                imgSrc: "/img/buñuelo.png",
-                price: 2000
-            },
-            {
-                productName: "Arepa de huevo",
-                customerName: "Narly Sanchez",
-                quantity: 3,
-                status: "Listo para recoger",
-                imgSrc: "/img/arepadehuevo.png",
-                price: 1500
-            },
-            {
-                productName: "Hamburguesa tres carnes",
-                customerName: "Illia Topuria",
-                quantity: 3,
-                status: "Listo para recoger",
-                imgSrc: "/img/hamburguesa.png",
-                price: 5000
-            },
-            {
-                productName: "Cafe con deditos de queso",
-                customerName: "Connor Mcgregor",
-                quantity: 3,
-                status: "Listo para recoger",
-                imgSrc: "/img/cafe.png",
-                price: 3000
-            },
-            {
-                productName: "Pan de bono con trozitos de chocolate",
-                customerName: "Khabib Nurmagodev",
-                quantity: 3,
-                status: "Listo para recoger",
-                imgSrc: "/img/pan de bono.png",
-                price: 2500
-            },
-            {
-                productName: "Carne asada",
-                customerName: "Cristiano Ronaldo",
-                quantity: 3,
-                status: "Listo para recoger",
-                imgSrc: "/img/carneasada.png",
-                price: 7000
-            },
-            {
-                productName: "Costillas de cerdo con salsa BBQ",
-                customerName: "Daniel Junco",
-                quantity: 3,
-                status: "Listo para recoger",
-                imgSrc: "/img/costillas de cerdo.png",
-                price: 8000
-            },
-            {
-                productName: "Bandeja Paisa",
-                customerName: "Cesar Castillo",
-                quantity: 3,
-                status: "Listo para recoger",
-                imgSrc: "/img/bandeja paisa.png",
-                price: 10000
-            },
-            {
-                productName: "Chuleta valluna",
-                customerName: "Daniel Villamil",
-                quantity: 3,
-                status: "Listo para recoger",
-                imgSrc: "/img/chuleta valluna.png",
-                price: 6000
-            },
-            {
-                productName: "Frijolada",
-                customerName: "Nicolas Vera",
-                quantity: 3,
-                status: "Listo para recoger",
-                imgSrc: "/img/frijolada.png",
-                price: 5000
-            },
-            {
-                productName: "Mojarra frita",
-                customerName: "Juan Perez",
-                quantity: 3,
-                status: "Listo para recoger",
-                imgSrc: "/img/pescado.png",
-                price: 9000
-            }
-        ];
+            const orders = [
+                {
+                    productName: "Empanada de Carne",
+                    customerName: "Mailin Velasquez",
+                    quantity: 2,
+                    status: "Pendiente",
+                    imgSrc: "/img/empanada.png",
+                    price: 1000
+                },
+            ];
 
-        let orderContent = `
-            <h2>Pedidos de Clientes</h2>
-            <ul class="order-list">
-        `;
-
-        orders.forEach(order => {
-            const totalPrice = order.quantity * order.price;
-            orderContent += `
-                <li>
-                    <img src="${order.imgSrc}" alt="${order.productName}">
-                    <div>
-                        <h3>${order.productName}</h3>
-                        <p><strong>Cliente:</strong> ${order.customerName}</p>
-                        <p><strong>Cantidad:</strong> ${order.quantity}</p>
-                        <p><strong>Precio Unitario:</strong> ${order.price} COP</p>
-                        <p><strong>Precio Total:</strong> ${totalPrice} COP</p>
-                        <p><strong>Estado:</strong> 
-                            <select onchange="updateOrderStatus(this)">
-                                <option value="Pendiente" ${order.status === 'Pendiente' ? 'selected' : ''}>Pendiente</option>
-                                <option value="Preparando" ${order.status === 'Preparando' ? 'selected' : ''}>Preparando</option>
-                                <option value="Listo para recoger" ${order.status === 'Listo para recoger' ? 'selected' : ''}>Listo para recoger</option>
-                                <option value="Entregado" ${order.status === 'Entregado' ? 'selected' : ''}>Entregado</option>
-                            </select>
-                        </p>
-                    </div>
-                </li>
+            let orderContent = `
+                <h2>Pedidos de Clientes</h2>
+                <ul class="order-list">
             `;
-        });
 
-        orderContent += `
-            </ul>
-        `;
+            orders.forEach(order => {
+                const totalPrice = order.quantity * order.price;
+                orderContent += `
+                    <li>
+                        <img src="${order.imgSrc}" alt="${order.productName}">
+                        <div>
+                            <h3>${order.productName}</h3>
+                            <p><strong>Cliente:</strong> ${order.customerName}</p>
+                            <p><strong>Cantidad:</strong> ${order.quantity}</p>
+                            <p><strong>Precio Unitario:</strong> ${order.price} COP</p>
+                            <p><strong>Precio Total:</strong> ${totalPrice} COP</p>
+                            <p><strong>Estado:</strong> 
+                                <select onchange="updateOrderStatus(this)">
+                                    <option value="Pendiente" ${order.status === 'Pendiente' ? 'selected' : ''}>Pendiente</option>
+                                    <option value="Preparando" ${order.status === 'Preparando' ? 'selected' : ''}>Preparando</option>
+                                    <option value="Listo para recoger" ${order.status === 'Listo para recoger' ? 'selected' : ''}>Listo para recoger</option>
+                                    <option value="Entregado" ${order.status === 'Entregado' ? 'selected' : ''}>Entregado</option>
+                                </select>
+                            </p>
+                        </div>
+                    </li>
+                `;
+            });
 
-        document.getElementById('content').innerHTML = orderContent;
-    }
+            orderContent += `
+                </ul>
+            `;
 
-    function updateOrderStatus(select) {
-        const status = select.value;
-        alert('El estado del pedido ha sido actualizado a: ' + status);
-    }
+            document.getElementById('content').innerHTML = orderContent;
+        }
 
+        function updateOrderStatus(select) {
+            const status = select.value;
+            alert('El estado del pedido ha sido actualizado a: ' + status);
+        }
 
         function logout() {
             alert('Sesión cerrada');

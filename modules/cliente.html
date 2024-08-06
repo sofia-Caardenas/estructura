@@ -10,19 +10,19 @@
     <header>
         <div class="logo">
             <h1 class="header-title">Cafésena</h1>
-            
         </div>
-        <button class="logout-button" onclick="logout()">Cerrar Sesión</button>
-    </header>
-    <div class="container">
+        
         <nav>
             <ul>
                 <li><a href="#" onclick="showProfile(); return false;">Perfil de Usuario</a></li>
                 <li><a href="#" onclick="showMenu(); return false;">Ver Menú</a></li>
                 <li><a href="#" onclick="placeOrder(); return false;">Carrito de compras</a></li>
                 <li><a href="#" onclick="checkOrderStatus(); return false;">Pedidos</a></li>
+                <button class="logout-button" onclick="logout()">Cerrar Sesión</button>
             </ul>
         </nav>
+    </header>
+    <div class="container">
         <div id="content">
             <!-- Contenido dinámico se cargará aquí -->
         </div>
@@ -70,7 +70,7 @@
                 showProfile();
             });
         }
-  
+
         function showMenu() {
             const menuContent = `
                 <section class="menu-section" id="menu">
@@ -175,77 +175,30 @@
                 </section>
             `;
             document.getElementById('content').innerHTML = menuContent;
-
-            // Agregar funcionalidad de "Comprar ahora"
-            const buyButtons = document.querySelectorAll('.product-button');
-            buyButtons.forEach(button => {
-                button.addEventListener('click', function(event) {
-                    event.preventDefault();
-                    const product = this.closest('.product');
-                    const title = product.querySelector('.product-title').textContent;
-                    const price = product.querySelector('.product-price').textContent;
-                    const image = product.querySelector('img').src;
-                    addToCart(title, price, image);
-                });
-            });
-        }
-
-        function addToCart(title, price, image) {
-            const item = { title, price, image };
-            cart.push(item);
-            alert(`Producto agregado al carrito: ${title}`);
         }
 
         function placeOrder() {
-            if (cart.length === 0) {
-                alert('Tu carrito está vacío. Agrega productos antes de realizar un pedido.');
-                return;
-            }
-
-            const orderContent = `
-                <div class="order">
-                    <h2>Tus Pedidos</h2>
-                    <ul id="orderList">
-                        ${cart.map(item => `
-                            <li>
-                                <img src="${item.image}" alt="${item.title}" class="order-image">
-                                <span>${item.title}</span> - <span>${item.price}</span>
-                            </li>
-                        `).join('')}
-                    </ul>
-                    <button onclick="checkout()">Realizar Pedido</button>
-                </div>
+            const cartContent = `
+                <section class="cart-section">
+                    <h2>Carrito de compras</h2>
+                    <p>No tienes productos en el carrito.</p>
+                </section>
             `;
-            document.getElementById('content').innerHTML = orderContent;
-        }
-
-        function checkout() {
-            // Simular proceso de pedido
-            orders.push(...cart.map(item => ({ ...item, status: 'Pendiente' })));
-            cart = [];
-            alert('Pedido realizado con éxito');
-            checkOrderStatus();
+            document.getElementById('content').innerHTML = cartContent;
         }
 
         function checkOrderStatus() {
-            const orderStatusContent = `
-                <div class="order-status">
-                    <h2>Estado de tus Pedidos</h2>
-                    <ul>
-                        ${orders.map((item, index) => `
-                            <li>
-                                <img src="${item.image}" alt="${item.title}" class="order-image">
-                                <span>${item.title}</span> - <span>${item.price}</span> - <span>${item.status}</span>
-                            </li>
-                        `).join('')}
-                    </ul>
-                </div>
+            const ordersContent = `
+                <section class="orders-section">
+                    <h2>Pedidos</h2>
+                    <p>No tienes pedidos recientes.</p>
+                </section>
             `;
-            document.getElementById('content').innerHTML = orderStatusContent;
+            document.getElementById('content').innerHTML = ordersContent;
         }
 
         function logout() {
-            window.location.href = '../index.html';
+            window.location.href = "login.html"; // Redirige a la página de login
         }
     </script>
 </body>
