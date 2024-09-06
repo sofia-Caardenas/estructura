@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Administración - Cafésena</title>
+    <link rel="stylesheet" href="../assets/css/administrador.css">
+</head>
+<body>
+    <header>
+        <div class="logo">Cafésena</div>
+        <nav class="main-nav">
+            <ul>
+                <li><a href="#usuarios" onclick="showSection('usuarios')">Usuarios</a></li>
+                <li><a href="#productos" onclick="showSection('productos')">Productos</a></li>
+                <li><a href="#pedidos" onclick="showSection('pedidos')">Pedidos</a></li>
+                <li><a href="#historial" onclick="showSection('historial')">Historial</a></li>
+                <li><a href="#notificaciones" onclick="showSection('notificaciones')">Notificaciones</a></li>
+            </ul>
+        </nav>
+        <button class="logout-btn" onclick="logout()">Cerrar Sesión</button>
+    </header>
+    <main>
+        <h1>Panel de Administración</h1>
+
+        <section id="usuarios" class="menu-section">
+            <h2 class="section-title">Usuarios</h2>
+            <form id="usuarioForm">
+                <input type="hidden" id="userId">
+                <label>Nombre: <input type="text" id="nombre" required></label>
+                <label>Email: <input type="email" id="email" required></label>
+                <label>Teléfono: <input type="text" id="telefono" required></label>
+                <label>Dirección: <input type="text" id="direccion" required></label>
+                <label>Fecha de Registro: <input type="datetime-local" id="fechaRegistro" required></label>
+                <button type="submit">Guardar</button>
+            </form>
+            <table id="usuarios-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nombre</th>
+                        <th>Email</th>
+                        <th>Teléfono</th>
+                        <th>Dirección</th>
+                        <th>Fecha de Registro</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </section>
+
+        <section id="productos" class="menu-section" style="display:none;">
+            <h2 class="section-title">Productos</h2>
+            <form id="productoForm">
+                <input type="hidden" id="productoId">
+                <label>Nombre: <input type="text" id="productoNombre" required></label>
+                <label>Descripción: <input type="text" id="descripcion" required></label>
+                <label>Precio: <input type="number" step="0.01" id="precio" required></label>
+                <label>Stock: <input type="number" id="stock" required></label>
+                <label>Fecha Agregado: <input type="datetime-local" id="fechaAgregado" required></label>
+                <button type="submit">Guardar</button>
+            </form>
+            <table id="productos-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nombre</th>
+                        <th>Descripción</th>
+                        <th>Precio</th>
+                        <th>Stock</th>
+                        <th>Fecha Agregado</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </section>
+
+        <section id="pedidos" class="menu-section" style="display:none;">
+            <h2 class="section-title">Pedidos</h2>
+            <form id="pedidoForm">
+                <input type="hidden" id="pedidoId">
+                <label>ID Usuario: <input type="number" id="pedidoUsuarioId" required></label>
+                <label>Fecha del Pedido: <input type="datetime-local" id="fechaPedido" required></label>
+                <label>Estado: <input type="text" id="estado" required></label>
+                <label>Total: <input type="number" step="0.01" id="total" required></label>
+                <button type="submit">Guardar</button>
+            </form>
+            <table id="pedidos-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>ID Usuario</th>
+                        <th>Fecha del Pedido</th>
+                        <th>Estado</th>
+                        <th>Total</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </section>
+
+        <section id="historial" class="menu-section" style="display:none;">
+            <h2 class="section-title">Historial de Pedidos</h2>
+            <form id="historialForm">
+                <input type="hidden" id="historialId">
+                <label>ID Usuario: <input type="number" id="historialUsuarioId" required></label>
+                <label>ID Pedido: <input type="number" id="historialPedidoId" required></label>
+                <label>Fecha del Pedido: <input type="datetime-local" id="historialFechaPedido" required></label>
+                <label>Estado: <input type="text" id="historialEstado" required></label>
+                <label>Total: <input type="number" step="0.01" id="historialTotal" required></label>
+                <button type="submit">Guardar</button>
+            </form>
+            <table id="historial-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>ID Usuario</th>
+                        <th>ID Pedido</th>
+                        <th>Fecha del Pedido</th>
+                        <th>Estado</th>
+                        <th>Total</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </section>
+
+        <section id="notificaciones" class="menu-section" style="display:none;">
+            <h2 class="section-title">Notificaciones</h2>
+            <form id="notificacionForm">
+                <input type="hidden" id="notificacionId">
+                <label>ID Usuario: <input type="number" id="notificacionUsuarioId" required></label>
+                <label>Mensaje: <input type="text" id="mensaje" required></label>
+                <label>Fecha: <input type="datetime-local" id="fecha" required></label>
+                <label>Leída: <input type="checkbox" id="leida"></label>
+                <button type="submit">Guardar</button>
+            </form>
+            <table id="notificaciones-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>ID Usuario</th>
+                        <th>Mensaje</th>
+                        <th>Fecha</th>
+                        <th>Leída</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </section>
+    </main>
+    <footer>
+        <p>&copy; 2024 Cafésena. Todos los derechos reservados.</p>
+    </footer>
+    <script src="../js/admin.js"></script>
+</body>
+</html>
