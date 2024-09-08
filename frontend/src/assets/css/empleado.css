@@ -1,31 +1,25 @@
+/* Estilos generales */
 body {
     font-family: Arial, sans-serif;
-    background-color: #F5F5DC;
-    margin: 0;  
-    display: flex;
-    flex-direction: column;
+    background-color: #faf7e9;
+    margin: 0;
+    padding: 0;
     background-image: url('../img/background.jpg');
     background-size: cover;
     min-height: 100vh;
     box-sizing: border-box;
 }
 
+/* Header */
 header {
     background-color: #4b2e1e;
     color: white;
     padding: 20px;
     width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
     position: relative;
-}
-
-.logo {
-    position: absolute;
-    left: 20px;
-    top: 50%;
-    transform: translateY(-50%);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }
 
 .header-title {
@@ -33,16 +27,17 @@ header {
     margin: 0;
 }
 
+
+.logo {
+    font-size: 24px;
+}
+
 .logout-button {
-    position: absolute;
-    right: 20px;
-    top: 50%;
-    transform: translateY(-50%);
     background-color: #7a5230;
     color: white;
     border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
+    padding: 12px 60px;
+    border-radius: 0px;
     cursor: pointer;
     transition: background-color 0.3s ease;
 }
@@ -51,8 +46,9 @@ header {
     background-color: #573d2d;
 }
 
+/* Navegación */
 nav {
-    margin-top: 20px;
+    background-color: #7a5230;
 }
 
 nav ul {
@@ -63,50 +59,75 @@ nav ul {
 }
 
 nav ul li {
-    margin: 0 15px;
+    margin: 0;
 }
 
 nav ul li a {
     color: white;
     text-decoration: none;
     font-weight: bold;
-    padding: 10px;
+    padding: 15px 20px;
+    display: block;
     transition: background-color 0.3s ease;
 }
 
 nav ul li a:hover {
     background-color: #573d2d;
-    border-radius: 5px;
+    border-radius: 0%;
 }
 
-.container {
+.nav-menu {
     display: flex;
-    flex-direction: column;
-    width: 100%;
-    padding: 20px;
+    gap: 20px;
+    border-radius: 0%;
 }
 
-#content {
-    background-color: #F5F5DC;
+.nav-menu a {
+    color: white;
+    text-decoration: none;
+    font-size: 16px;
+    border-radius: 0%;
+}
+
+.nav-menu a:hover {
+    text-decoration: underline;
+    border-radius: 0%;
+}
+
+/* Contenedores */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
     padding: 20px;
+    flex: 1;
+}
+
+.section-title {
+    font-size: 24px;
+    color: #5a2e0a;
+    margin-bottom: 20px;
+}
+
+/* Contenido */
+#content {
+    background-color: #fff7e6;
+    padding: 40px;
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    margin: 20px;
-    flex: 1;
+    margin: 20px 0;
 }
 
 h1, h2 {
     color: #8b6652;
 }
 
-ul.stock-list,
-ul.order-list {
+/* Listas de stock y órdenes */
+ul.stock-list, ul.order-list {
     list-style: none;
     padding: 0;
 }
 
-ul.stock-list li,
-ul.order-list li {
+ul.stock-list li, ul.order-list li {
     display: flex;
     align-items: center;
     margin-bottom: 20px;
@@ -116,15 +137,13 @@ ul.order-list li {
     border-radius: 8px;
 }
 
-ul.stock-list li img,
-ul.order-list li img {
+ul.stock-list li img, ul.order-list li img {
     width: 100px;
     height: 100px;
     margin-right: 20px;
 }
 
-ul.stock-list li div,
-ul.order-list li div {
+ul.stock-list li div, ul.order-list li div {
     flex: 1;
 }
 
@@ -134,7 +153,25 @@ ul.order-list li div {
     margin-right: 10px;
 }
 
-button {
+/* Perfil */
+.profile {
+    background-color: #fff8f0;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin: 20px 0;
+}
+
+.profile h2 {
+    margin-top: 0;
+}
+
+.profile p {
+    margin: 5px 0;
+}
+
+/* Botones */
+button, .order-button, .product-button {
     background-color: #7a5230;
     color: white;
     border: none;
@@ -142,17 +179,140 @@ button {
     border-radius: 5px;
     cursor: pointer;
     transition: background-color 0.3s ease;
+    text-align: center;
 }
 
-button:hover {
+button:hover, .order-button:hover, .product-button:hover {
     background-color: #573d2d;
 }
 
+/* Productos y Órdenes */
+.products, .orders {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    width: 100%;
+}
+
+.product, .order {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 10px;
+    text-align: center;
+    width: 160px;
+    box-sizing: border-box;
+}
+
+.product img, .order img {
+    width: 100%;
+    height: auto;
+    border-radius: 5px;
+}
+
+.product-title, .order-title {
+    font-size: 14px;
+    margin: 10px 0;
+    color: #4b2e1e;
+}
+
+.product-price, .product-old-price, .product-discount, .order-price, .order-status {
+    font-size: 12px;
+    margin: 5px 0;
+}
+
+/* Sección del carrito */
+.cart-section {
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+}
+
+.cart-items {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.cart-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid #ddd;
+}
+
+.item-details {
+    display: flex;
+    align-items: center;
+}
+
+.item-image {
+    width: 80px;
+    height: 80px;
+    border-radius: 5px;
+    margin-right: 10px;
+}
+
+.item-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.item-name {
+    font-size: 16px;
+    color: #333;
+    font-weight: bold;
+}
+
+.item-price {
+    font-size: 14px;
+    color: #999;
+}
+
+.item-actions {
+    display: flex;
+    align-items: center;
+}
+
+.remove-button {
+    background-color: transparent;
+    color: #ff4d4d;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+    text-decoration: underline;
+}
+
+.remove-button:hover {
+    color: #ff0000;
+}
+
+/* Footer */
 footer {
     background-color: #4b2e1e;
     color: white;
     text-align: center;
     padding: 10px;
-    position: relative;
     width: 100%;
+    position: fixed;
+    bottom: 0;
+}
+
+/* Media Queries */
+@media screen and (max-width: 768px) {
+    nav ul {
+        flex-direction: column;
+    }
+
+    .container {
+        flex-direction: column;
+    }
+
+    #content {
+        margin: 20px 0;
+        width: 90%;
+    }
 }

@@ -3,12 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Panel de Administración - Cafésena</title>
-    <link rel="stylesheet" href="../assets/css/administrador.css">
+    <title>Panel de Administración - Onix</title>
+    <link rel="stylesheet" href="../src/assets/css/administrador.css">
+    <style>
+        .menu-section {
+            display: none;
+        }
+    </style>
 </head>
 <body>
     <header>
-        <div class="logo">Cafésena</div>
+        <div class="logo">Onix</div>
         <nav class="main-nav">
             <ul>
                 <li><a href="#usuarios" onclick="showSection('usuarios')">Usuarios</a></li>
@@ -25,19 +30,11 @@
 
         <section id="usuarios" class="menu-section">
             <h2 class="section-title">Usuarios</h2>
-            <form id="usuarioForm">
-                <input type="hidden" id="userId">
-                <label>Nombre: <input type="text" id="nombre" required></label>
-                <label>Email: <input type="email" id="email" required></label>
-                <label>Teléfono: <input type="text" id="telefono" required></label>
-                <label>Dirección: <input type="text" id="direccion" required></label>
-                <label>Fecha de Registro: <input type="datetime-local" id="fechaRegistro" required></label>
-                <button type="submit">Guardar</button>
-            </form>
+            <button onclick="addUser()">Agregar Usuario</button>
             <table id="usuarios-table">
                 <thead>
                     <tr>
-                        <th>ID</th>
+                        
                         <th>Nombre</th>
                         <th>Email</th>
                         <th>Teléfono</th>
@@ -51,26 +48,18 @@
             </table>
         </section>
 
-        <section id="productos" class="menu-section" style="display:none;">
+        <section id="productos" class="menu-section">
             <h2 class="section-title">Productos</h2>
-            <form id="productoForm">
-                <input type="hidden" id="productoId">
-                <label>Nombre: <input type="text" id="productoNombre" required></label>
-                <label>Descripción: <input type="text" id="descripcion" required></label>
-                <label>Precio: <input type="number" step="0.01" id="precio" required></label>
-                <label>Stock: <input type="number" id="stock" required></label>
-                <label>Fecha Agregado: <input type="datetime-local" id="fechaAgregado" required></label>
-                <button type="submit">Guardar</button>
-            </form>
+            <button onclick="addProduct()">Agregar Producto</button>
             <table id="productos-table">
                 <thead>
                     <tr>
-                        <th>ID</th>
                         <th>Nombre</th>
                         <th>Descripción</th>
                         <th>Precio</th>
-                        <th>Stock</th>
-                        <th>Fecha Agregado</th>
+                        <th>categoria</th>
+                        <th>Stock</th>                        
+                        <th>fecha de Agregando</th>
                         <th>Acciones</th>
                     </tr>
                 </thead>
@@ -79,21 +68,13 @@
             </table>
         </section>
 
-        <section id="pedidos" class="menu-section" style="display:none;">
+        <section id="pedidos" class="menu-section">
             <h2 class="section-title">Pedidos</h2>
-            <form id="pedidoForm">
-                <input type="hidden" id="pedidoId">
-                <label>ID Usuario: <input type="number" id="pedidoUsuarioId" required></label>
-                <label>Fecha del Pedido: <input type="datetime-local" id="fechaPedido" required></label>
-                <label>Estado: <input type="text" id="estado" required></label>
-                <label>Total: <input type="number" step="0.01" id="total" required></label>
-                <button type="submit">Guardar</button>
-            </form>
+            <button onclick="addOrder()">Agregar Pedido</button>
             <table id="pedidos-table">
                 <thead>
                     <tr>
-                        <th>ID</th>
-                        <th>ID Usuario</th>
+                        <th>ID pedido</th>
                         <th>Fecha del Pedido</th>
                         <th>Estado</th>
                         <th>Total</th>
@@ -105,21 +86,13 @@
             </table>
         </section>
 
-        <section id="historial" class="menu-section" style="display:none;">
+        <section id="historial" class="menu-section">
             <h2 class="section-title">Historial de Pedidos</h2>
-            <form id="historialForm">
-                <input type="hidden" id="historialId">
-                <label>ID Usuario: <input type="number" id="historialUsuarioId" required></label>
-                <label>ID Pedido: <input type="number" id="historialPedidoId" required></label>
-                <label>Fecha del Pedido: <input type="datetime-local" id="historialFechaPedido" required></label>
-                <label>Estado: <input type="text" id="historialEstado" required></label>
-                <label>Total: <input type="number" step="0.01" id="historialTotal" required></label>
-                <button type="submit">Guardar</button>
-            </form>
+            <button onclick="addHistory()">Agregar Historial</button>
             <table id="historial-table">
                 <thead>
                     <tr>
-                        <th>ID</th>
+                        
                         <th>ID Usuario</th>
                         <th>ID Pedido</th>
                         <th>Fecha del Pedido</th>
@@ -133,21 +106,13 @@
             </table>
         </section>
 
-        <section id="notificaciones" class="menu-section" style="display:none;">
+        <section id="notificaciones" class="menu-section">
             <h2 class="section-title">Notificaciones</h2>
-            <form id="notificacionForm">
-                <input type="hidden" id="notificacionId">
-                <label>ID Usuario: <input type="number" id="notificacionUsuarioId" required></label>
-                <label>Mensaje: <input type="text" id="mensaje" required></label>
-                <label>Fecha: <input type="datetime-local" id="fecha" required></label>
-                <label>Leída: <input type="checkbox" id="leida"></label>
-                <button type="submit">Guardar</button>
-            </form>
+            <button onclick="addNotification()">Agregar Notificación</button>
             <table id="notificaciones-table">
                 <thead>
                     <tr>
                         <th>ID</th>
-                        <th>ID Usuario</th>
                         <th>Mensaje</th>
                         <th>Fecha</th>
                         <th>Leída</th>
@@ -160,8 +125,237 @@
         </section>
     </main>
     <footer>
-        <p>&copy; 2024 Cafésena. Todos los derechos reservados.</p>
+        <p>&copy; 2024 Onix. Todos los derechos reservados.</p>
     </footer>
-    <script src="../js/admin.js"></script>
+    <script>
+        // Simulación de datos
+        let usuarios = [
+            { id: 1, nombre: 'Juan Perez', email: 'juan.perez@example.com', telefono: '3001234567', direccion: 'Calle 123 #45-67', fechaRegistro: '2024-01-15' },
+            { id: 2, nombre: 'Maria Gomez', email: 'maria.gomez@example.com', telefono: '3102345678', direccion: 'Carrera 12 #34-56', fechaRegistro: '2024-02-20' }
+        ];
+
+        let productos = [
+            { id: 1, title: 'Café Americano', description: 'Café negro sin azúcar', price: 5000, category: 'Bebidas', image: '20', dateAdded: '2024-03-01' },
+            { id: 2, title: 'Café Latte', description: 'Café con leche', price: 6000, category: 'Bebidas', image: '20', dateAdded: '2024-03-05' }
+        ];
+
+        let pedidos = [
+            { id: 1, userId: 1, orderDate: '2024-04-01', status: 'Recibido', total: 10000 },
+            { id: 2, userId: 2, orderDate: '2024-04-02', status: 'En Preparacion', total: 12000 }
+        ];
+
+        let historial = [
+            { id: 1, userId: 1, orderId: 1, orderDate: '2024-04-01', status: 'Recibido', total: 10000 },
+            { id: 2, userId: 2, orderId: 2, orderDate: '2024-04-02', status: 'En Preparacion', total: 12000 }
+        ];
+
+        let notificaciones = [
+            { id: 1, userId: 1, message: 'Tu pedido ha sido recibido.', date: '2024-04-01', read: false },
+            { id: 2, userId: 2, message: 'Tu pedido está en preparación.', date: '2024-04-02', read: true }
+        ];
+
+        function fillTable(tableId, data, editFunction, deleteFunction) {
+            const tbody = document.querySelector(`#${tableId} tbody`);
+            tbody.innerHTML = ''; // Limpia el contenido de la tabla
+            data.forEach(item => {
+                let row = '<tr>';
+                for (const key in item) {
+                    if (key !== 'id') row += `<td>${item[key]}</td>`;
+                }
+                row += `
+                    <td>
+                        <button onclick="${editFunction}(${item.id})">Editar</button>
+                        <button onclick="${deleteFunction}(${item.id})">Eliminar</button>
+                    </td>
+                `;
+                row += '</tr>';
+                tbody.innerHTML += row;
+          });
+}
+
+        function showSection(sectionId) {
+            document.querySelectorAll('.menu-section').forEach(section => {
+                section.style.display = 'none';
+            });
+            document.querySelector(`#${sectionId}`).style.display = 'block';
+        }
+
+        function loadTableData() {
+            fillTable('usuarios-table', usuarios, 'editUser', 'deleteUser');
+            fillTable('productos-table', productos, 'editProduct', 'deleteProduct');
+            fillTable('pedidos-table', pedidos, 'editOrder', 'deleteOrder');
+            fillTable('historial-table', historial, 'editHistory', 'deleteHistory');
+            fillTable('notificaciones-table', notificaciones, 'editNotification', 'deleteNotification');
+        }
+
+        function addUser() {
+            const newUser = {
+                id: usuarios.length + 1,
+                nombre: prompt('Nombre del Usuario:'),
+                email: prompt('Email del Usuario:'),
+                telefono: prompt('Teléfono del Usuario:'),
+                direccion: prompt('Dirección del Usuario:'),
+                fechaRegistro: new Date().toISOString().split('T')[0]
+            };
+            usuarios.push(newUser);
+            fillTable('usuarios-table', usuarios);
+        }
+
+        function editUser(id) {
+    const user = usuarios.find(u => u.id === id);
+    if (user) {
+        user.nombre = prompt('Nuevo Nombre del Usuario:', user.nombre) || user.nombre;
+        user.email = prompt('Nuevo Email del Usuario:', user.email) || user.email;
+        user.telefono = prompt('Nuevo Teléfono del Usuario:', user.telefono) || user.telefono;
+        user.direccion = prompt('Nueva Dirección del Usuario:', user.direccion) || user.direccion;
+        fillTable('usuarios-table', usuarios, 'editUser', 'deleteUser');
+    } else {
+        alert("Usuario no encontrado.");
+    }
+}
+
+
+        function deleteUser(id) {
+            const index = usuarios.findIndex(u => u.id === id);
+            if (index !== -1) {
+                usuarios.splice(index, 1);
+                fillTable('usuarios-table', usuarios);
+            }
+        }
+
+        function addProduct() {
+            const newProduct = {
+                id: productos.length + 1,
+                title: prompt('Nombre del Producto:'),
+                description: prompt('Descripción del Producto:'),
+                price: parseFloat(prompt('Precio del Producto:')),
+                category: prompt('Categoría del Producto:'),
+                image: prompt('URL de la Imagen del Producto:'),
+                dateAdded: new Date().toISOString().split('T')[0]
+            };
+            productos.push(newProduct);
+            fillTable('productos-table', productos);
+        }
+
+        function editProduct(id) {
+            const product = productos.find(p => p.id === id);
+            product.title = prompt('Nuevo Nombre del Producto:', product.title);
+            product.description = prompt('Nueva Descripción del Producto:', product.description);
+            product.price = parseFloat(prompt('Nuevo Precio del Producto:', product.price));
+            product.category = prompt('Nueva Categoría del Producto:', product.category);
+            product.image = prompt('Nueva URL de la Imagen del Producto:', product.image);
+            product.stock = parseInt(prompt('Nuevo Stock del Producto:', product.stock));  // Agregando la edición del stock
+            fillTable('productos-table', productos);
+            
+            // Guardar cambios en el localStorage o enviar a la API
+            localStorage.setItem('productos', JSON.stringify(productos));
+        }
+
+
+        function deleteProduct(id) {
+            const index = productos.findIndex(p => p.id === id);
+            if (index !== -1) {
+                productos.splice(index, 1);
+                fillTable('productos-table', productos);
+            }
+        }
+
+        function addOrder() {
+            const newOrder = {
+                id: pedidos.length + 1,
+                userId: parseInt(prompt('ID del Usuario:')),
+                orderDate: new Date().toISOString().split('T')[0],
+                status: prompt('Estado del Pedido:'),
+                total: parseFloat(prompt('Total del Pedido:'))
+            };
+            pedidos.push(newOrder);
+            fillTable('pedidos-table', pedidos);
+        }
+
+        function editOrder(id) {
+            const order = pedidos.find(o => o.id === id);
+            order.userId = parseInt(prompt('Nuevo ID del Usuario:', order.userId));
+            order.orderDate = prompt('Nueva Fecha del Pedido:', order.orderDate);
+            order.status = prompt('Nuevo Estado del Pedido:', order.status);
+            order.total = parseFloat(prompt('Nuevo Total del Pedido:', order.total));
+            fillTable('pedidos-table', pedidos);
+        }
+
+        function deleteOrder(id) {
+            const index = pedidos.findIndex(o => o.id === id);
+            if (index !== -1) {
+                pedidos.splice(index, 1);
+                fillTable('pedidos-table', pedidos);
+            }
+        }
+
+        function addHistory() {
+            const newHistory = {
+                id: historial.length + 1,
+                userId: parseInt(prompt('ID del Usuario:')),
+                orderId: parseInt(prompt('ID del Pedido:')),
+                orderDate: prompt('Fecha del Pedido:', new Date().toISOString().split('T')[0]),
+                status: prompt('Estado del Pedido:'),
+                total: parseFloat(prompt('Total del Pedido:'))
+            };
+            historial.push(newHistory);
+            fillTable('historial-table', historial);
+        }
+
+        function editHistory(id) {
+            const history = historial.find(h => h.id === id);
+            history.userId = parseInt(prompt('Nuevo ID del Usuario:', history.userId));
+            history.orderId = parseInt(prompt('Nuevo ID del Pedido:', history.orderId));
+            history.orderDate = prompt('Nueva Fecha del Pedido:', history.orderDate);
+            history.status = prompt('Nuevo Estado del Pedido:', history.status);
+            history.total = parseFloat(prompt('Nuevo Total del Pedido:', history.total));
+            fillTable('historial-table', historial);
+        }
+
+        function deleteHistory(id) {
+            const index = historial.findIndex(h => h.id === id);
+            if (index !== -1) {
+                historial.splice(index, 1);
+                fillTable('historial-table', historial);
+            }
+        }
+
+        function addNotification() {
+            const newNotification = {
+                id: notificaciones.length + 1,
+                userId: parseInt(prompt('ID del Usuario:')),
+                message: prompt('Mensaje de la Notificación:'),
+                date: new Date().toISOString().split('T')[0],
+                read: confirm('¿Marcado como leído?')
+            };
+            notificaciones.push(newNotification);
+            fillTable('notificaciones-table', notificaciones);
+        }
+
+        function editNotification(id) {
+            const notification = notificaciones.find(n => n.id === id);
+            notification.userId = parseInt(prompt('Nuevo ID del Usuario:', notification.userId));
+            notification.message = prompt('Nuevo Mensaje de la Notificación:', notification.message);
+            notification.date = prompt('Nueva Fecha:', notification.date);
+            notification.read = confirm('¿Marcado como leído?');
+            fillTable('notificaciones-table', notificaciones);
+        }
+
+        function deleteNotification(id) {
+            const index = notificaciones.findIndex(n => n.id === id);
+            if (index !== -1) {
+                notificaciones.splice(index, 1);
+                fillTable('notificaciones-table', notificaciones);
+            }
+        }
+
+        function logout() {
+            window.location.href = "login.html"; // Redirige a la página de login
+            alert ('Cerrando sesion')
+        }
+
+        // Inicializar datos
+        loadTableData();
+    </script>
 </body>
 </html>

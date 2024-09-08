@@ -1,17 +1,19 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cliente - Cafetería</title>
-    <link rel="stylesheet" href="../assets/css/cliente.css">
+    <link rel="stylesheet" href="../src/assets/css/cliente.css">
 </head>
+
 <body>
     <header>
         <div class="logo">
-            <h1 class="header-title">Cafésena</h1>
+            <a  class="logo"><img src="../src/assets/img/logocafsenablanco.png" width="25%" height="100%" "Logo Onix"></a>
         </div>
-        
+
         <nav>
             <ul>
                 <li><a href="#" onclick="showProfile(); return false;">Perfil de Usuario</a></li>
@@ -23,12 +25,15 @@
         </nav>
     </header>
     <div class="container">
+        <h1 class="section-title">Panel de cliente</h1>
         <div id="content">
-
+            <!-- Contenido dinámico de cada sección -->
+            <p>Bienvenido al panel de cliente. Selecciona una opción del menú para comenzar.</p>
         </div>
     </div>
+
     <footer>
-        <p>&copy; 2024 Cafésena. Todos los derechos reservados.</p>
+        <p>&copy; 2024 Onix. Todos los derechos reservados.</p>
     </footer>
 
     <script>
@@ -39,8 +44,8 @@
             const profileContent = `
                 <div class="profile">
                     <h2>Perfil de Usuario</h2>
-                    <p><strong>Nombre:</strong> Daniel Junco</p>
-                    <p><strong>Email:</strong> dsjunco5@soy.sena.edu.co</p>
+                    <p><strong>Nombre:</strong> kate herrera</p>
+                    <p><strong>Email:</strong> kate_h@gmail.com</p>
                     <p><strong>Teléfono:</strong> 318 3888099</p>
                     <button onclick="editProfile()">Editar Perfil</button>
                 </div>
@@ -54,9 +59,9 @@
                     <h2>Editar Perfil</h2>
                     <form id="editProfileForm">
                         <label for="name">Nombre:</label>
-                        <input type="text" id="name" name="name" value="Daniel Junco" required>
+                        <input type="text" id="name" name="name" value="kate herrera" required>
                         <label for="email">Email:</label>
-                        <input type="email" id="email" name="email" value="dsjunco5@soy.sena.edu.co" required>
+                        <input type="email" id="email" name="email" value="kate_h@gmail.com" required>
                         <label for="phone">Teléfono:</label>
                         <input type="tel" id="phone" name="phone" value="318 3888099" required>
                         <button type="submit">Guardar Cambios</button>
@@ -65,7 +70,7 @@
             `;
             document.getElementById('content').innerHTML = editProfileContent;
 
-            document.getElementById('editProfileForm').addEventListener('submit', function(event) {
+            document.getElementById('editProfileForm').addEventListener('submit', function (event) {
                 event.preventDefault();
                 showProfile();
             });
@@ -77,99 +82,79 @@
                     <h2 class="section-title">Lo más vendido</h2>
                     <div class="products">
                         <div class="product">
-                            <img src="/img/empanada.png" alt="Empanada de carne">
+                            <img src="../src/assets/img/empanada.png" alt="Empanada de carne">
                             <div class="product-title">Empanada de carne</div>
-                            <div class="product-price">$1.000</div>
-                            <a href="#" class="product-button" onclick="addToCart('Empanada de carne', 1000, '/img/empanada.png'); return false;">Añadir al carrito</a>
+                            <div class="product-price">$8.000</div>
+                            <a href="#" class="product-button" onclick="addToCart('Empanada de carne', 8000, '/img/empanada.png'); return false;">Añadir al carrito</a>
                         </div>
                         <div class="product">
-                            <img src="/img/buñuelo.png" alt="Buñuelos rellenos de arequipe">
-                            <div class="product-title">Buñuelos rellenos de arequipe</div>
-                            <div class="product-old-price">$2.199.000</div>
-                            <div class="product-price">$1.908.900</div>
-                            <div class="product-discount">13% OFF</div>
-                            <a href="#" class="product-button" onclick="addToCart('Buñuelos rellenos de arequipe', 1908900, '/img/buñuelo.png'); return false;">Añadir al carrito</a>
+                            <img src="../src/assets/img/buñuelo.png" alt="Buñuelos rellenos de arequipe">
+                            <div class="product-title">Buñuelo relleno</div>
+                            <div class="product-price">$6.000</div>
+                            <a href="#" class="product-button" onclick="addToCart('Buñuelos rellenos de arequipe', 6000, '/img/buñuelo.png'); return false;">Añadir al carrito</a>
                         </div>
                         <div class="product">
-                            <img src="/img/arepadehuevo.png" alt="Arepa de huevo">
+                            <img src="../src/assets/img/arepadehuevo.png" alt="Arepa de huevo">
                             <div class="product-title">Arepa de huevo</div>
-                            <div class="product-old-price">$2.099.000</div>
-                            <div class="product-price">$1.826.000</div>
-                            <div class="product-discount">13% OFF</div>
-                            <a href="#" class="product-button" onclick="addToCart('Arepa de huevo', 1826000, '/img/arepadehuevo.png'); return false;">Añadir al carrito</a>
+                            <div class="product-price">$5.000</div>
+                            <a href="#" class="product-button" onclick="addToCart('Arepa de huevo', 5000, '/img/arepadehuevo.png'); return false;">Añadir al carrito</a>
                         </div>
                         <div class="product">
-                            <img src="/img/hamburguesa.png" alt="Hamburguesa tres carnes">
-                            <div class="product-title">Hamburguesa tres carnes</div>
-                            <div class="product-old-price">$117.990</div>
-                            <div class="product-price">$79.990</div>
-                            <div class="product-discount">32% OFF</div>
-                            <a href="#" class="product-button" onclick="addToCart('Hamburguesa tres carnes', 79990, '/img/hamburguesa.png'); return false;">Añadir al carrito</a>
+                            <img src="../src/assets/img/hamburguesa.png" alt="Hamburguesa tres carnes">
+                            <div class="product-title">Hamburguesa</div>
+                            <div class="product-price">$9.000</div>
+                            <a href="#" class="product-button" onclick="addToCart('Hamburguesa tres carnes', 9000, '/img/hamburguesa.png'); return false;">Añadir al carrito</a>
                         </div>
                         <div class="product">
-                            <img src="/img/cafe.png" alt="Cafe con deditos de queso">
-                            <div class="product-title">Cafe con deditos de queso</div>
-                            <div class="product-old-price">$117.990</div>
-                            <div class="product-price">$79.990</div>
-                            <div class="product-discount">32% OFF</div>
-                            <a href="#" class="product-button" onclick="addToCart('Cafe con deditos de queso', 79990, '/img/cafe.png'); return false;">Añadir al carrito</a>
+                            <img src="../src/assets/img/cafe.png" alt="Cafe con deditos de queso">
+                            <div class="product-title">Cafe deditos</div>
+                            <div class="product-price">$4.000</div>
+                            <a href="#" class="product-button" onclick="addToCart('Cafe con deditos de queso', 4000, '/img/cafe.png'); return false;">Añadir al carrito</a>
                         </div>
                         <div class="product">
-                            <img src="/img/pan de bono.png" alt="Pan de bono con trozitos de chocolate">
-                            <div class="product-title">Pan de bono con trozitos de chocolate</div>
-                            <div class="product-old-price">$117.990</div>
-                            <div class="product-price">$79.990</div>
-                            <div class="product-discount">32% OFF</div>
-                            <a href="#" class="product-button" onclick="addToCart('Pan de bono con trozitos de chocolate', 79990, '/img/pan de bono.png'); return false;">Añadir al carrito</a>
+                            <img src="../src/assets/img/pan de bono.png" alt="Pan de bono con trozitos de chocolate">
+                            <div class="product-title">Pan de bono</div>
+                            <div class="product-price">$6.000</div>
+                            <a href="#" class="product-button" onclick="addToCart('Pan de bono con trozitos de chocolate', 6000, '/img/pan de bono.png'); return false;">Añadir al carrito</a>
                         </div>
                     </div>
                     <h2 class="section-title">Platos del día</h2>
                     <div class="products">
                         <div class="product">
-                            <img src="/img/carneasada.png" alt="Carne asada">
+                            <img src="../src/assets/img/carneasada.png" alt="Carne asada">
                             <div class="product-title">Carne asada</div>
-                            <div class="product-price">$1.891.900</div>
-                            <a href="#" class="product-button" onclick="addToCart('Carne asada', 1891900, '/img/carneasada.png'); return false;">Añadir al carrito</a>
+                            <div class="product-price">$8.000</div>
+                            <a href="#" class="product-button" onclick="addToCart('Carne asada', 8000, '/img/carneasada.png'); return false;">Añadir al carrito</a>
                         </div>
                         <div class="product">
-                            <img src="/img/costillas de cerdo.png" alt="Costillas de cerdo con salsa BBQ">
-                            <div class="product-title">Costillas de cerdo con salsa BBQ</div>
-                            <div class="product-old-price">$2.199.000</div>
-                            <div class="product-price">$1.908.900</div>
-                            <div class="product-discount">13% OFF</div>
-                            <a href="#" class="product-button" onclick="addToCart('Costillas de cerdo con salsa BBQ', 1908900, '/img/costillas de cerdo.png'); return false;">Añadir al carrito</a>
+                            <img src="../src/assets/img/costillas de cerdo.png" alt="Costillas de cerdo con salsa BBQ">
+                            <div class="product-title">Costillas de cerdo</div>
+                            <div class="product-price">$8.000</div>
+                            <a href="#" class="product-button" onclick="addToCart('Costillas de cerdo con salsa BBQ', 8000, '/img/costillas de cerdo.png'); return false;">Añadir al carrito</a>
                         </div>
                         <div class="product">
-                            <img src="/img/bandeja paisa.png" alt="Bandeja Paisa">
+                            <img src="../src/assets/img/bandeja paisa.png" alt="Bandeja Paisa">
                             <div class="product-title">Bandeja Paisa</div>
-                            <div class="product-old-price">$2.095.000</div>
-                            <div class="product-price">$1.969.300</div>
-                            <div class="product-discount">6% OFF</div>
-                            <a href="#" class="product-button" onclick="addToCart('Bandeja Paisa', 1969300, '/img/bandeja paisa.png'); return false;">Añadir al carrito</a>
+                            <div class="product-price">$8.000</div>
+                            <a href="#" class="product-button" onclick="addToCart('Bandeja Paisa', 8000, '/img/bandeja paisa.png'); return false;">Añadir al carrito</a>
                         </div>
                         <div class="product">
-                            <img src="/img/chuleta valluna.png" alt="Chuleta valluna">
+                            <img src="../src/assets/img/chuleta valluna.png" alt="Chuleta valluna">
                             <div class="product-title">Chuleta valluna</div>
-                            <div class="product-old-price">$2.199.000</div>
-                            <div class="product-price">$1.908.900</div>
-                            <div class="product-discount">13% OFF</div>
-                            <a href="#" class="product-button" onclick="addToCart('Chuleta valluna', 1908900, '/img/chuleta valluna.png'); return false;">Añadir al carrito</a>
+                            <div class="product-price">$8.000</div>
+                            <a href="#" class="product-button" onclick="addToCart('Chuleta valluna', 8000, '/img/chuleta valluna.png'); return false;">Añadir al carrito</a>
                         </div>
                         <div class="product">
-                            <img src="/img/frijolada.png" alt="Frijolada">
+                            <img src="../src/assets/img/frijolada.png" alt="Frijolada">
                             <div class="product-title">Frijolada</div>
-                            <div class="product-old-price">$2.199.000</div>
-                            <div class="product-price">$1.908.900</div>
-                            <div class="product-discount">13% OFF</div>
-                            <a href="#" class="product-button" onclick="addToCart('Frijolada', 1908900, '/img/frijolada.png'); return false;">Añadir al carrito</a>
+                            <div class="product-price">$8.000</div>
+                            <a href="#" class="product-button" onclick="addToCart('Frijolada', 8000, '/img/frijolada.png'); return false;">Añadir al carrito</a>
                         </div>
                         <div class="product">
-                            <img src="/img/pescado.png" alt="Mojarra frita">
+                            <img src="../src/assets/img/pescado.png" alt="Mojarra frita">
                             <div class="product-title">Mojarra frita</div>
-                            <div class="product-old-price">$2.199.000</div>
-                            <div class="product-price">$1.908.900</div>
-                            <div class="product-discount">13% OFF</div>
-                            <a href="#" class="product-button" onclick="addToCart('Mojarra frita', 1908900, '/img/pescado.png'); return false;">Añadir al carrito</a>
+                            <div class="product-price">$8.000</div>
+                            <a href="#" class="product-button" onclick="addToCart('Mojarra frita', 8000, '/img/pescado.png'); return false;">Añadir al carrito</a>
                         </div>
                     </div>
                 </section>
@@ -178,37 +163,37 @@
         }
 
         function addToCart(product, price, imageUrl) {
-            cart.push({ product, price, imageUrl });
-            
-            alert(`${product} ha sido añadido al carrito.`);
+            const newItem = {
+                product: product,
+                price: price,
+                imageUrl: imageUrl
+            };
+            cart.push(newItem);
+            alert('Producto añadido al carrito');
         }
 
         function showCart() {
-            let cartContent = `
+            const cartContent = `
                 <section class="cart-section">
                     <h2>Carrito de compras</h2>
-                    ${cart.length === 0 ? '<p>No tienes productos en el carrito.</p>' : '<ul>'}
+                    ${cart.length === 0 ? '<p>No tienes productos en el carrito.</p>' : '<ul class="cart-items">'}
+                    ${cart.map((item, index) => `
+                        <li class="cart-item">
+                            <div class="item-details">
+                                <img src="${item.imageUrl}" alt="${item.product}" class="product">
+                                <div class="item-info">
+                                    <span class="item-name">${item.product}</span>
+                                    <span class="item-price">$${item.price}</span>
+                                </div>
+                            </div>
+                            <div class="item-actions">
+                                <button onclick="removeFromCart(${index})" class="remove-button">Eliminar</button>
+                            </div>
+                        </li>
+                    `).join('')}
+                    ${cart.length > 0 ? '</ul><button class="order-button" onclick="placeOrder()">Realizar Pedido</button>' : ''}
+                </section>
             `;
-
-            cart.forEach((item, index) => {
-                cartContent += `
-                    <li>
-                        <img src="${item.imageUrl}" alt="${item.product}" style="width:100px; height:100px;">
-                        ${item.product} - $${item.price}
-                        <button onclick="removeFromCart(${index})">Eliminar</button>
-                    </li>
-                `;
-            });
-
-            if (cart.length > 0) {
-                cartContent += `
-                    </ul>
-                    <button onclick="placeOrder()">Realizar Pedido</button>
-                `;
-            }
-
-            cartContent += `</section>`;
-
             document.getElementById('content').innerHTML = cartContent;
         }
 
@@ -218,47 +203,77 @@
         }
 
         function placeOrder() {
-            if (cart.length === 0) {
-                alert('No tienes productos en el carrito.');
-                return;
-            }
+    const order = {
+        id: Date.now(),
+        items: [...cart],
+        status: 'En preparación',
+        customerName: 'kate herrera', // Aquí deberías usar los datos reales del cliente
+        customerEmail: 'kate_h@gmail.com'
+    };
 
-            orders.push([...cart]);
-            cart = [];
+    let orders = JSON.parse(localStorage.getItem('orders')) || [];
+    orders.push(order);
 
-            alert('Pedido realizado con éxito.');
+    localStorage.setItem('orders', JSON.stringify(orders));
 
-            showCart();
-        }
+    cart = [];
+    alert('Pedido realizado con éxito');
+    showCart();
+}
 
-        function checkOrderStatus() {
-            let ordersContent = `
-                <section class="orders-section">
-                    <h2>Pedidos</h2>
-                    ${orders.length === 0 ? '<p>No tienes pedidos recientes.</p>' : '<ul>'}
+
+
+function checkOrderStatus() {
+    let orders = JSON.parse(localStorage.getItem('orders')) || [];
+
+    // Filtrar pedidos que no han sido entregados
+    const activeOrders = orders.filter(order => order.status !== 'Entregado');
+
+    const orderStatusContent = `
+        <section class="order-status">
+            <h2 class="section-title">Estado de los Pedidos</h2>
+            ${activeOrders.length === 0 ? '<p>No tienes pedidos realizados.</p>' : '<ul class="order-list">'}
+            ${activeOrders.map(order => `
+                <li class="order-item">
+                    <h3>Pedido #${order.id}</h3>
+                    <ul>
+                        ${order.items.map(item => `
+                            <li>
+                                <div class="item-details">
+                                    <img src="${item.imageUrl}" alt="${item.product}" class="item-image">
+                                    <div class="item-info">
+                                        <span class="item-name">${item.product}</span>
+                                        <span class="item-price">$${item.price}</span>
+                                    </div>
+                                </div>
+                            </li>
+                        `).join('')}
+                    </ul>
+                    <p><strong>Estado:</strong> <span>${order.status}</span></p>
+                </li>
+            `).join('')}
+            ${activeOrders.length > 0 ? '</ul>' : ''}
+        </section>
+    `;
+    document.getElementById('content').innerHTML = orderStatusContent;
+}
+
+        // Mostrar un contenido de bienvenida al cargar la página
+        window.onload = function() {
+            const contentDiv = document.getElementById('content');
+            contentDiv.innerHTML = `
+                <h2>Bienvenido al panel de cliente</h2>
+                <p>Selecciona una opción del menú para comenzar.</p>
             `;
-
-            orders.forEach((order, index) => {
-                ordersContent += `<li>Pedido ${index + 1}<ul>`;
-                order.forEach(item => {
-                    ordersContent += `
-                        <li>
-                            <img src="${item.imageUrl}" alt="${item.product}" style="width:50px; height:50px;">
-                            ${item.product} - $${item.price}
-                        </li>
-                    `;
-                });
-                ordersContent += `</ul></li>`;
-            });
-
-            ordersContent += `</ul></section>`;
-
-            document.getElementById('content').innerHTML = ordersContent;
-        }
+        };
 
         function logout() {
             window.location.href = "login.html"; // Redirige a la página de login
+            alert ('Cerrando sesion')
         }
     </script>
 </body>
+<br>
+<br>
+<br>
 </html>

@@ -3,41 +3,51 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Empleado - Cafésena</title>
-    <link rel="icon" href="img/logocafsena.png" type="image/x-icon">
-    <link rel="stylesheet" href="../assets/css/empleado.css">
+    <title>Empleado - Onix</title>
+    <link rel="icon" href="../src/assets/img/logocafsena.png" type="image/x-icon">
+    <link rel="stylesheet" href="../src/assets/css/empleado.css">
 </head>
+
 <body>  
     <header>
         <div class="logo">
-            <h1 class="header-title">Cafésena</h1>
+            <a  class="logo"><img src="../src/assets/img/logocafsenablanco.png" width="25%" height="100%" "Logo Onix"></a>
         </div>
-        <button class="logout-button" onclick="logout()">Cerrar Sesión</button>
-        <nav>
+
+        <nav class="nav-menu">
+            
             <ul>
                 <li><a href="#" onclick="showProfile(); return false;">Perfil de empleado</a></li>
-                <li><a href="#" onclick="showStockUpdate(); return false;">Actualizar Stock</a></li>
+                <li><a href="#" onclick="showStockUpdate(); return false;">Ver Stock</a></li>
                 <li><a href="#" onclick="showOrders(); return false;">Ver pedidos</a></li>
             </ul>
+            <button class="logout-button" onclick="logout()">Cerrar Sesión</button>
         </nav>
     </header>
+
     <div class="container">
+        <h1 class="section-title">Panel de Empleado</h1>
         <div id="content">
-            <!-- Contenido dinámico se cargará aquí -->
+            <!-- Contenido dinámico de cada sección -->
+            <p>Bienvenido al panel de empleado. Selecciona una opción del menú para comenzar.</p>
         </div>
     </div>
+
     <footer>
-        <p>&copy; 2024 Cafésena. Todos los derechos reservados.</p>
+        <p>&copy; 2024 Onix. Todos los derechos reservados.</p>
     </footer>
+</body>
+</html>
+
 
     <script>
         function showProfile() {
             const profileContent = `
                 <div class="profile">
                     <h2>Perfil de Usuario</h2>
-                    <p><strong>Nombre:</strong> Juan Pérez</p>
-                    <p><strong>Email:</strong> juan.perez@example.com</p>
-                    <p><strong>Teléfono:</strong> 123-456-7890</p>
+                    <p><strong>Nombre:</strong> kate_h</p>
+                    <p><strong>Email:</strong> kate_h@gmail.com</p>
+                    <p><strong>Teléfono:</strong> 318 3888099</p>
                     <button onclick="editProfile()">Editar Perfil</button>
                 </div>
             `;
@@ -50,11 +60,11 @@
                     <h2>Editar Perfil</h2>
                     <form id="editProfileForm">
                         <label for="name">Nombre:</label>
-                        <input type="text" id="name" name="name" value="Juan Pérez" required>
+                        <input type="text" id="name" name="name" value="kate_h" required>
                         <label for="email">Email:</label>
-                        <input type="email" id="email" name="email" value="juan.perez@example.com" required>
+                        <input type="email" id="email" name="email" value="kate_h@gmail.com" required>
                         <label for="phone">Teléfono:</label>
-                        <input type="tel" id="phone" name="phone" value="123-456-7890" required>
+                        <input type="tel" id="phone" name="phone" value="318 3888099" required>
                         <button type="submit">Guardar Cambios</button>
                     </form>
                 </div>
@@ -69,80 +79,196 @@
 
         function showStockUpdate() {
             const stockContent = `
-                <h2>Actualizar Stock</h2>
+                <h2>Ver Stock</h2>
                 <ul class="stock-list">
                     <li>
-                        <img src="/img/empanada.png" alt="empanada de carne">
+                        <img src="../src/assets/img/carneasada.png" alt="empanada de carne">
                         <div>
-                            <h3>Empanada de Carne</h3>
+                            <h3>Carne asada</h3>
                             <p>Exquisita empanada rellena de jugosa carne sazonada, con una masa crujiente que te hará querer más.</p>
-                            <span>Existencias: <input type="number" value="20" min="0" class="stock-input"></span>
-                            <button onclick="updateStock(this, 'increase')">Añadir</button>
-                            <button onclick="updateStock(this, 'decrease')">Quitar</button>
-                        </div>
+                            <span>Existencias: <input type="number" value="20" class="stock-input"></span>
+                        </div>    
                     </li>
-                    <!-- Agrega aquí el resto de los elementos del stock como en el ejemplo anterior -->
+                                        <li>
+                        <img src="../src/assets/img/costillas de cerdo.png" alt="empanada de carne">
+                        <div>
+                            <h3>Costillas de cerdo con salsa BBQ</h3>
+                            <p>Exquisita empanada rellena de jugosa carne sazonada, con una masa crujiente que te hará querer más.</p>
+                            <span>Existencias: <input type="number" value="20" class="stock-input"></span>
+                        </div>    
+                    </li>
+                                        <li>
+                        <img src="../src/assets/img/bandeja paisa.png" alt="empanada de carne">
+                        <div>
+                            <h3>Bandeja Paisa</h3>
+                            <p>Exquisita empanada rellena de jugosa carne sazonada, con una masa crujiente que te hará querer más.</p>
+                            <span>Existencias: <input type="number" value="20" class="stock-input"></span>
+                        </div>    
+                    </li>
+                                        <li>
+                        <img src="../src/assets/img/chuleta valluna.png" alt="empanada de carne">
+                        <div>
+                            <h3>Chuleta valluna</h3>
+                            <p>Exquisita empanada rellena de jugosa carne sazonada, con una masa crujiente que te hará querer más.</p>
+                            <span>Existencias: <input type="number" value="20" class="stock-input"></span>
+                        </div>    
+                    </li>
+                                        <li>
+                        <img src="../src/assets/img/frijolada.png" alt="empanada de carne">
+                        <div>
+                            <h3>Frijolada</h3>
+                            <p>Exquisita empanada rellena de jugosa carne sazonada, con una masa crujiente que te hará querer más.</p>
+                            <span>Existencias: <input type="number" value="20" class="stock-input"></span>
+                        </div>    
+                    </li>
+                                        <li>
+                        <img src="../src/assets/img/pescado.png" alt="empanada de carne">
+                        <div>
+                            <h3>Mojarra frita</h3>
+                            <p>Exquisita empanada rellena de jugosa carne sazonada, con una masa crujiente que te hará querer más.</p>
+                            <span>Existencias: <input type="number" value="20" class="stock-input"></span>
+                        </div>    
+                    </li>
+                                        </li>
+                                        <li>
+                        <img src="../src/assets/img/empanada.png" alt="empanada de carne">
+                        <div>
+                            <h3>Empanada de carne</h3>
+                            <p>Exquisita empanada rellena de jugosa carne sazonada, con una masa crujiente que te hará querer más.</p>
+                            <span>Existencias: <input type="number" value="20" class="stock-input"></span>
+                        </div>    
+                    </li>
+                                        </li>
+                                        <li>
+                        <img src="../src/assets/img/buñuelo.png" alt="empanada de carne">
+                        <div>
+                            <h3>Buñuelos rellenos de arequipe</h3>
+                            <p>Exquisita empanada rellena de jugosa carne sazonada, con una masa crujiente que te hará querer más.</p>
+                            <span>Existencias: <input type="number" value="20" class="stock-input"></span>
+                        </div>    
+                    </li>
+                                        </li>
+                                        <li>
+                        <img src="../src/assets/img/arepadehuevo.png" alt="empanada de carne">
+                        <div>
+                            <h3>Arepa de huevo</h3>
+                            <p>Exquisita empanada rellena de jugosa carne sazonada, con una masa crujiente que te hará querer más.</p>
+                            <span>Existencias: <input type="number" value="20" class="stock-input"></span>
+                        </div>    
+                    </li>
+                                        </li>
+                                        <li>
+                        <img src="../src/assets/img/hamburguesa.png" alt="empanada de carne">
+                        <div>
+                            <h3>Hamburguesa tres carnes</h3>
+                            <p>Exquisita empanada rellena de jugosa carne sazonada, con una masa crujiente que te hará querer más.</p>
+                            <span>Existencias: <input type="number" value="20" class="stock-input"></span>
+                        </div>    
+                    </li>
+                                        </li>
+                                        <li>
+                        <img src="../src/assets/img/cafe.png" alt="empanada de carne">
+                        <div>
+                            <h3>cafe con deditos de queso</h3>
+                            <p>Exquisita empanada rellena de jugosa carne sazonada, con una masa crujiente que te hará querer más.</p>
+                            <span>Existencias: <input type="number" value="20" class="stock-input"></span>
+                        </div>    
+                    </li>
+                                        </li>
+                                        <li>
+                        <img src="../src/assets/img/pan de bono.png" alt="empanada de carne">
+                        <div>
+                            <h3>Pan de bono con trozitos de chocolate</h3>
+                            <p>Exquisita empanada rellena de jugosa carne sazonada, con una masa crujiente que te hará querer más.</p>
+                            <span>Existencias: <input type="number" value="20" class="stock-input"></span>
+                        </div>    
+                    </li>
                 </ul>
             `;
             document.getElementById('content').innerHTML = stockContent;
         }
 
         function showOrders() {
-            const orders = [
-                {
-                    productName: "Empanada de Carne",
-                    customerName: "Mailin Velasquez",
-                    quantity: 2,
-                    status: "Pendiente",
-                    imgSrc: "/img/empanada.png",
-                    price: 1000
-                },
-            ];
+    let orders = JSON.parse(localStorage.getItem('orders')) || [];
+            
+    let orderContent = `
+        <h2>Pedidos de Clientes</h2>
+        <ul class="order-list">
+    `;
 
-            let orderContent = `
-                <h2>Pedidos de Clientes</h2>
-                <ul class="order-list">
-            `;
+    orders.forEach((order, index) => {
+        orderContent += `
+            <li>
+                 <h3>Pedido #${order.id}</h3>
+                 <p><strong> Estado:</strong>
+                     <select onchange="updateOrderStatus(${order.id}, this.value)">
+                         <option value="En preparación" ${order.status === 'En preparación' ? 'selected' : ''}>En preparación</option>
+                         <option value="En camino" ${order.status === 'En camino' ? 'selected' : ''}>En camino</option>
+                         <option value="Entregado" ${order.status === 'Entregado' ? 'selected' : ''}>Entregado</option>
+                     </select>
+                 </p>
+                 <ul>
+                     ${order.items.map(item => `
+                         <li>${item.product} - $${item.price}</li>
+                      `).join('')}
+                 </ul>
+            </li>
 
-            orders.forEach(order => {
-                const totalPrice = order.quantity * order.price;
-                orderContent += `
-                    <li>
-                        <img src="${order.imgSrc}" alt="${order.productName}">
-                        <div>
-                            <h3>${order.productName}</h3>
-                            <p><strong>Cliente:</strong> ${order.customerName}</p>
-                            <p><strong>Cantidad:</strong> ${order.quantity}</p>
-                            <p><strong>Precio Unitario:</strong> ${order.price} COP</p>
-                            <p><strong>Precio Total:</strong> ${totalPrice} COP</p>
-                            <p><strong>Estado:</strong> 
-                                <select onchange="updateOrderStatus(this)">
-                                    <option value="Pendiente" ${order.status === 'Pendiente' ? 'selected' : ''}>Pendiente</option>
-                                    <option value="Preparando" ${order.status === 'Preparando' ? 'selected' : ''}>Preparando</option>
-                                    <option value="Listo para recoger" ${order.status === 'Listo para recoger' ? 'selected' : ''}>Listo para recoger</option>
-                                    <option value="Entregado" ${order.status === 'Entregado' ? 'selected' : ''}>Entregado</option>
-                                </select>
-                            </p>
-                        </div>
-                    </li>
-                `;
-            });
+        `;
+    });
 
-            orderContent += `
-                </ul>
-            `;
+    orderContent += `</ul>`;
 
-            document.getElementById('content').innerHTML = orderContent;
+    document.getElementById('content').innerHTML = orderContent;
+}
+
+if (!localStorage.getItem('orderCounter')) {
+    localStorage.setItem('orderCounter', '1');
+}
+
+function getNextOrderId() {
+    let currentOrderId = parseInt(localStorage.getItem('orderCounter'), 10);
+    localStorage.setItem('orderCounter', (currentOrderId + 1).toString());
+    return currentOrderId;
+}
+function createNewOrder(orderData) {
+    // Asigna un número de orden autoincremental
+    orderData.id = getNextOrderId();
+
+    // Guarda el pedido en localStorage
+    let orders = JSON.parse(localStorage.getItem('orders')) || [];
+    orders.push(orderData);
+    localStorage.setItem('orders', JSON.stringify(orders));
+}
+
+function updateOrderStatus(orderId, newStatus) {
+    let orders = JSON.parse(localStorage.getItem('orders')) || [];
+
+    orders = orders.map(order => {
+        if (order.id === orderId) {
+            order.status = newStatus;
         }
+        return order;
+    });
 
-        function updateOrderStatus(select) {
-            const status = select.value;
-            alert('El estado del pedido ha sido actualizado a: ' + status);
-        }
+    localStorage.setItem('orders', JSON.stringify(orders));
+    alert('El estado del pedido ha sido actualizado a: ' + newStatus);
+    showOrders();  // Refresca la vista de pedidos
+}
+
+        // Mostrar un contenido de bienvenida al cargar la página
+        window.onload = function() {
+            const contentDiv = document.getElementById('content');
+            contentDiv.innerHTML = `
+                <h2>Bienvenido al panel de empleado</h2>
+                <p>Selecciona una opción del menú para comenzar.</p>
+            `;
+        };
+
 
         function logout() {
             alert('Sesión cerrada');
-            window.location.href = '../index.html'; 
+            window.location.href = 'login.html'; 
         }
 
         function updateStock(button, action) {
@@ -157,6 +283,7 @@
 
             input.value = value;
         }
+
     </script>
 </body>
 </html>
