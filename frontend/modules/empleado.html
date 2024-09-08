@@ -243,15 +243,26 @@ function createNewOrder(orderData) {
 
 function updateOrderStatus(orderId, newStatus) {
     let orders = JSON.parse(localStorage.getItem('orders')) || [];
+    let orderHistory = JSON.parse(localStorage.getItem('orderHistory')) || [];
 
     orders = orders.map(order => {
         if (order.id === orderId) {
             order.status = newStatus;
+
+            // Si el pedido se marca como entregado, lo movemos a "Historial de Pedidos"
+            if (newStatus === "Entregado") {
+                orderHistory.push(order); // Añadimos el pedido al historial
+            }
         }
         return order;
     });
 
+
+orders = orders.filter(order => order.status !== "Entregado");
+
     localStorage.setItem('orders', JSON.stringify(orders));
+    localStorage.setItem('orderHistory', JSON.stringify(orderHistory)); // Guardamos el historial
+
     alert('El estado del pedido ha sido actualizado a: ' + newStatus);
     showOrders();  // Refresca la vista de pedidos
 }

@@ -20,6 +20,7 @@
                 <li><a href="#" onclick="showMenu(); return false;">Ver Menú</a></li>
                 <li><a href="#" onclick="showCart(); return false;">Carrito de compras</a></li>
                 <li><a href="#" onclick="checkOrderStatus(); return false;">Pedidos</a></li>
+                <li><a href="#" onclick="showOrderHistory(); return false;">Historial de Pedidos</a></li>
                 <button class="logout-button" onclick="logout()">Cerrar Sesión</button>
             </ul>
         </nav>
@@ -257,7 +258,31 @@ function checkOrderStatus() {
     `;
     document.getElementById('content').innerHTML = orderStatusContent;
 }
+function showOrderHistory() {
+    let orderHistory = JSON.parse(localStorage.getItem('orderHistory')) || [];
+    
+    let historyContent = `
+        <h2>Historial de Pedidos</h2>
+        <ul class="history-list">
+    `;
 
+    orderHistory.forEach((order, index) => {
+        historyContent += `
+            <li>
+                 <h3>Pedido #${order.id}</h3>
+                 <ul>
+                     ${order.items.map(item => `
+                         <li>${item.product} - $${item.price}</li>
+                      `).join('')}
+                 </ul>
+            </li>
+        `;
+    });
+
+    historyContent += `</ul>`;
+
+    document.getElementById('content').innerHTML = historyContent;
+}
         // Mostrar un contenido de bienvenida al cargar la página
         window.onload = function() {
             const contentDiv = document.getElementById('content');
