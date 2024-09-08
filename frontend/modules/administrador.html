@@ -5,128 +5,35 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Panel de Administración - Onix</title>
     <link rel="stylesheet" href="../src/assets/css/administrador.css">
-    <style>
-        .menu-section {
-            display: none;
-        }
-    </style>
 </head>
 <body>
     <header>
-        <div class="logo">Onix</div>
-        <nav class="main-nav">
+        <div class="logo">
+            <a class="logo"><img src="../src/assets/img/logocafsenablanco.png" width="25%" height="100%" alt="Logo Onix"></a>
+        </div>
+        <nav>
             <ul>
                 <li><a href="#usuarios" onclick="showSection('usuarios')">Usuarios</a></li>
                 <li><a href="#productos" onclick="showSection('productos')">Productos</a></li>
                 <li><a href="#pedidos" onclick="showSection('pedidos')">Pedidos</a></li>
                 <li><a href="#historial" onclick="showSection('historial')">Historial</a></li>
-                <li><a href="#notificaciones" onclick="showSection('notificaciones')">Notificaciones</a></li>
             </ul>
         </nav>
-        <button class="logout-btn" onclick="logout()">Cerrar Sesión</button>
+        <button class="logout-button" onclick="logout()">Cerrar Sesión</button>
     </header>
-    <main>
-        <h1>Panel de Administración</h1>
 
-        <section id="usuarios" class="menu-section">
-            <h2 class="section-title">Usuarios</h2>
-            <button onclick="addUser()">Agregar Usuario</button>
-            <table id="usuarios-table">
-                <thead>
-                    <tr>
-                        
-                        <th>Nombre</th>
-                        <th>Email</th>
-                        <th>Teléfono</th>
-                        <th>Dirección</th>
-                        <th>Fecha de Registro</th>
-                        <th>Acciones</th>
-                    </tr>
-                </thead>
-                <tbody>
-                </tbody>
-            </table>
-        </section>
+    <div class="container">
+        <h1 class="section-title">Panel de Administración</h1>
+        <div id="content">
+            <p>Bienvenido al panel de administrador. Selecciona una opción del menú para comenzar.</p>
+        </div>
+    </div>
 
-        <section id="productos" class="menu-section">
-            <h2 class="section-title">Productos</h2>
-            <button onclick="addProduct()">Agregar Producto</button>
-            <table id="productos-table">
-                <thead>
-                    <tr>
-                        <th>Nombre</th>
-                        <th>Descripción</th>
-                        <th>Precio</th>
-                        <th>categoria</th>
-                        <th>Stock</th>                        
-                        <th>fecha de Agregando</th>
-                        <th>Acciones</th>
-                    </tr>
-                </thead>
-                <tbody>
-                </tbody>
-            </table>
-        </section>
-
-        <section id="pedidos" class="menu-section">
-            <h2 class="section-title">Pedidos</h2>
-            <button onclick="addOrder()">Agregar Pedido</button>
-            <table id="pedidos-table">
-                <thead>
-                    <tr>
-                        <th>ID pedido</th>
-                        <th>Fecha del Pedido</th>
-                        <th>Estado</th>
-                        <th>Total</th>
-                        <th>Acciones</th>
-                    </tr>
-                </thead>
-                <tbody>
-                </tbody>
-            </table>
-        </section>
-
-        <section id="historial" class="menu-section">
-            <h2 class="section-title">Historial de Pedidos</h2>
-            <button onclick="addHistory()">Agregar Historial</button>
-            <table id="historial-table">
-                <thead>
-                    <tr>
-                        
-                        <th>ID Usuario</th>
-                        <th>ID Pedido</th>
-                        <th>Fecha del Pedido</th>
-                        <th>Estado</th>
-                        <th>Total</th>
-                        <th>Acciones</th>
-                    </tr>
-                </thead>
-                <tbody>
-                </tbody>
-            </table>
-        </section>
-
-        <section id="notificaciones" class="menu-section">
-            <h2 class="section-title">Notificaciones</h2>
-            <button onclick="addNotification()">Agregar Notificación</button>
-            <table id="notificaciones-table">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Mensaje</th>
-                        <th>Fecha</th>
-                        <th>Leída</th>
-                        <th>Acciones</th>
-                    </tr>
-                </thead>
-                <tbody>
-                </tbody>
-            </table>
-        </section>
-    </main>
     <footer>
         <p>&copy; 2024 Onix. Todos los derechos reservados.</p>
     </footer>
+
+
     <script>
         // Simulación de datos
         let usuarios = [
@@ -149,10 +56,7 @@
             { id: 2, userId: 2, orderId: 2, orderDate: '2024-04-02', status: 'En Preparacion', total: 12000 }
         ];
 
-        let notificaciones = [
-            { id: 1, userId: 1, message: 'Tu pedido ha sido recibido.', date: '2024-04-01', read: false },
-            { id: 2, userId: 2, message: 'Tu pedido está en preparación.', date: '2024-04-02', read: true }
-        ];
+
 
         function fillTable(tableId, data, editFunction, deleteFunction) {
             const tbody = document.querySelector(`#${tableId} tbody`);
@@ -185,7 +89,6 @@
             fillTable('productos-table', productos, 'editProduct', 'deleteProduct');
             fillTable('pedidos-table', pedidos, 'editOrder', 'deleteOrder');
             fillTable('historial-table', historial, 'editHistory', 'deleteHistory');
-            fillTable('notificaciones-table', notificaciones, 'editNotification', 'deleteNotification');
         }
 
         function addUser() {
@@ -320,35 +223,14 @@
             }
         }
 
-        function addNotification() {
-            const newNotification = {
-                id: notificaciones.length + 1,
-                userId: parseInt(prompt('ID del Usuario:')),
-                message: prompt('Mensaje de la Notificación:'),
-                date: new Date().toISOString().split('T')[0],
-                read: confirm('¿Marcado como leído?')
-            };
-            notificaciones.push(newNotification);
-            fillTable('notificaciones-table', notificaciones);
-        }
-
-        function editNotification(id) {
-            const notification = notificaciones.find(n => n.id === id);
-            notification.userId = parseInt(prompt('Nuevo ID del Usuario:', notification.userId));
-            notification.message = prompt('Nuevo Mensaje de la Notificación:', notification.message);
-            notification.date = prompt('Nueva Fecha:', notification.date);
-            notification.read = confirm('¿Marcado como leído?');
-            fillTable('notificaciones-table', notificaciones);
-        }
-
-        function deleteNotification(id) {
-            const index = notificaciones.findIndex(n => n.id === id);
-            if (index !== -1) {
-                notificaciones.splice(index, 1);
-                fillTable('notificaciones-table', notificaciones);
-            }
-        }
-
+        // Mostrar un contenido de bienvenida al cargar la página
+        window.onload = function() {
+            const contentDiv = document.getElementById('content');
+            contentDiv.innerHTML = `
+                <h2>Bienvenido al panel de administrador</h2>
+                <p>Selecciona una opción del menú para comenzar.</p>
+            `;
+        };
         function logout() {
             window.location.href = "login.html"; // Redirige a la página de login
             alert ('Cerrando sesion')

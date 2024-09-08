@@ -1,3 +1,4 @@
+/* Estilo General */
 body {
     font-family: Arial, sans-serif;
     background-color: #faf7e9;
@@ -16,54 +17,63 @@ body {
             padding: 0;
         }
 
-        .header {
-            background-color: #4d2e0b;
-            width: 100%;
-            color: #d1bfa7;
-            padding: 15px 30px;
+        header {
+            background-color: #4b2e1e;
+            color: white;
+            padding: 12px 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
+        header {
+            max-width: 100%;
+            box-sizing: border-box;
+        }
 
-        .header h1 {
+        nav {
+            background-color: #7a5230;
+            flex-grow: 1;
+            margin-left: 20px; /* Añadimos un margen entre el logo y el nav */
+            border-radius: 5px;
+        }
+
+        nav ul {
+            list-style: none;
+            padding: 0;
             margin: 0;
-            font-size: 24px;
-        }
-
-        .nav-menu {
             display: flex;
-            gap: 20px;
-            border-radius: 0%;
+            justify-content: space-around; /* Distribuir las opciones de manera uniforme */
+            flex-grow: 1;
         }
-
-        .nav-menu a {
-            color: #d1bfa7;
+        nav ul li {
+            margin: 0 15px;
+        }
+        
+        nav ul li a {
+            color: white;
             text-decoration: none;
-            font-size: 16px;
-            border-radius: 0%;
+            font-weight: bold;
+            padding: 15px 20px;
+            display: block;
+            transition: background-color 0.3s ease;
         }
-
-        .nav-menu a:hover {
-            text-decoration: underline;
-            border-radius: 0%;
+        
+        nav ul li a:hover {
+            background-color: #573d2d;
+            border-radius: 0px;
         }
 
         .container {
             max-width: 1200px;
             margin: 0 auto;
             padding: 20px;
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            justify-content: center; /* Asegura que el contenido esté centrado */
         }
         
         .section-title {
             font-size: 24px;
             color: #5a2e0a;
             margin-bottom: 20px;
-            text-align: center; /* Centra el texto del título */
+            text-align: center;
         }
         
 
@@ -155,46 +165,16 @@ header {
     background-color: #7a5230;
     color: white;
     border: none;
-    padding: 12px 60px;
-    border-radius: 0px;
+    padding: 12px 20px;
     cursor: pointer;
     transition: background-color 0.3s ease;
+    margin-left: 20px; /* Añadir espacio entre el nav y el botón */
+    border-radius: 5px;
 }
-    
+
 .logout-button:hover {
     background-color: #573d2d;
 }
-
-nav {
-    background-color: #7a5230;
-}
-
-nav ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    display: flex;
-}
-
-nav ul li {
-    margin: 0;
-}
-
-nav ul li a {
-    color: white;
-    text-decoration: none;
-    font-weight: bold;
-    padding: 15px 20px;
-    display: block;
-    transition: background-color 0.3s ease;
-}
-
-nav ul li a:hover {
-    background-color: #573d2d;
-    border-radius: 0%;
-}
-
-
 
 #content {
     background-color: #fff7e6;
@@ -205,7 +185,7 @@ nav ul li a:hover {
 }
 
 h1, h2 {
-    color: #8b6652;
+    color: #5a2e0a;
 }
 
 .products, .orders {

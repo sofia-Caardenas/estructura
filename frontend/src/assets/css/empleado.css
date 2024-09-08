@@ -15,29 +15,17 @@ header {
     background-color: #4b2e1e;
     color: white;
     padding: 20px;
-    width: 100%;
-    position: relative;
     display: flex;
-    align-items: center;
     justify-content: space-between;
-}
-
-.header-title {
-    font-size: 24px;
-    margin: 0;
-}
-
-
-.logo {
-    font-size: 24px;
+    align-items: center;
+    position: relative;
 }
 
 .logout-button {
     background-color: #7a5230;
     color: white;
     border: none;
-    padding: 12px 60px;
-    border-radius: 0px;
+    padding: 12px 20px;
     cursor: pointer;
     transition: background-color 0.3s ease;
 }
@@ -49,8 +37,8 @@ header {
 /* Navegación */
 nav {
     background-color: #7a5230;
+    border-radius: 5px;
 }
-
 nav ul {
     list-style: none;
     padding: 0;
@@ -59,7 +47,7 @@ nav ul {
 }
 
 nav ul li {
-    margin: 0;
+    margin: 0 15px;
 }
 
 nav ul li a {
@@ -73,26 +61,10 @@ nav ul li a {
 
 nav ul li a:hover {
     background-color: #573d2d;
-    border-radius: 0%;
+    border-radius: 0px;
 }
 
-.nav-menu {
-    display: flex;
-    gap: 20px;
-    border-radius: 0%;
-}
 
-.nav-menu a {
-    color: white;
-    text-decoration: none;
-    font-size: 16px;
-    border-radius: 0%;
-}
-
-.nav-menu a:hover {
-    text-decoration: underline;
-    border-radius: 0%;
-}
 
 /* Contenedores */
 .container {
@@ -123,7 +95,7 @@ nav ul li a:hover {
 }
 
 h1, h2 {
-    color: #8b6652;
+    color: #5a2e0a;
 }
 
 /* Listas de stock y órdenes */
