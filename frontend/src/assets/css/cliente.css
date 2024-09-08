@@ -16,7 +16,7 @@ body {
             padding: 0;
         }
 
-        header {
+        .header {
             background-color: #4d2e0b;
             width: 100%;
             color: #d1bfa7;
@@ -52,15 +52,20 @@ body {
         .container {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 100;
+            padding: 20px;
             flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center; /* Asegura que el contenido esté centrado */
         }
-
+        
         .section-title {
             font-size: 24px;
             color: #5a2e0a;
             margin-bottom: 20px;
+            text-align: center; /* Centra el texto del título */
         }
+        
 
         .order-status {
             background-color: #fff7e6;
