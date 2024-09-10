@@ -6,14 +6,40 @@
     <title>Empleado - Onix</title>
     <link rel="icon" href="../src/assets/img/logocafsena.png" type="image/x-icon">
     <link rel="stylesheet" href="../src/assets/css/empleado.css">
-</head>
+    <!-- Incluye Toastr CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+    <style>
+        /* Ajustes para las notificaciones de Toastr */
+        .toast {
+            background-color: #333; /* Color de fondo oscuro */
+            color: #fff; /* Texto blanco */
+            border-radius: 5px; /* Bordes redondeados */
+            padding: 10px 20px; /* Espaciado interno */
+            font-size: 14px; /* Tamaño de fuente */
+        }
 
-<body>  
+        .toast-success {
+            background-color: #4CAF50; /* Verde para éxito */
+        }
+
+        .toast-error {
+            background-color: #F44336; /* Rojo para error */
+        }
+
+        .toast-warning {
+            background-color: #FFC107; /* Amarillo para advertencias */
+        }
+
+        .toast-info {
+            background-color: #2196F3; /* Azul para información */
+        }
+    </style>
+</head>
+<body>
     <header>
         <div class="logo">
-            <a  class="logo"><img src="../src/assets/img/logocafsenablanco.png" width="25%" height="100%" "Logo Onix"></a>
+            <a href="#"><img src="../src/assets/img/logocafsenablanco.png" width="25%" height="100%" alt="Logo Onix"></a>
         </div>
-
         <nav>
             <ul>
                 <li><a href="#" onclick="showProfile(); return false;">Perfil de empleado</a></li>
@@ -35,151 +61,129 @@
     <footer>
         <p>&copy; 2024 Onix. Todos los derechos reservados.</p>
     </footer>
-</body>
-</html>
 
-
+    <!-- Incluye Toastr JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
     <script>
+        // Mostrar el perfil del usuario
         function showProfile() {
-            const profileContent = `
-                <div class="profile">
-                    <h2>Perfil de Usuario</h2>
-                    <p><strong>Nombre:</strong> kate_h</p>
-                    <p><strong>Email:</strong> kate_h@gmail.com</p>
-                    <p><strong>Teléfono:</strong> 318 3888099</p>
-                    <button onclick="editProfile()">Editar Perfil</button>
-                </div>
-            `;
-            document.getElementById('content').innerHTML = profileContent;
+            const user = JSON.parse(localStorage.getItem('loggedInUser'));
+
+            if (user) {
+                const profileContent = `
+                    <div class="profile">
+                        <h2>Perfil de Usuario</h2>
+                        <p><strong>Nombre:</strong> ${user.name}</p>
+                        <p><strong>Email:</strong> ${user.email}</p>
+                        <p><strong>Teléfono:</strong> ${user.phone}</p>
+                        <button onclick="editProfile()">Editar Perfil</button>
+                    </div>
+                `;
+                document.getElementById('content').innerHTML = profileContent;
+            } else {
+                toastr.warning('No hay información de perfil disponible.', 'Advertencia');
+            }
         }
 
+        // Editar perfil del usuario
         function editProfile() {
-            const editProfileContent = `
-                <div class="profile">
-                    <h2>Editar Perfil</h2>
-                    <form id="editProfileForm">
-                        <label for="name">Nombre:</label>
-                        <input type="text" id="name" name="name" value="kate_h" required>
-                        <label for="email">Email:</label>
-                        <input type="email" id="email" name="email" value="kate_h@gmail.com" required>
-                        <label for="phone">Teléfono:</label>
-                        <input type="tel" id="phone" name="phone" value="318 3888099" required>
-                        <button type="submit">Guardar Cambios</button>
-                    </form>
-                </div>
-            `;
-            document.getElementById('content').innerHTML = editProfileContent;
+            const user = JSON.parse(localStorage.getItem('loggedInUser'));
 
-            document.getElementById('editProfileForm').addEventListener('submit', function(event) {
-                event.preventDefault();
-                showProfile();
-            });
+            if (user) {
+                const editProfileContent = `
+                    <div class="profile">
+                        <h2>Editar Perfil</h2>
+                        <form id="editProfileForm">
+                            <label for="name">Nombre:</label>
+                            <input type="text" id="name" name="name" value="${user.name}" required>
+                            <label for="email">Email:</label>
+                            <input type="email" id="email" name="email" value="${user.email}" required>
+                            <label for="phone">Teléfono:</label>
+                            <input type="tel" id="phone" name="phone" value="${user.phone}" required>
+                            <button type="submit">Guardar Cambios</button>
+                        </form>
+                    </div>
+                `;
+                document.getElementById('content').innerHTML = editProfileContent;
+
+                document.getElementById('editProfileForm').addEventListener('submit', function(event) {
+                    event.preventDefault();
+                    const updatedUser = {
+                        ...user,
+                        name: document.getElementById('name').value,
+                        email: document.getElementById('email').value,
+                        phone: document.getElementById('phone').value
+                    };
+                    localStorage.setItem('loggedInUser', JSON.stringify(updatedUser));
+                    showProfile();
+                    toastr.success('Perfil actualizado correctamente.', 'Éxito');
+                });
+            }
         }
 
+        // Mostrar stock
         function showStockUpdate() {
             const stockContent = `
                 <h2>Ver Stock</h2>
                 <ul class="stock-list">
                     <li>
-                        <img src="../src/assets/img/carneasada.png" alt="empanada de carne">
-                        <div>
-                            <h3>Carne asada</h3>
-                            <p>Exquisita empanada rellena de jugosa carne sazonada, con una masa crujiente que te hará querer más.</p>
-                            <span>Existencias: <input type="number" value="20" class="stock-input"></span>
-                        </div>    
-                    </li>
-                                        <li>
-                        <img src="../src/assets/img/costillas de cerdo.png" alt="empanada de carne">
-                        <div>
-                            <h3>Costillas de cerdo con salsa BBQ</h3>
-                            <p>Exquisita empanada rellena de jugosa carne sazonada, con una masa crujiente que te hará querer más.</p>
-                            <span>Existencias: <input type="number" value="20" class="stock-input"></span>
-                        </div>    
-                    </li>
-                                        <li>
-                        <img src="../src/assets/img/bandeja paisa.png" alt="empanada de carne">
-                        <div>
-                            <h3>Bandeja Paisa</h3>
-                            <p>Exquisita empanada rellena de jugosa carne sazonada, con una masa crujiente que te hará querer más.</p>
-                            <span>Existencias: <input type="number" value="20" class="stock-input"></span>
-                        </div>    
-                    </li>
-                                        <li>
-                        <img src="../src/assets/img/chuleta valluna.png" alt="empanada de carne">
-                        <div>
-                            <h3>Chuleta valluna</h3>
-                            <p>Exquisita empanada rellena de jugosa carne sazonada, con una masa crujiente que te hará querer más.</p>
-                            <span>Existencias: <input type="number" value="20" class="stock-input"></span>
-                        </div>    
-                    </li>
-                                        <li>
-                        <img src="../src/assets/img/frijolada.png" alt="empanada de carne">
-                        <div>
-                            <h3>Frijolada</h3>
-                            <p>Exquisita empanada rellena de jugosa carne sazonada, con una masa crujiente que te hará querer más.</p>
-                            <span>Existencias: <input type="number" value="20" class="stock-input"></span>
-                        </div>    
-                    </li>
-                                        <li>
-                        <img src="../src/assets/img/pescado.png" alt="empanada de carne">
-                        <div>
-                            <h3>Mojarra frita</h3>
-                            <p>Exquisita empanada rellena de jugosa carne sazonada, con una masa crujiente que te hará querer más.</p>
-                            <span>Existencias: <input type="number" value="20" class="stock-input"></span>
-                        </div>    
-                    </li>
-                                        </li>
-                                        <li>
-                        <img src="../src/assets/img/empanada.png" alt="empanada de carne">
+                        <img src="../src/assets/img/empanada.png" alt="Empanada de carne">
                         <div>
                             <h3>Empanada de carne</h3>
-                            <p>Exquisita empanada rellena de jugosa carne sazonada, con una masa crujiente que te hará querer más.</p>
-                            <span>Existencias: <input type="number" value="20" class="stock-input"></span>
+                            <p>Deliciosa empanada rellena de carne, ideal para cualquier momento del día.</p>
+                            <span>Existencias: <input type="number" value="10" class="stock-input"></span>
+                            <button onclick="updateStock(this, 'increase')">Aumentar</button>
+                            <button onclick="updateStock(this, 'decrease')">Disminuir</button>
                         </div>    
                     </li>
-                                        </li>
-                                        <li>
-                        <img src="../src/assets/img/buñuelo.png" alt="empanada de carne">
+                    <li>
+                        <img src="../src/assets/img/buñuelo.png" alt="Buñuelos rellenos de arequipe">
                         <div>
                             <h3>Buñuelos rellenos de arequipe</h3>
-                            <p>Exquisita empanada rellena de jugosa carne sazonada, con una masa crujiente que te hará querer más.</p>
-                            <span>Existencias: <input type="number" value="20" class="stock-input"></span>
+                            <p>Esponjosos buñuelos con un dulce relleno de arequipe.</p>
+                            <span>Existencias: <input type="number" value="15" class="stock-input"></span>
+                            <button onclick="updateStock(this, 'increase')">Aumentar</button>
+                            <button onclick="updateStock(this, 'decrease')">Disminuir</button>
                         </div>    
                     </li>
-                                        </li>
-                                        <li>
-                        <img src="../src/assets/img/arepadehuevo.png" alt="empanada de carne">
+                    <li>
+                        <img src="../src/assets/img/arepadehuevo.png" alt="Arepa de huevo">
                         <div>
                             <h3>Arepa de huevo</h3>
-                            <p>Exquisita empanada rellena de jugosa carne sazonada, con una masa crujiente que te hará querer más.</p>
+                            <p>Deliciosa arepa rellena con huevo y otros ingredientes.</p>
                             <span>Existencias: <input type="number" value="20" class="stock-input"></span>
+                            <button onclick="updateStock(this, 'increase')">Aumentar</button>
+                            <button onclick="updateStock(this, 'decrease')">Disminuir</button>
                         </div>    
                     </li>
-                                        </li>
-                                        <li>
-                        <img src="../src/assets/img/hamburguesa.png" alt="empanada de carne">
+                    <li>
+                        <img src="../src/assets/img/hamburguesa.png" width="1024px" height="1024px" alt="Hamburguesa tres carnes">
                         <div>
                             <h3>Hamburguesa tres carnes</h3>
-                            <p>Exquisita empanada rellena de jugosa carne sazonada, con una masa crujiente que te hará querer más.</p>
-                            <span>Existencias: <input type="number" value="20" class="stock-input"></span>
+                            <p>Hamburguesa con una mezcla de tres tipos de carne para un sabor inigualable.</p>
+                            <span>Existencias: <input type="number" value="8" class="stock-input"></span>
+                            <button onclick="updateStock(this, 'increase')">Aumentar</button>
+                            <button onclick="updateStock(this, 'decrease')">Disminuir</button>
                         </div>    
                     </li>
-                                        </li>
-                                        <li>
-                        <img src="../src/assets/img/cafe.png" alt="empanada de carne">
+                    <li>
+                        <img src="../src/assets/img/cafe.png" alt="Café con deditos de queso">
                         <div>
-                            <h3>cafe con deditos de queso</h3>
-                            <p>Exquisita empanada rellena de jugosa carne sazonada, con una masa crujiente que te hará querer más.</p>
-                            <span>Existencias: <input type="number" value="20" class="stock-input"></span>
+                            <h3>Café con deditos de queso</h3>
+                            <p>Acompaña tu café con deditos de queso recién horneados.</p>
+                            <span>Existencias: <input type="number" value="25" class="stock-input"></span>
+                            <button onclick="updateStock(this, 'increase')">Aumentar</button>
+                            <button onclick="updateStock(this, 'decrease')">Disminuir</button>
                         </div>    
                     </li>
-                                        </li>
-                                        <li>
-                        <img src="../src/assets/img/pan de bono.png" alt="empanada de carne">
+                    <li>
+                        <img src="../src/assets/img/pan de bono.png" alt="Pan de bono con trocitos de chocolate">
                         <div>
-                            <h3>Pan de bono con trozitos de chocolate</h3>
-                            <p>Exquisita empanada rellena de jugosa carne sazonada, con una masa crujiente que te hará querer más.</p>
-                            <span>Existencias: <input type="number" value="20" class="stock-input"></span>
+                            <h3>Pan de bono con trocitos de chocolate</h3>
+                            <p>Suave pan de bono con deliciosos trocitos de chocolate.</p>
+                            <span>Existencias: <input type="number" value="12" class="stock-input"></span>
+                            <button onclick="updateStock(this, 'increase')">Aumentar</button>
+                            <button onclick="updateStock(this, 'decrease')">Disminuir</button>
                         </div>    
                     </li>
                 </ul>
@@ -187,100 +191,72 @@
             document.getElementById('content').innerHTML = stockContent;
         }
 
+        // Mostrar pedidos
         function showOrders() {
-    let orders = JSON.parse(localStorage.getItem('orders')) || [];
+            let orders = JSON.parse(localStorage.getItem('orders')) || [];
             
-    let orderContent = `
-        <h2>Pedidos de Clientes</h2>
-        <ul class="order-list">
-    `;
-
-    orders.forEach((order, index) => {
-        orderContent += `
-            <li>
-                 <h3>Pedido #${order.id}</h3>
-                 <p><strong> Estado:</strong>
-                     <select onchange="updateOrderStatus(${order.id}, this.value)">
-                         <option value="En preparación" ${order.status === 'En preparación' ? 'selected' : ''}>En preparación</option>
-                         <option value="En camino" ${order.status === 'En camino' ? 'selected' : ''}>En camino</option>
-                         <option value="Entregado" ${order.status === 'Entregado' ? 'selected' : ''}>Entregado</option>
-                     </select>
-                 </p>
-                 <ul>
-                     ${order.items.map(item => `
-                         <li>${item.product} - $${item.price}</li>
-                      `).join('')}
-                 </ul>
-            </li>
-
-        `;
-    });
-
-    orderContent += `</ul>`;
-
-    document.getElementById('content').innerHTML = orderContent;
-}
-
-if (!localStorage.getItem('orderCounter')) {
-    localStorage.setItem('orderCounter', '1');
-}
-
-function getNextOrderId() {
-    let currentOrderId = parseInt(localStorage.getItem('orderCounter'), 10);
-    localStorage.setItem('orderCounter', (currentOrderId + 1).toString());
-    return currentOrderId;
-}
-function createNewOrder(orderData) {
-    // Asigna un número de orden autoincremental
-    orderData.id = getNextOrderId();
-
-    // Guarda el pedido en localStorage
-    let orders = JSON.parse(localStorage.getItem('orders')) || [];
-    orders.push(orderData);
-    localStorage.setItem('orders', JSON.stringify(orders));
-}
-
-function updateOrderStatus(orderId, newStatus) {
-    let orders = JSON.parse(localStorage.getItem('orders')) || [];
-    let orderHistory = JSON.parse(localStorage.getItem('orderHistory')) || [];
-
-    orders = orders.map(order => {
-        if (order.id === orderId) {
-            order.status = newStatus;
-
-            // Si el pedido se marca como entregado, lo movemos a "Historial de Pedidos"
-            if (newStatus === "Entregado") {
-                orderHistory.push(order); // Añadimos el pedido al historial
-            }
-        }
-        return order;
-    });
-
-
-orders = orders.filter(order => order.status !== "Entregado");
-
-    localStorage.setItem('orders', JSON.stringify(orders));
-    localStorage.setItem('orderHistory', JSON.stringify(orderHistory)); // Guardamos el historial
-
-    alert('El estado del pedido ha sido actualizado a: ' + newStatus);
-    showOrders();  // Refresca la vista de pedidos
-}
-
-        // Mostrar un contenido de bienvenida al cargar la página
-        window.onload = function() {
-            const contentDiv = document.getElementById('content');
-            contentDiv.innerHTML = `
-                <h2>Bienvenido al panel de empleado</h2>
-                <p>Selecciona una opción del menú para comenzar.</p>
+            let orderContent = `
+                <h2>Pedidos de Clientes</h2>
+                <ul class="order-list">
             `;
-        };
 
+            orders.forEach((order) => {
+                orderContent += `
+                    <li>
+                        <h3>Pedido #${order.id}</h3>
+                        <p><strong> Estado:</strong>
+                            <select onchange="updateOrderStatus(${order.id}, this.value)">
+                                <option value="En preparación" ${order.status === 'En preparación' ? 'selected' : ''}>En preparación</option>
+                                <option value="En camino" ${order.status === 'En camino' ? 'selected' : ''}>En camino</option>
+                                <option value="Entregado" ${order.status === 'Entregado' ? 'selected' : ''}>Entregado</option>
+                            </select>
+                        </p>
+                        <ul>
+                            ${order.items.map(item => `
+                                <li>${item.product} - $${item.price}</li>
+                            `).join('')}
+                        </ul>
+                    </li>
+                `;
+            });
 
-        function logout() {
-            alert('Sesión cerrada');
-            window.location.href = 'login.html'; 
+            orderContent += `</ul>`;
+
+            document.getElementById('content').innerHTML = orderContent;
         }
 
+        // Actualizar el estado de un pedido
+        function updateOrderStatus(orderId, newStatus) {
+            let orders = JSON.parse(localStorage.getItem('orders')) || [];
+            let orderHistory = JSON.parse(localStorage.getItem('orderHistory')) || [];
+
+            orders = orders.map(order => {
+                if (order.id === orderId) {
+                    order.status = newStatus;
+
+                    if (newStatus === "Entregado") {
+                        orderHistory.push(order);
+                    }
+                }
+                return order;
+            });
+
+            orders = orders.filter(order => order.status !== "Entregado");
+
+            localStorage.setItem('orders', JSON.stringify(orders));
+            localStorage.setItem('orderHistory', JSON.stringify(orderHistory));
+
+            toastr.success('El estado del pedido ha sido actualizado a: ' + newStatus, 'Éxito');
+            showOrders();
+        }
+
+        // Función para cerrar sesión
+        function logout() {
+            window.location.href = "login.html"; // Redirige a la página de login
+            toastr.info('Sesión cerrada', 'Información'); // Muestra notificación de cierre de sesión
+        }
+
+        // Actualizar stock
         function updateStock(button, action) {
             const input = button.parentElement.querySelector('.stock-input');
             let value = parseInt(input.value);
@@ -294,6 +270,14 @@ orders = orders.filter(order => order.status !== "Entregado");
             input.value = value;
         }
 
+        // Mostrar un contenido de bienvenida al cargar la página
+        window.onload = function() {
+            const contentDiv = document.getElementById('content');
+            contentDiv.innerHTML = `
+                <h2>Bienvenido al panel de empleado</h2>
+                <p>Selecciona una opción del menú para comenzar.</p>
+            `;
+        };
     </script>
 </body>
 </html>

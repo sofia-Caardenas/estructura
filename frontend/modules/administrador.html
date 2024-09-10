@@ -3,13 +3,155 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Panel de Administración - Onix</title>
+    <title>Panel de Administración - Cafetería Ónix</title>
     <link rel="stylesheet" href="../src/assets/css/administrador.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            background-color: #f5f5f5;
+        }
+        header {
+            background-color: #6f4e37; /* Café oscuro */
+            color: white;
+            padding: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .logo img {
+            width: 150px;
+            height: auto;
+        }
+        nav {
+            flex: 1;
+        }
+        nav ul {
+            list-style: none;
+            display: flex;
+            margin: 0;
+            padding: 0;
+            justify-content: space-around;
+        }
+        nav ul li {
+            display: inline;
+        }
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            display: block;
+            transition: background-color 0.3s ease;
+        }
+        nav ul li a:hover {
+            background-color: #8e735b; /* Café intermedio */
+            border-radius: 4px;
+        }
+        .logout-button {
+            background-color: #4e3a24; /* Café oscuro */
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+        .logout-button:hover {
+            background-color: #3b2b1b; /* Café más oscuro */
+        }
+        .container {
+            flex: 1;
+            width: 80%;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .section-title {
+            font-size: 24px;
+            margin-bottom: 20px;
+            text-align: center;
+            color: #6f4e37; /* Café oscuro */
+        }
+        footer {
+            background-color: #6f4e37; /* Café oscuro */
+            color: white;
+            padding: 10px;
+            text-align: center;
+            border-radius: 8px 8px 0 0;
+            margin-top: 20px;
+            box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .search-bar {
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: flex-end;
+        }
+        .search-bar input[type="text"] {
+            padding: 10px;
+            width: 200px;
+            box-sizing: border-box;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            color: #333;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #e8d7c1; /* Café claro */
+            color: #6f4e37; /* Café oscuro */
+        }
+        tr:nth-child(even) {
+            background-color: #f9f4f0; /* Café muy claro */
+        }
+        button {
+            padding: 5px 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .action-buttons {
+            display: flex;
+            justify-content: space-around;
+        }
+        .action-buttons i {
+            cursor: pointer;
+            margin: 0 5px;
+            font-size: 18px;
+        }
+        .action-buttons .edit {
+            color: #8e735b; /* Café intermedio */
+        }
+        .action-buttons .delete {
+            color: #6f4e37; /* Café oscuro */
+        }
+        .action-buttons .edit:hover {
+            color: #7a5a42; /* Café oscuro intermedio */
+        }
+        .action-buttons .delete:hover {
+            color: #4e3a24; /* Café más oscuro */
+        }
+    </style>
 </head>
 <body>
     <header>
         <div class="logo">
-            <a class="logo"><img src="../src/assets/img/logocafsenablanco.png" width="25%" height="100%" alt="Logo Onix"></a>
+            <a href="#"><img src="../src/assets/img/logocafsenablanco.png" alt="Logo Onix"></a>
         </div>
         <nav>
             <ul>
@@ -23,221 +165,277 @@
     </header>
 
     <div class="container">
-        <h1 class="section-title">Panel de administración</h1>
+        <h1 class="section-title">Panel de Administración</h1>
         <div id="content">
-            <p>Bienvenido al panel de administrador. Selecciona una opción del menú para comenzar.</p>
+            <div id="usuarios" class="menu-section">
+                <h2>Usuarios</h2>
+                <div class="search-bar">
+                    <input type="text" id="search-usuarios" placeholder="Buscar usuarios..." onkeyup="searchTable('usuarios-table', 'search-usuarios')">
+                </div>
+                <table id="usuarios-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nombre</th>
+                            <th>Email</th>
+                            <th>Teléfono</th>
+                            <th>Dirección</th>
+                            <th>Fecha de Registro</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td>Juan Pérez</td>
+                            <td>juan.perez@example.com</td>
+                            <td>(123) 456-7890</td>
+                            <td>Calle Falsa 123</td>
+                            <td>2024-01-15</td>
+                            <td class="action-buttons">
+                                <i class="fas fa-edit edit" onclick="editUser(1)"></i>
+                                <i class="fas fa-trash delete" onclick="deleteUser(1)"></i>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>María López</td>
+                            <td>maria.lopez@example.com</td>
+                            <td>(098) 765-4321</td>
+                            <td>Avenida Siempre Viva 742</td>
+                            <td>2024-02-20</td>
+                            <td class="action-buttons">
+                                <i class="fas fa-edit edit" onclick="editUser(2)"></i>
+                                <i class="fas fa-trash delete" onclick="deleteUser(2)"></i>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <button onclick="addUser()">Agregar Usuario</button>
+            </div>
+
+            <div id="productos" class="menu-section" style="display:none;">
+                <h2>Productos</h2>
+                <div class="search-bar">
+                    <input type="text" id="search-productos" placeholder="Buscar productos..." onkeyup="searchTable('productos-table', 'search-productos')">
+                </div>
+                <table id="productos-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nombre</th>
+                            <th>Descripción</th>
+                            <th>Precio</th>
+                            <th>Categoría</th>
+                            <th>Fecha de Adición</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td>Café Espresso</td>
+                            <td>Café fuerte y aromático</td>
+                            <td>$3.00</td>
+                            <td>Bebidas</td>
+                            <td>2024-01-20</td>
+                            <td class="action-buttons">
+                                <i class="fas fa-edit edit" onclick="editProduct(1)"></i>
+                                <i class="fas fa-trash delete" onclick="deleteProduct(1)"></i>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>Croissant</td>
+                            <td>Delicioso croissant de mantequilla</td>
+                            <td>$2.50</td>
+                            <td>Pastelería</td>
+                            <td>2024-01-25</td>
+                            <td class="action-buttons">
+                                <i class="fas fa-edit edit" onclick="editProduct(2)"></i>
+                                <i class="fas fa-trash delete" onclick="deleteProduct(2)"></i>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <button onclick="addProduct()">Agregar Producto</button>
+            </div>
+
+            <div id="pedidos" class="menu-section" style="display:none;">
+                <h2>Pedidos</h2>
+                <div class="search-bar">
+                    <input type="text" id="search-pedidos" placeholder="Buscar pedidos..." onkeyup="searchTable('pedidos-table', 'search-pedidos')">
+                </div>
+                <table id="pedidos-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>ID Usuario</th>
+                            <th>Fecha del Pedido</th>
+                            <th>Estado</th>
+                            <th>Total</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td>1</td>
+                            <td>2024-02-01</td>
+                            <td>Enviado</td>
+                            <td>$5.50</td>
+                            <td class="action-buttons">
+                                <i class="fas fa-edit edit" onclick="editOrder(1)"></i>
+                                <i class="fas fa-trash delete" onclick="deleteOrder(1)"></i>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>2</td>
+                            <td>2024-02-05</td>
+                            <td>En preparación</td>
+                            <td>$6.00</td>
+                            <td class="action-buttons">
+                                <i class="fas fa-edit edit" onclick="editOrder(2)"></i>
+                                <i class="fas fa-trash delete" onclick="deleteOrder(2)"></i>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <button onclick="addOrder()">Agregar Pedido</button>
+            </div>
+
+            <div id="historial" class="menu-section" style="display:none;">
+                <h2>Historial</h2>
+                <div class="search-bar">
+                    <input type="text" id="search-historial" placeholder="Buscar historial..." onkeyup="searchTable('historial-table', 'search-historial')">
+                </div>
+                <table id="historial-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>ID Usuario</th>
+                            <th>ID Pedido</th>
+                            <th>Fecha del Pedido</th>
+                            <th>Estado</th>
+                            <th>Total</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td>1</td>
+                            <td>1</td>
+                            <td>2024-02-01</td>
+                            <td>Enviado</td>
+                            <td>$5.50</td>
+                            <td class="action-buttons">
+                                <i class="fas fa-edit edit" onclick="editHistory(1)"></i>
+                                <i class="fas fa-trash delete" onclick="deleteHistory(1)"></i>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>2</td>
+                            <td>2</td>
+                            <td>2024-02-05</td>
+                            <td>En preparación</td>
+                            <td>$6.00</td>
+                            <td class="action-buttons">
+                                <i class="fas fa-edit edit" onclick="editHistory(2)"></i>
+                                <i class="fas fa-trash delete" onclick="deleteHistory(2)"></i>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <button onclick="addHistory()">Agregar Historial</button>
+            </div>
         </div>
     </div>
 
     <footer>
-        <p>&copy; 2024 Onix. Todos los derechos reservados.</p>
+        &copy; 2024 Cafetería Ónix. Todos los derechos reservados.
     </footer>
 
-
     <script>
-        // Simulación de datos
-        let usuarios = [
-            { id: 1, nombre: 'Juan Perez', email: 'juan.perez@example.com', telefono: '3001234567', direccion: 'Calle 123 #45-67', fechaRegistro: '2024-01-15' },
-            { id: 2, nombre: 'Maria Gomez', email: 'maria.gomez@example.com', telefono: '3102345678', direccion: 'Carrera 12 #34-56', fechaRegistro: '2024-02-20' }
-        ];
-
-        let productos = [
-            { id: 1, title: 'Café Americano', description: 'Café negro sin azúcar', price: 5000, category: 'Bebidas', image: '20', dateAdded: '2024-03-01' },
-            { id: 2, title: 'Café Latte', description: 'Café con leche', price: 6000, category: 'Bebidas', image: '20', dateAdded: '2024-03-05' }
-        ];
-
-        let pedidos = [
-            { id: 1, userId: 1, orderDate: '2024-04-01', status: 'Recibido', total: 10000 },
-            { id: 2, userId: 2, orderDate: '2024-04-02', status: 'En Preparacion', total: 12000 }
-        ];
-
-        let historial = [
-            { id: 1, userId: 1, orderId: 1, orderDate: '2024-04-01', status: 'Recibido', total: 10000 },
-            { id: 2, userId: 2, orderId: 2, orderDate: '2024-04-02', status: 'En Preparacion', total: 12000 }
-        ];
-
-
-
-        function fillTable(tableId, data, editFunction, deleteFunction) {
-            const tbody = document.querySelector(`#${tableId} tbody`);
-            tbody.innerHTML = ''; // Limpia el contenido de la tabla
-            data.forEach(item => {
-                let row = '<tr>';
-                for (const key in item) {
-                    if (key !== 'id') row += `<td>${item[key]}</td>`;
-                }
-                row += `
-                    <td>
-                        <button onclick="${editFunction}(${item.id})">Editar</button>
-                        <button onclick="${deleteFunction}(${item.id})">Eliminar</button>
-                    </td>
-                `;
-                row += '</tr>';
-                tbody.innerHTML += row;
-          });
-}
-
         function showSection(sectionId) {
-            document.querySelectorAll('.menu-section').forEach(section => {
-                section.style.display = 'none';
+            const sections = document.querySelectorAll('.menu-section');
+            sections.forEach(section => {
+                section.style.display = section.id === sectionId ? 'block' : 'none';
             });
-            document.querySelector(`#${sectionId}`).style.display = 'block';
         }
 
-        function loadTableData() {
-            fillTable('usuarios-table', usuarios, 'editUser', 'deleteUser');
-            fillTable('productos-table', productos, 'editProduct', 'deleteProduct');
-            fillTable('pedidos-table', pedidos, 'editOrder', 'deleteOrder');
-            fillTable('historial-table', historial, 'editHistory', 'deleteHistory');
+        function searchTable(tableId, inputId) {
+            const input = document.getElementById(inputId);
+            const filter = input.value.toLowerCase();
+            const table = document.getElementById(tableId);
+            const rows = table.getElementsByTagName('tr');
+
+            for (let i = 1; i < rows.length; i++) {
+                const cells = rows[i].getElementsByTagName('td');
+                let found = false;
+                for (let j = 0; j < cells.length; j++) {
+                    if (cells[j].textContent.toLowerCase().includes(filter)) {
+                        found = true;
+                        break;
+                    }
+                }
+                rows[i].style.display = found ? '' : 'none';
+            }
         }
 
         function addUser() {
-            const newUser = {
-                id: usuarios.length + 1,
-                nombre: prompt('Nombre del Usuario:'),
-                email: prompt('Email del Usuario:'),
-                telefono: prompt('Teléfono del Usuario:'),
-                direccion: prompt('Dirección del Usuario:'),
-                fechaRegistro: new Date().toISOString().split('T')[0]
-            };
-            usuarios.push(newUser);
-            fillTable('usuarios-table', usuarios);
+            alert('Agregar Usuario');
         }
 
         function editUser(id) {
-    const user = usuarios.find(u => u.id === id);
-    if (user) {
-        user.nombre = prompt('Nuevo Nombre del Usuario:', user.nombre) || user.nombre;
-        user.email = prompt('Nuevo Email del Usuario:', user.email) || user.email;
-        user.telefono = prompt('Nuevo Teléfono del Usuario:', user.telefono) || user.telefono;
-        user.direccion = prompt('Nueva Dirección del Usuario:', user.direccion) || user.direccion;
-        fillTable('usuarios-table', usuarios, 'editUser', 'deleteUser');
-    } else {
-        alert("Usuario no encontrado.");
-    }
-}
-
+            alert('Editar Usuario ' + id);
+        }
 
         function deleteUser(id) {
-            const index = usuarios.findIndex(u => u.id === id);
-            if (index !== -1) {
-                usuarios.splice(index, 1);
-                fillTable('usuarios-table', usuarios);
-            }
+            alert('Eliminar Usuario ' + id);
         }
 
         function addProduct() {
-            const newProduct = {
-                id: productos.length + 1,
-                title: prompt('Nombre del Producto:'),
-                description: prompt('Descripción del Producto:'),
-                price: parseFloat(prompt('Precio del Producto:')),
-                category: prompt('Categoría del Producto:'),
-                image: prompt('URL de la Imagen del Producto:'),
-                dateAdded: new Date().toISOString().split('T')[0]
-            };
-            productos.push(newProduct);
-            fillTable('productos-table', productos);
+            alert('Agregar Producto');
         }
 
         function editProduct(id) {
-            const product = productos.find(p => p.id === id);
-            product.title = prompt('Nuevo Nombre del Producto:', product.title);
-            product.description = prompt('Nueva Descripción del Producto:', product.description);
-            product.price = parseFloat(prompt('Nuevo Precio del Producto:', product.price));
-            product.category = prompt('Nueva Categoría del Producto:', product.category);
-            product.image = prompt('Nueva URL de la Imagen del Producto:', product.image);
-            product.stock = parseInt(prompt('Nuevo Stock del Producto:', product.stock));  // Agregando la edición del stock
-            fillTable('productos-table', productos);
-            
-            // Guardar cambios en el localStorage o enviar a la API
-            localStorage.setItem('productos', JSON.stringify(productos));
+            alert('Editar Producto ' + id);
         }
 
-
         function deleteProduct(id) {
-            const index = productos.findIndex(p => p.id === id);
-            if (index !== -1) {
-                productos.splice(index, 1);
-                fillTable('productos-table', productos);
-            }
+            alert('Eliminar Producto ' + id);
         }
 
         function addOrder() {
-            const newOrder = {
-                id: pedidos.length + 1,
-                userId: parseInt(prompt('ID del Usuario:')),
-                orderDate: new Date().toISOString().split('T')[0],
-                status: prompt('Estado del Pedido:'),
-                total: parseFloat(prompt('Total del Pedido:'))
-            };
-            pedidos.push(newOrder);
-            fillTable('pedidos-table', pedidos);
+            alert('Agregar Pedido');
         }
 
         function editOrder(id) {
-            const order = pedidos.find(o => o.id === id);
-            order.userId = parseInt(prompt('Nuevo ID del Usuario:', order.userId));
-            order.orderDate = prompt('Nueva Fecha del Pedido:', order.orderDate);
-            order.status = prompt('Nuevo Estado del Pedido:', order.status);
-            order.total = parseFloat(prompt('Nuevo Total del Pedido:', order.total));
-            fillTable('pedidos-table', pedidos);
+            alert('Editar Pedido ' + id);
         }
 
         function deleteOrder(id) {
-            const index = pedidos.findIndex(o => o.id === id);
-            if (index !== -1) {
-                pedidos.splice(index, 1);
-                fillTable('pedidos-table', pedidos);
-            }
+            alert('Eliminar Pedido ' + id);
         }
 
         function addHistory() {
-            const newHistory = {
-                id: historial.length + 1,
-                userId: parseInt(prompt('ID del Usuario:')),
-                orderId: parseInt(prompt('ID del Pedido:')),
-                orderDate: prompt('Fecha del Pedido:', new Date().toISOString().split('T')[0]),
-                status: prompt('Estado del Pedido:'),
-                total: parseFloat(prompt('Total del Pedido:'))
-            };
-            historial.push(newHistory);
-            fillTable('historial-table', historial);
+            alert('Agregar Historial');
         }
 
         function editHistory(id) {
-            const history = historial.find(h => h.id === id);
-            history.userId = parseInt(prompt('Nuevo ID del Usuario:', history.userId));
-            history.orderId = parseInt(prompt('Nuevo ID del Pedido:', history.orderId));
-            history.orderDate = prompt('Nueva Fecha del Pedido:', history.orderDate);
-            history.status = prompt('Nuevo Estado del Pedido:', history.status);
-            history.total = parseFloat(prompt('Nuevo Total del Pedido:', history.total));
-            fillTable('historial-table', historial);
+            alert('Editar Historial ' + id);
         }
 
         function deleteHistory(id) {
-            const index = historial.findIndex(h => h.id === id);
-            if (index !== -1) {
-                historial.splice(index, 1);
-                fillTable('historial-table', historial);
-            }
+            alert('Eliminar Historial ' + id);
         }
 
-        // Mostrar un contenido de bienvenida al cargar la página
-        window.onload = function() {
-            const contentDiv = document.getElementById('content');
-            contentDiv.innerHTML = `
-                <h2>Bienvenido al panel de administrador</h2>
-                <p>Selecciona una opción del menú para comenzar.</p>
-            `;
-        };
         function logout() {
-            window.location.href = "login.html"; // Redirige a la página de login
-            alert ('Cerrando sesion')
+            alert('Cerrar Sesión');
         }
-
-        // Inicializar datos
-        loadTableData();
     </script>
 </body>
 </html>
