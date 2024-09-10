@@ -19,7 +19,7 @@
         }
 
         .toast-success {
-            background-color: #4CAF50; /* Verde para éxito */
+            background-color: #9c6b2b; /* Verde para éxito */
         }
 
         .toast-error {
@@ -125,8 +125,9 @@
         function showStockUpdate() {
             const stockContent = `
                 <h2>Ver Stock</h2>
-                <ul class="stock-list">
-                    <li>
+                <input type="text" id="searchInput" placeholder="Buscar producto..." onkeyup="searchStock()">
+                <ul id="stockList" class="stock-list">
+                    <li data-name="Empanada de carne">
                         <img src="../src/assets/img/empanada.png" alt="Empanada de carne">
                         <div>
                             <h3>Empanada de carne</h3>
@@ -136,7 +137,7 @@
                             <button onclick="updateStock(this, 'decrease')">Disminuir</button>
                         </div>    
                     </li>
-                    <li>
+                    <li data-name="Buñuelos rellenos de arequipe">
                         <img src="../src/assets/img/buñuelo.png" alt="Buñuelos rellenos de arequipe">
                         <div>
                             <h3>Buñuelos rellenos de arequipe</h3>
@@ -146,7 +147,7 @@
                             <button onclick="updateStock(this, 'decrease')">Disminuir</button>
                         </div>    
                     </li>
-                    <li>
+                    <li data-name="Arepa de huevo">
                         <img src="../src/assets/img/arepadehuevo.png" alt="Arepa de huevo">
                         <div>
                             <h3>Arepa de huevo</h3>
@@ -156,7 +157,7 @@
                             <button onclick="updateStock(this, 'decrease')">Disminuir</button>
                         </div>    
                     </li>
-                    <li>
+                    <li data-name="Hamburguesa tres carnes">
                         <img src="../src/assets/img/hamburguesa.png" width="1024px" height="1024px" alt="Hamburguesa tres carnes">
                         <div>
                             <h3>Hamburguesa tres carnes</h3>
@@ -166,7 +167,7 @@
                             <button onclick="updateStock(this, 'decrease')">Disminuir</button>
                         </div>    
                     </li>
-                    <li>
+                    <li data-name="Café con deditos de queso">
                         <img src="../src/assets/img/cafe.png" alt="Café con deditos de queso">
                         <div>
                             <h3>Café con deditos de queso</h3>
@@ -176,7 +177,7 @@
                             <button onclick="updateStock(this, 'decrease')">Disminuir</button>
                         </div>    
                     </li>
-                    <li>
+                    <li data-name="Pan de bono con trocitos de chocolate">
                         <img src="../src/assets/img/pan de bono.png" alt="Pan de bono con trocitos de chocolate">
                         <div>
                             <h3>Pan de bono con trocitos de chocolate</h3>
@@ -189,6 +190,21 @@
                 </ul>
             `;
             document.getElementById('content').innerHTML = stockContent;
+        }
+
+        // Función de búsqueda en stock
+        function searchStock() {
+            const searchInput = document.getElementById('searchInput').value.toLowerCase();
+            const stockItems = document.querySelectorAll('#stockList li');
+
+            stockItems.forEach(item => {
+                const itemName = item.getAttribute('data-name').toLowerCase();
+                if (itemName.includes(searchInput)) {
+                    item.style.display = '';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
         }
 
         // Mostrar pedidos
@@ -212,8 +228,8 @@
                             </select>
                         </p>
                         <ul>
-                            ${order.items.map(item => `
-                                <li>${item.product} - $${item.price}</li>
+                            ${order.items.map(item => `\
+                                <li>${item.product} - $${item.price}</li>\
                             `).join('')}
                         </ul>
                     </li>
@@ -252,8 +268,7 @@
 
         // Función para cerrar sesión
         function logout() {
-            window.location.href = "login.html"; // Redirige a la página de login
-            toastr.info('Sesión cerrada', 'Información'); // Muestra notificación de cierre de sesión
+            window.location.href = "login.html";
         }
 
         // Actualizar stock
