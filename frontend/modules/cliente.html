@@ -1,19 +1,19 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cliente - Cafetería</title>
     <link rel="stylesheet" href="../src/assets/css/cliente.css">
+    
+    <!-- Incluimos Toastr CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
 </head>
-
 <body>
     <header>
         <div class="logo">
-            <a class="logo"><img src="../src/assets/img/logocafsenablanco.png" width="25%" height="100%" alt="Logo Onix"></a>
+            <a class="logo"><img src="../src/assets/img/logocafsenablanco.png" width="25%" height="100%" alt="Logo Cafetería"></a>
         </div>
-    
         <nav>
             <ul>
                 <li><a href="#" onclick="showProfile(); return false;">Perfil de Usuario</a></li>
@@ -34,52 +34,75 @@
     </div>
 
     <footer>
-        <p>&copy; 2024 Onix. Todos los derechos reservados.</p>
+        <p>&copy; 2024 Cafetería. Todos los derechos reservados.</p>
     </footer>
+
+    <!-- Incluimos las librerías de Toastr JS y jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 
     <script>
         let cart = [];
         let orders = [];
 
+        // Mostrar el perfil del cliente desde localStorage
         function showProfile() {
-            const profileContent = `
-                <div class="profile">
-                    <h2>Perfil de Usuario</h2>
-                    <p><strong>Nombre:</strong> kate herrera</p>
-                    <p><strong>Email:</strong> kate_h@gmail.com</p>
-                    <p><strong>Teléfono:</strong> 318 3888099</p>
-                    <button onclick="editProfile()">Editar Perfil</button>
-                </div>
-            `;
-            document.getElementById('content').innerHTML = profileContent;
+            const user = JSON.parse(localStorage.getItem('loggedInUser'));
+
+            if (user) {
+                const profileContent = 
+                    `<div class="profile">
+                        <h2>Perfil de Usuario</h2>
+                        <p><strong>Nombre:</strong> ${user.name}</p>
+                        <p><strong>Email:</strong> ${user.email}</p>
+                        <p><strong>Teléfono:</strong> ${user.phone}</p>
+                        <button onclick="editProfile()">Editar Perfil</button>
+                    </div>`;
+                document.getElementById('content').innerHTML = profileContent;
+            } else {
+                toastr.warning('No hay información de perfil disponible.', 'Advertencia');
+            }
         }
 
+        // Editar el perfil del cliente
         function editProfile() {
-            const editProfileContent = `
-                <div class="profile">
-                    <h2>Editar Perfil</h2>
-                    <form id="editProfileForm">
-                        <label for="name">Nombre:</label>
-                        <input type="text" id="name" name="name" value="kate herrera" required>
-                        <label for="email">Email:</label>
-                        <input type="email" id="email" name="email" value="kate_h@gmail.com" required>
-                        <label for="phone">Teléfono:</label>
-                        <input type="tel" id="phone" name="phone" value="318 3888099" required>
-                        <button type="submit">Guardar Cambios</button>
-                    </form>
-                </div>
-            `;
-            document.getElementById('content').innerHTML = editProfileContent;
+            const user = JSON.parse(localStorage.getItem('loggedInUser'));
 
-            document.getElementById('editProfileForm').addEventListener('submit', function (event) {
-                event.preventDefault();
-                showProfile();
-            });
+            if (user) {
+                const editProfileContent = 
+                    `<div class="profile">
+                        <h2>Editar Perfil</h2>
+                        <form id="editProfileForm">
+                            <label for="name">Nombre:</label>
+                            <input type="text" id="name" name="name" value="${user.name}" required>
+                            <label for="email">Email:</label>
+                            <input type="email" id="email" name="email" value="${user.email}" required>
+                            <label for="phone">Teléfono:</label>
+                            <input type="tel" id="phone" name="phone" value="${user.phone}" required>
+                            <button type="submit">Guardar Cambios</button>
+                        </form>
+                    </div>`;
+                document.getElementById('content').innerHTML = editProfileContent;
+
+                document.getElementById('editProfileForm').addEventListener('submit', function(event) {
+                    event.preventDefault();
+                    const updatedUser = {
+                        ...user,
+                        name: document.getElementById('name').value,
+                        email: document.getElementById('email').value,
+                        phone: document.getElementById('phone').value
+                    };
+                    localStorage.setItem('loggedInUser', JSON.stringify(updatedUser));
+                    showProfile();
+                    toastr.success('Perfil actualizado correctamente.', 'Éxito');
+                });
+            }
         }
 
+        // Mostrar el menú de productos
         function showMenu() {
-            const menuContent = `
-                <section class="menu-section" id="menu">
+            const menuContent = 
+                `<section class="menu-section" id="menu">
                     <h2 class="section-title">Lo más vendido</h2>
                     <div class="products">
                         <div class="product">
@@ -100,69 +123,12 @@
                             <div class="product-price">$5.000</div>
                             <a href="#" class="product-button" onclick="addToCart('Arepa de huevo', 5000, '/img/arepadehuevo.png'); return false;">Añadir al carrito</a>
                         </div>
-                        <div class="product">
-                            <img src="../src/assets/img/hamburguesa.png" alt="Hamburguesa tres carnes">
-                            <div class="product-title">Hamburguesa</div>
-                            <div class="product-price">$9.000</div>
-                            <a href="#" class="product-button" onclick="addToCart('Hamburguesa tres carnes', 9000, '/img/hamburguesa.png'); return false;">Añadir al carrito</a>
-                        </div>
-                        <div class="product">
-                            <img src="../src/assets/img/cafe.png" alt="Cafe con deditos de queso">
-                            <div class="product-title">Cafe deditos</div>
-                            <div class="product-price">$4.000</div>
-                            <a href="#" class="product-button" onclick="addToCart('Cafe con deditos de queso', 4000, '/img/cafe.png'); return false;">Añadir al carrito</a>
-                        </div>
-                        <div class="product">
-                            <img src="../src/assets/img/pan de bono.png" alt="Pan de bono con trozitos de chocolate">
-                            <div class="product-title">Pan de bono</div>
-                            <div class="product-price">$6.000</div>
-                            <a href="#" class="product-button" onclick="addToCart('Pan de bono con trozitos de chocolate', 6000, '/img/pan de bono.png'); return false;">Añadir al carrito</a>
-                        </div>
                     </div>
-                    <h2 class="section-title">Platos del día</h2>
-                    <div class="products">
-                        <div class="product">
-                            <img src="../src/assets/img/carneasada.png" alt="Carne asada">
-                            <div class="product-title">Carne asada</div>
-                            <div class="product-price">$8.000</div>
-                            <a href="#" class="product-button" onclick="addToCart('Carne asada', 8000, '/img/carneasada.png'); return false;">Añadir al carrito</a>
-                        </div>
-                        <div class="product">
-                            <img src="../src/assets/img/costillas de cerdo.png" alt="Costillas de cerdo con salsa BBQ">
-                            <div class="product-title">Costillas de cerdo</div>
-                            <div class="product-price">$8.000</div>
-                            <a href="#" class="product-button" onclick="addToCart('Costillas de cerdo con salsa BBQ', 8000, '/img/costillas de cerdo.png'); return false;">Añadir al carrito</a>
-                        </div>
-                        <div class="product">
-                            <img src="../src/assets/img/bandeja paisa.png" alt="Bandeja Paisa">
-                            <div class="product-title">Bandeja Paisa</div>
-                            <div class="product-price">$8.000</div>
-                            <a href="#" class="product-button" onclick="addToCart('Bandeja Paisa', 8000, '/img/bandeja paisa.png'); return false;">Añadir al carrito</a>
-                        </div>
-                        <div class="product">
-                            <img src="../src/assets/img/chuleta valluna.png" alt="Chuleta valluna">
-                            <div class="product-title">Chuleta valluna</div>
-                            <div class="product-price">$8.000</div>
-                            <a href="#" class="product-button" onclick="addToCart('Chuleta valluna', 8000, '/img/chuleta valluna.png'); return false;">Añadir al carrito</a>
-                        </div>
-                        <div class="product">
-                            <img src="../src/assets/img/frijolada.png" alt="Frijolada">
-                            <div class="product-title">Frijolada</div>
-                            <div class="product-price">$8.000</div>
-                            <a href="#" class="product-button" onclick="addToCart('Frijolada', 8000, '/img/frijolada.png'); return false;">Añadir al carrito</a>
-                        </div>
-                        <div class="product">
-                            <img src="../src/assets/img/pescado.png" alt="Mojarra frita">
-                            <div class="product-title">Mojarra frita</div>
-                            <div class="product-price">$8.000</div>
-                            <a href="#" class="product-button" onclick="addToCart('Mojarra frita', 8000, '/img/pescado.png'); return false;">Añadir al carrito</a>
-                        </div>
-                    </div>
-                </section>
-            `;
+                </section>`;
             document.getElementById('content').innerHTML = menuContent;
         }
 
+        // Añadir producto al carrito
         function addToCart(product, price, imageUrl) {
             const newItem = {
                 product: product,
@@ -170,16 +136,17 @@
                 imageUrl: imageUrl
             };
             cart.push(newItem);
-            alert('Producto añadido al carrito');
+            toastr.success('Producto añadido al carrito.', 'Éxito');
         }
 
+        // Mostrar el carrito de compras
         function showCart() {
-            const cartContent = `
-                <section class="cart-section">
+            const cartContent = 
+                `<section class="cart-section">
                     <h2>Carrito de compras</h2>
                     ${cart.length === 0 ? '<p>No tienes productos en el carrito.</p>' : '<ul class="cart-items">'}
-                    ${cart.map((item, index) => `
-                        <li class="cart-item">
+                    ${cart.map((item, index) => 
+                        `<li class="cart-item">
                             <div class="item-details">
                                 <img src="${item.imageUrl}" alt="${item.product}" class="product">
                                 <div class="item-info">
@@ -190,115 +157,111 @@
                             <div class="item-actions">
                                 <button onclick="removeFromCart(${index})" class="remove-button">Eliminar</button>
                             </div>
-                        </li>
-                    `).join('')}
+                        </li>`
+                    ).join('')}
                     ${cart.length > 0 ? '</ul><button class="order-button" onclick="placeOrder()">Realizar Pedido</button>' : ''}
-                </section>
-            `;
+                </section>`;
             document.getElementById('content').innerHTML = cartContent;
         }
 
+        // Eliminar producto del carrito
         function removeFromCart(index) {
             cart.splice(index, 1);
             showCart();
+            toastr.info('Producto eliminado del carrito.', 'Información');
         }
 
+        // Realizar pedido
         function placeOrder() {
-    const order = {
-        id: Date.now(),
-        items: [...cart],
-        status: 'En preparación',
-        customerName: 'kate herrera', // Aquí deberías usar los datos reales del cliente
-        customerEmail: 'kate_h@gmail.com'
-    };
+            const user = JSON.parse(localStorage.getItem('loggedInUser'));
+            const order = {
+                id: Date.now(),
+                items: [...cart],
+                status: 'En preparación',
+                customerName: user.name,
+                customerEmail: user.email
+            };
 
-    let orders = JSON.parse(localStorage.getItem('orders')) || [];
-    orders.push(order);
+            let orders = JSON.parse(localStorage.getItem('orders')) || [];
+            orders.push(order);
 
-    localStorage.setItem('orders', JSON.stringify(orders));
+            localStorage.setItem('orders', JSON.stringify(orders));
 
-    cart = [];
-    alert('Pedido realizado con éxito');
-    showCart();
-}
+            cart = [];
+            toastr.success('Pedido realizado con éxito.', 'Éxito');
+            showCart();
+        }
 
+        // Ver estado de pedidos
+        function checkOrderStatus() {
+            let orders = JSON.parse(localStorage.getItem('orders')) || [];
+            const activeOrders = orders.filter(order => order.status !== 'Entregado');
 
+            const orderStatusContent = 
+                `<section class="order-status">
+                    <h2 class="section-title">Estado de los Pedidos</h2>
+                    ${activeOrders.length === 0 ? '<p>No tienes pedidos realizados.</p>' : '<ul class="order-list">'}
+                    ${activeOrders.map(order => 
+                        `<li class="order-item">
+                            <h3>Pedido #${order.id}</h3>
+                            <ul>
+                                ${order.items.map(item => 
+                                    `<li>
+                                        <div class="item-details">
+                                            <img src="${item.imageUrl}" alt="${item.product}" class="item-image">
+                                            <div class="item-info">
+                                                <span class="item-name">${item.product}</span>
+                                                <span class="item-price">$${item.price}</span>
+                                            </div>
+                                        </div>
+                                    </li>`
+                                ).join('')}
+                            </ul>
+                            <p><strong>Estado:</strong> <span>${order.status}</span></p>
+                        </li>`
+                    ).join('')}
+                    ${activeOrders.length > 0 ? '</ul>' : ''}
+                </section>`;
+            document.getElementById('content').innerHTML = orderStatusContent;
+        }
 
-function checkOrderStatus() {
-    let orders = JSON.parse(localStorage.getItem('orders')) || [];
+        // Mostrar historial de pedidos
+        function showOrderHistory() {
+            let orderHistory = JSON.parse(localStorage.getItem('orderHistory')) || [];
+            
+            let historyContent = 
+                `<h2>Historial de Pedidos</h2>
+                <ul class="history-list">`;
 
-    // Filtrar pedidos que no han sido entregados
-    const activeOrders = orders.filter(order => order.status !== 'Entregado');
+            orderHistory.forEach((order, index) => {
+                historyContent += 
+                    `<li>
+                         <h3>Pedido #${order.id}</h3>
+                         <ul>
+                             ${order.items.map(item => 
+                                 `<li>${item.product} - $${item.price}</li>`
+                              ).join('')}
+                         </ul>
+                    </li>`;
+            });
 
-    const orderStatusContent = `
-        <section class="order-status">
-            <h2 class="section-title">Estado de los Pedidos</h2>
-            ${activeOrders.length === 0 ? '<p>No tienes pedidos realizados.</p>' : '<ul class="order-list">'}
-            ${activeOrders.map(order => `
-                <li class="order-item">
-                    <h3>Pedido #${order.id}</h3>
-                    <ul>
-                        ${order.items.map(item => `
-                            <li>
-                                <div class="item-details">
-                                    <img src="${item.imageUrl}" alt="${item.product}" class="item-image">
-                                    <div class="item-info">
-                                        <span class="item-name">${item.product}</span>
-                                        <span class="item-price">$${item.price}</span>
-                                    </div>
-                                </div>
-                            </li>
-                        `).join('')}
-                    </ul>
-                    <p><strong>Estado:</strong> <span>${order.status}</span></p>
-                </li>
-            `).join('')}
-            ${activeOrders.length > 0 ? '</ul>' : ''}
-        </section>
-    `;
-    document.getElementById('content').innerHTML = orderStatusContent;
-}
-function showOrderHistory() {
-    let orderHistory = JSON.parse(localStorage.getItem('orderHistory')) || [];
-    
-    let historyContent = `
-        <h2>Historial de Pedidos</h2>
-        <ul class="history-list">
-    `;
+            historyContent += '</ul>';
+            document.getElementById('content').innerHTML = historyContent;
+        }
 
-    orderHistory.forEach((order, index) => {
-        historyContent += `
-            <li>
-                 <h3>Pedido #${order.id}</h3>
-                 <ul>
-                     ${order.items.map(item => `
-                         <li>${item.product} - $${item.price}</li>
-                      `).join('')}
-                 </ul>
-            </li>
-        `;
-    });
+        // Cerrar sesión
+        function logout() {
+            toastr.info('Sesión cerrada.', 'Información');
+            window.location.href = "login.html"; // Redirige a la página de login
+        }
 
-    historyContent += `</ul>`;
-
-    document.getElementById('content').innerHTML = historyContent;
-}
-        // Mostrar un contenido de bienvenida al cargar la página
+        // Mostrar contenido de bienvenida al cargar la página
         window.onload = function() {
             const contentDiv = document.getElementById('content');
             contentDiv.innerHTML = `
                 <h2>Bienvenido al panel de cliente</h2>
-                <p>Selecciona una opción del menú para comenzar.</p>
-            `;
+                <p>Selecciona una opción del menú para comenzar.</p>`;
         };
-
-        function logout() {
-            window.location.href = "login.html"; // Redirige a la página de login
-            alert ('Cerrando sesion')
-        }
     </script>
 </body>
-<br>
-<br>
-<br>
 </html>
