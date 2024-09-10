@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Panel de Administración - Cafetería Ónix</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+
     <link rel="stylesheet" href="../src/assets/css/administrador.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
@@ -216,7 +218,8 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
+                        <!-- Ejemplos de datos -->
+                        <tr data-id="1">
                             <td>1</td>
                             <td>Juan Pérez</td>
                             <td>juan.perez@example.com</td>
@@ -228,7 +231,7 @@
                                 <i class="fas fa-trash delete" onclick="deleteUser(1)"></i>
                             </td>
                         </tr>
-                        <tr>
+                        <tr data-id="2">
                             <td>2</td>
                             <td>María López</td>
                             <td>maria.lopez@example.com</td>
@@ -256,135 +259,76 @@
                         <tr>
                             <th>ID</th>
                             <th>Nombre</th>
-                            <th>Descripción</th>
                             <th>Precio</th>
-                            <th>Categoría</th>
-                            <th>Fecha de Adición</th>
+                            <th>Descripción</th>
                             <th>Acciones</th>
                         </tr>
                     </thead>
                     <tbody>
+                        <!-- Ejemplos de datos -->
                         <tr>
                             <td>1</td>
-                            <td>Café Espresso</td>
-                            <td>Café fuerte y aromático</td>
+                            <td>Café Americano</td>
                             <td>$3.00</td>
-                            <td>Bebidas</td>
-                            <td>2024-01-20</td>
+                            <td>Café negro servido caliente.</td>
                             <td class="action-buttons">
-                                <i class="fas fa-edit edit" onclick="editProduct(1)"></i>
-                                <i class="fas fa-trash delete" onclick="deleteProduct(1)"></i>
+                                <i class="fas fa-edit edit"></i>
+                                <i class="fas fa-trash delete"></i>
                             </td>
                         </tr>
                         <tr>
                             <td>2</td>
-                            <td>Croissant</td>
-                            <td>Delicioso croissant de mantequilla</td>
-                            <td>$2.50</td>
-                            <td>Pastelería</td>
-                            <td>2024-01-25</td>
+                            <td>Donuts</td>
+                            <td>$1.50</td>
+                            <td>Dulces donuts glaseados.</td>
                             <td class="action-buttons">
-                                <i class="fas fa-edit edit" onclick="editProduct(2)"></i>
-                                <i class="fas fa-trash delete" onclick="deleteProduct(2)"></i>
+                                <i class="fas fa-edit edit"></i>
+                                <i class="fas fa-trash delete"></i>
                             </td>
                         </tr>
                     </tbody>
                 </table>
-                <button onclick="addProduct()">Agregar Producto</button>
+                <button onclick="openAddProductModal()">Agregar Producto</button>
             </div>
 
             <!-- Sección Pedidos -->
             <div id="pedidos" class="menu-section" style="display:none;">
                 <h2>Pedidos</h2>
-                <div class="search-bar">
-                    <input type="text" id="search-pedidos" placeholder="Buscar pedidos..." onkeyup="searchTable('pedidos-table', 'search-pedidos')">
-                </div>
-                <table id="pedidos-table">
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>ID Usuario</th>
-                            <th>Fecha del Pedido</th>
-                            <th>Estado</th>
-                            <th>Total</th>
-                            <th>Acciones</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td>1</td>
-                            <td>2024-02-01</td>
-                            <td>Enviado</td>
-                            <td>$5.50</td>
-                            <td class="action-buttons">
-                                <i class="fas fa-edit edit" onclick="editOrder(1)"></i>
-                                <i class="fas fa-trash delete" onclick="deleteOrder(1)"></i>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>2</td>
-                            <td>2</td>
-                            <td>2024-02-05</td>
-                            <td>En preparación</td>
-                            <td>$6.00</td>
-                            <td class="action-buttons">
-                                <i class="fas fa-edit edit" onclick="editOrder(2)"></i>
-                                <i class="fas fa-trash delete" onclick="deleteOrder(2)"></i>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-                <button onclick="addOrder()">Agregar Pedido</button>
+                <!-- Contenido de pedidos aquí -->
             </div>
 
             <!-- Sección Historial -->
             <div id="historial" class="menu-section" style="display:none;">
                 <h2>Historial</h2>
-                <div class="search-bar">
-                    <input type="text" id="search-historial" placeholder="Buscar historial..." onkeyup="searchTable('historial-table', 'search-historial')">
-                </div>
-                <table id="historial-table">
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>ID Usuario</th>
-                            <th>ID Pedido</th>
-                            <th>Fecha del Pedido</th>
-                            <th>Estado</th>
-                            <th>Total</th>
-                            <th>Acciones</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td>1</td>
-                            <td>1</td>
-                            <td>2024-02-01</td>
-                            <td>Enviado</td>
-                            <td>$5.50</td>
-                            <td class="action-buttons">
-                                <i class="fas fa-edit edit" onclick="editHistory(1)"></i>
-                                <i class="fas fa-trash delete" onclick="deleteHistory(1)"></i>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>2</td>
-                            <td>2</td>
-                            <td>2</td>
-                            <td>2024-02-05</td>
-                            <td>En preparación</td>
-                            <td>$6.00</td>
-                            <td class="action-buttons">
-                                <i class="fas fa-edit edit" onclick="editHistory(2)"></i>
-                                <i class="fas fa-trash delete" onclick="deleteHistory(2)"></i>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-                <button onclick="addHistory()">Agregar Historial</button>
+                <!-- Contenido de historial aquí -->
             </div>
+        </div>
+    </div>
+
+    <!-- Modal Agregar Usuario -->
+    <div id="add-user-modal" class="modal">
+        <div class="modal-content">
+            <h2>Agregar Usuario</h2>
+            <input type="text" id="add-user-name" placeholder="Nombre">
+            <input type="email" id="add-user-email" placeholder="Email">
+            <input type="text" id="add-user-phone" placeholder="Teléfono">
+            <input type="text" id="add-user-address" placeholder="Dirección">
+            <button onclick="addUser()">Agregar</button>
+            <button onclick="closeModal('add-user-modal')">Cerrar</button>
+        </div>
+    </div>
+
+    <!-- Modal Editar Usuario -->
+    <div id="edit-user-modal" class="modal">
+        <div class="modal-content">
+            <h2>Editar Usuario</h2>
+            <input type="hidden" id="edit-user-id">
+            <input type="text" id="edit-user-name" placeholder="Nombre">
+            <input type="email" id="edit-user-email" placeholder="Email">
+            <input type="text" id="edit-user-phone" placeholder="Teléfono">
+            <input type="text" id="edit-user-address" placeholder="Dirección">
+            <button onclick="updateUser()">Actualizar</button>
+            <button onclick="closeModal('edit-user-modal')">Cerrar</button>
         </div>
     </div>
 
@@ -392,23 +336,21 @@
         &copy; 2024 Cafetería Ónix. Todos los derechos reservados.
     </footer>
 
-    <!-- Modal para agregar y editar usuarios -->
-    <div id="userModal" class="modal">
-        <div class="modal-content">
-            <h2 id="modal-title">Agregar Usuario</h2>
-            <input type="hidden" id="userId">
-            <input type="text" id="userName" placeholder="Nombre">
-            <input type="email" id="userEmail" placeholder="Email">
-            <input type="text" id="userPhone" placeholder="Teléfono">
-            <input type="text" id="userAddress" placeholder="Dirección">
-            <button id="modalSaveButton" onclick="saveUser()">Guardar</button>
-        </div>
-    </div>
-
     <script>
         let editingUserId = null;
+        let userIdCounter = 3; // Inicializar el contador de ID (último ID + 1)
 
-        // Mostrar la sección correspondiente
+        document.addEventListener('DOMContentLoaded', () => {
+            // Inicializa el contador con el último ID en la tabla, si existe
+            const rows = document.querySelectorAll('#usuarios-table tbody tr');
+            rows.forEach(row => {
+                const id = parseInt(row.getAttribute('data-id'));
+                if (id >= userIdCounter) {
+                    userIdCounter = id + 1;
+                }
+            });
+        });
+
         function showSection(sectionId) {
             const sections = document.querySelectorAll('.menu-section');
             sections.forEach(section => {
@@ -416,97 +358,110 @@
             });
         }
 
-        // Función para buscar en la tabla
-        function searchTable(tableId, inputId) {
-            const input = document.getElementById(inputId);
+        function searchTable(tableId, searchId) {
+            const input = document.getElementById(searchId);
             const filter = input.value.toLowerCase();
             const table = document.getElementById(tableId);
-            const rows = table.getElementsByTagName('tr');
+            const rows = table.querySelectorAll('tbody tr');
 
-            for (let i = 1; i < rows.length; i++) {
-                const cells = rows[i].getElementsByTagName('td');
-                let found = false;
-                for (let j = 0; j < cells.length; j++) {
-                    if (cells[j].textContent.toLowerCase().includes(filter)) {
-                        found = true;
-                        break;
+            rows.forEach(row => {
+                const cells = row.querySelectorAll('td');
+                let match = false;
+                cells.forEach(cell => {
+                    if (cell.textContent.toLowerCase().includes(filter)) {
+                        match = true;
                     }
-                }
-                rows[i].style.display = found ? '' : 'none';
-            }
+                });
+                row.style.display = match ? '' : 'none';
+            });
         }
 
-        // Abrir modal para agregar usuario
         function openAddUserModal() {
-            document.getElementById('modal-title').innerText = 'Agregar Usuario';
-            document.getElementById('userId').value = '';
-            document.getElementById('userName').value = '';
-            document.getElementById('userEmail').value = '';
-            document.getElementById('userPhone').value = '';
-            document.getElementById('userAddress').value = '';
-            document.getElementById('userModal').style.display = 'block';
-            editingUserId = null;
+            document.getElementById('add-user-modal').style.display = 'block';
         }
 
-        // Abrir modal para editar usuario
-        function openEditUserModal(id) {
-            const row = document.querySelector(`#usuarios-table tr:nth-child(${id + 1})`);
-            const cells = row.getElementsByTagName('td');
-
-            document.getElementById('modal-title').innerText = 'Editar Usuario';
-            document.getElementById('userId').value = id;
-            document.getElementById('userName').value = cells[1].textContent;
-            document.getElementById('userEmail').value = cells[2].textContent;
-            document.getElementById('userPhone').value = cells[3].textContent;
-            document.getElementById('userAddress').value = cells[4].textContent;
-            document.getElementById('userModal').style.display = 'block';
-            editingUserId = id;
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
         }
 
-        // Guardar o actualizar usuario
-        function saveUser() {
-            const id = editingUserId || document.querySelectorAll('#usuarios-table tbody tr').length + 1;
-            const name = document.getElementById('userName').value;
-            const email = document.getElementById('userEmail').value;
-            const phone = document.getElementById('userPhone').value;
-            const address = document.getElementById('userAddress').value;
+        function addUser() {
+            const name = document.getElementById('add-user-name').value;
+            const email = document.getElementById('add-user-email').value;
+            const phone = document.getElementById('add-user-phone').value;
+            const address = document.getElementById('add-user-address').value;
 
-            if (editingUserId) {
-                // Editar usuario existente
-                const row = document.querySelector(`#usuarios-table tr:nth-child(${editingUserId + 1})`);
-                row.getElementsByTagName('td')[1].textContent = name;
-                row.getElementsByTagName('td')[2].textContent = email;
-                row.getElementsByTagName('td')[3].textContent = phone;
-                row.getElementsByTagName('td')[4].textContent = address;
-            } else {
-                // Agregar nuevo usuario
+            if (name && email && phone && address) {
                 const table = document.getElementById('usuarios-table').getElementsByTagName('tbody')[0];
                 const newRow = table.insertRow();
-                newRow.innerHTML = `
-                    <td>${id}</td>
-                    <td>${name}</td>
-                    <td>${email}</td>
-                    <td>${phone}</td>
-                    <td>${address}</td>
-                    <td>2024-09-10</td>
-                    <td class="action-buttons">
-                        <i class="fas fa-edit edit" onclick="openEditUserModal(${id})"></i>
-                        <i class="fas fa-trash delete" onclick="deleteUser(${id})"></i>
-                    </td>
+                const idCell = newRow.insertCell(0);
+                const nameCell = newRow.insertCell(1);
+                const emailCell = newRow.insertCell(2);
+                const phoneCell = newRow.insertCell(3);
+                const addressCell = newRow.insertCell(4);
+                const dateCell = newRow.insertCell(5);
+                const actionsCell = newRow.insertCell(6);
+
+                idCell.textContent = userIdCounter;
+                nameCell.textContent = name;
+                emailCell.textContent = email;
+                phoneCell.textContent = phone;
+                addressCell.textContent = address;
+                dateCell.textContent = new Date().toISOString().split('T')[0];
+
+                actionsCell.innerHTML = `
+                    <div class="action-buttons">
+                        <i class="fas fa-edit edit" onclick="openEditUserModal(${userIdCounter})"></i>
+                        <i class="fas fa-trash delete" onclick="deleteUser(${userIdCounter})"></i>
+                    </div>
                 `;
+                newRow.setAttribute('data-id', userIdCounter);
+                userIdCounter++;
+                closeModal('add-user-modal');
+            } else {
+                alert('Por favor, complete todos los campos.');
             }
-            document.getElementById('userModal').style.display = 'none';
         }
 
-        // Eliminar usuario
-        function deleteUser(id) {
-            const row = document.querySelector(`#usuarios-table tr:nth-child(${id + 1})`);
-            row.parentNode.removeChild(row);
+        function openEditUserModal(userId) {
+            editingUserId = userId;
+            const row = document.querySelector(`#usuarios-table tbody tr[data-id="${userId}"]`);
+            document.getElementById('edit-user-id').value = userId;
+            document.getElementById('edit-user-name').value = row.cells[1].textContent;
+            document.getElementById('edit-user-email').value = row.cells[2].textContent;
+            document.getElementById('edit-user-phone').value = row.cells[3].textContent;
+            document.getElementById('edit-user-address').value = row.cells[4].textContent;
+            document.getElementById('edit-user-modal').style.display = 'block';
         }
 
-        // Cerrar sesión
+        function updateUser() {
+            const id = document.getElementById('edit-user-id').value;
+            const name = document.getElementById('edit-user-name').value;
+            const email = document.getElementById('edit-user-email').value;
+            const phone = document.getElementById('edit-user-phone').value;
+            const address = document.getElementById('edit-user-address').value;
+
+            if (name && email && phone && address) {
+                const row = document.querySelector(`#usuarios-table tbody tr[data-id="${id}"]`);
+                row.cells[1].textContent = name;
+                row.cells[2].textContent = email;
+                row.cells[3].textContent = phone;
+                row.cells[4].textContent = address;
+                closeModal('edit-user-modal');
+            } else {
+                alert('Por favor, complete todos los campos.');
+            }
+        }
+
+        function deleteUser(userId) {
+            const row = document.querySelector(`#usuarios-table tbody tr[data-id="${userId}"]`);
+            if (confirm('¿Está seguro de que desea eliminar este usuario?')) {
+                row.remove();
+            }
+        }
+
         function logout() {
-            alert('Cerrar Sesión');
+            // Redirige a la página de inicio de sesión
+            window.location.href = 'login.html';
         }
     </script>
 </body>
