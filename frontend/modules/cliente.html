@@ -34,7 +34,7 @@
     </div>
 
     <footer>
-        <p>&copy; 2024 Cafetería. Todos los derechos reservados.</p>
+        <p>&copy; 2024 Onix. Todos los derechos reservados.</p>
     </footer>
 
     <!-- Incluimos las librerías de Toastr JS y jQuery -->
@@ -103,26 +103,78 @@
         function showMenu() {
             const menuContent = 
                 `<section class="menu-section" id="menu">
+                    <h2 class="section-title">Platos del día</h2>
+                    <div class="products">
+                        <div class="product">
+                            <img src="../src/assets/img/carneasada.png" alt="Carne asada">
+                            <div class="product-title">Carne asada</div>
+                            <div class="product-price">$8.000</div>
+                            <a href="#" class="product-button" onclick="addToCart('Carne asada', 8000); return false;">Añadir al carrito</a>
+                        </div>
+                        <div class="product">
+                            <img src="../src/assets/img/costillas de cerdo.png" alt="Costillas de cerdo con salsa BBQ">
+                            <div class="product-title">Costillas de cerdo con salsa BBQ</div>
+                            <div class="product-price">$8.000</div>
+                            <a href="#" class="product-button" onclick="addToCart('Costillas de cerdo con salsa BBQ', 8000); return false;">Añadir al carrito</a>
+                        </div>
+                        <div class="product">
+                            <img src="../src/assets/img/bandeja paisa.png" alt="Bandeja Paisa">
+                            <div class="product-title">Bandeja Paisa</div>
+                            <div class="product-price">$8.000</div>
+                            <a href="#" class="product-button" onclick="addToCart('Bandeja Paisa', 8000); return false;">Añadir al carrito</a>
+                        </div>
+                        <div class="product">
+                            <img src="../src/assets/img/chuleta valluna.png" alt="Chuleta valluna">
+                            <div class="product-title">Chuleta valluna</div>
+                            <div class="product-price">$8.000</div>
+                            <a href="#" class="product-button" onclick="addToCart('Chuleta valluna', 8000); return false;">Añadir al carrito</a>
+                        </div>
+                        <div class="product">
+                            <img src="../src/assets/img/frijolada.png" alt="Frijolada">
+                            <div class="product-title">Frijolada</div>
+                            <div class="product-price">$8.000</div>
+                            <a href="#" class="product-button" onclick="addToCart('Frijolada', 8000); return false;">Añadir al carrito</a>
+                        </div>
+                        <div class="product">
+                            <img src="../src/assets/img/pescado.png" alt="Mojarra frita">
+                            <div class="product-title">Mojarra frita</div>
+                            <div class="product-price">$8.000</div>
+                            <a href="#" class="product-button" onclick="addToCart('Mojarra frita', 8000); return false;">Añadir al carrito</a>
+                        </div>
+                    </div>
                     <h2 class="section-title">Lo más vendido</h2>
                     <div class="products">
                         <div class="product">
                             <img src="../src/assets/img/empanada.png" alt="Empanada de carne">
                             <div class="product-title">Empanada de carne</div>
                             <div class="product-price">$8.000</div>
-                            <a href="#" class="product-button" onclick="addToCart('Empanada de carne', 8000, '/img/empanada.png'); return false;">Añadir al carrito</a>
+                            <a href="#" class="product-button" onclick="addToCart('Empanada de carne', 8000); return false;">Añadir al carrito</a>
                         </div>
                         <div class="product">
                             <img src="../src/assets/img/buñuelo.png" alt="Buñuelos rellenos de arequipe">
-                            <div class="product-title">Buñuelo relleno</div>
+                            <div class="product-title">Buñuelos rellenos de arequipe</div>
                             <div class="product-price">$6.000</div>
-                            <a href="#" class="product-button" onclick="addToCart('Buñuelos rellenos de arequipe', 6000, '/img/buñuelo.png'); return false;">Añadir al carrito</a>
+                            <a href="#" class="product-button" onclick="addToCart('Buñuelos rellenos de arequipe', 6000); return false;">Añadir al carrito</a>
                         </div>
                         <div class="product">
                             <img src="../src/assets/img/arepadehuevo.png" alt="Arepa de huevo">
                             <div class="product-title">Arepa de huevo</div>
                             <div class="product-price">$5.000</div>
-                            <a href="#" class="product-button" onclick="addToCart('Arepa de huevo', 5000, '/img/arepadehuevo.png'); return false;">Añadir al carrito</a>
+                            <a href="#" class="product-button" onclick="addToCart('Arepa de huevo', 5000); return false;">Añadir al carrito</a>
                         </div>
+                        <div class="product">
+                            <img src="../src/assets/img/pan de bono.png" alt="Pandebonos">
+                            <div class="product-title">Pandebonos</div>
+                            <div class="product-price">$4.000</div>
+                            <a href="#" class="product-button" onclick="addToCart('Pandebonos', 4000); return false;">Añadir al carrito</a>
+                        </div>
+                            <div class="product">
+                            <img src="../src/assets/img/cafe.png" alt="Pandebonos">
+                            <div class="product-title">Cafe </div>
+                            <div class="product-price">$4.000</div>
+                            <a href="#" class="product-button" onclick="addToCart('Pandebonos', 4000); return false;">Añadir al carrito</a>
+                        </div>
+
                     </div>
                 </section>`;
             document.getElementById('content').innerHTML = menuContent;

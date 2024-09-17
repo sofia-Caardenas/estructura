@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Panel de Administración - Cafetería Ónix</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
-
     <link rel="stylesheet" href="../src/assets/css/administrador.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
@@ -183,13 +182,12 @@
 <body>
     <header>
         <div class="logo">
-            <a href="#"><img src="../src/assets/img/logocafsenablanco.png" alt="Logo Onix"></a>
+            <link rel="icon" href="../src/assets/img/logocafsena.png" width type="image/x-icon">
         </div>
         <nav>
             <ul>
                 <li><a href="#usuarios" onclick="showSection('usuarios')">Usuarios</a></li>
                 <li><a href="#productos" onclick="showSection('productos')">Productos</a></li>
-                <li><a href="#pedidos" onclick="showSection('pedidos')">Pedidos</a></li>
                 <li><a href="#historial" onclick="showSection('historial')">Historial</a></li>
             </ul>
         </nav>
@@ -221,8 +219,8 @@
                         <!-- Ejemplos de datos -->
                         <tr data-id="1">
                             <td>1</td>
-                            <td>Juan Pérez</td>
-                            <td>juan.perez@example.com</td>
+                            <td>John Doe</td>
+                            <td>john@mail.com</td>
                             <td>(123) 456-7890</td>
                             <td>Calle Falsa 123</td>
                             <td>2024-01-15</td>
@@ -234,7 +232,7 @@
                         <tr data-id="2">
                             <td>2</td>
                             <td>María López</td>
-                            <td>maria.lopez@example.com</td>
+                            <td>maria@mail.com</td>
                             <td>(098) 765-4321</td>
                             <td>Avenida Siempre Viva 742</td>
                             <td>2024-02-20</td>
@@ -243,6 +241,19 @@
                                 <i class="fas fa-trash delete" onclick="deleteUser(2)"></i>
                             </td>
                         </tr>
+                        <tr data-id="3">
+                            <td>3</td>
+                            <td>Stiven Junco</td>
+                            <td>admin@mail.com</td>
+                            <td>(098) 765-4321</td>
+                            <td>Avenida Siempre Viva 742</td>
+                            <td>2024-02-20</td>
+                            <td class="action-buttons">
+                                <i class="fas fa-edit edit" onclick="openEditUserModal(2)"></i>
+                                <i class="fas fa-trash delete" onclick="deleteUser(2)"></i>
+                            </td>
+                        </tr>
+
                     </tbody>
                 </table>
                 <button onclick="openAddUserModal()">Agregar Usuario</button>
@@ -266,31 +277,133 @@
                     </thead>
                     <tbody>
                         <!-- Ejemplos de datos -->
-                        <tr>
+                        <tr data-id="1">
                             <td>1</td>
-                            <td>Café Americano</td>
-                            <td>$3.00</td>
-                            <td>Café negro servido caliente.</td>
+                            <td>Carne asada</td>
+                            <td>$8.000</td>
+                            <td>Deliciosa carne asada.</td>
                             <td class="action-buttons">
-                                <i class="fas fa-edit edit"></i>
-                                <i class="fas fa-trash delete"></i>
+                                <i class="fas fa-edit edit" onclick="openEditProductModal(1)"></i>
+                                <i class="fas fa-trash delete" onclick="deleteProduct(1)"></i>
                             </td>
                         </tr>
-                        <tr>
+                        <tr data-id="2">
                             <td>2</td>
-                            <td>Donuts</td>
-                            <td>$1.50</td>
-                            <td>Dulces donuts glaseados.</td>
+                            <td>Costillas de cerdo con salsa BBQ</td>
+                            <td>$8.000</td>
+                            <td>Costillas de cerdo con salsa BBQ</td>
                             <td class="action-buttons">
-                                <i class="fas fa-edit edit"></i>
-                                <i class="fas fa-trash delete"></i>
+                                <i class="fas fa-edit edit" onclick="openEditProductModal(2)"></i>
+                                <i class="fas fa-trash delete" onclick="deleteProduct(2)"></i>
                             </td>
                         </tr>
+                        <tr data-id="3">
+                            <td>3</td>
+                            <td>Bandeja Paisa</td>
+                            <td>$8.000</td>
+                            <td>Bandeja Paisa</td>
+                            <td class="action-buttons">
+                                <i class="fas fa-edit edit" onclick="openEditProductModal(2)"></i>
+                                <i class="fas fa-trash delete" onclick="deleteProduct(2)"></i>
+                            </td>
+                        </tr>
+                        <tr data-id="4">
+                            <td>4</td>
+                            <td>Chuleta valluna</td>
+                            <td>$8.000</td>
+                            <td>Chuleta valluna</td>
+                            <td class="action-buttons">
+                                <i class="fas fa-edit edit" onclick="openEditProductModal(2)"></i>
+                                <i class="fas fa-trash delete" onclick="deleteProduct(2)"></i>
+                            </td>
+                        </tr>
+                        <tr data-id="5">
+                            <td>5</td>
+                            <td>Frijolada</td>
+                            <td>$8.000</td>
+                            <td>Deliciosa frijolada</td>
+                            <td class="action-buttons">
+                                <i class="fas fa-edit edit" onclick="openEditProductModal(2)"></i>
+                                <i class="fas fa-trash delete" onclick="deleteProduct(2)"></i>
+                            </td>
+                        </tr>
+                        <tr data-id="6">
+                            <td>6</td>
+                            <td>Mojarra frita</td>
+                            <td>$8.000</td>
+                            <td>Deliciosa Mojarra frita</td>
+                            <td class="action-buttons">
+                                <i class="fas fa-edit edit" onclick="openEditProductModal(2)"></i>
+                                <i class="fas fa-trash delete" onclick="deleteProduct(2)"></i>
+                            </td>
+                        </tr>
+                        <tr data-id="7">
+                            <td>7</td>
+                            <td>Empanada de carne</td>
+                            <td>$8.000</td>
+                            <td>Empanada de carne.</td>
+                            <td class="action-buttons">
+                                <i class="fas fa-edit edit" onclick="openEditProductModal(2)"></i>
+                                <i class="fas fa-trash delete" onclick="deleteProduct(2)"></i>
+                            </td>
+                        </tr>
+                        <tr data-id="8">
+                            <td>8</td>
+                            <td>Buñuelos rellenos de arequipe</td>
+                            <td>$6.000</td>
+                            <td>Buñuelos rellenos de arequipe.</td>
+                            <td class="action-buttons">
+                                <i class="fas fa-edit edit" onclick="openEditProductModal(2)"></i>
+                                <i class="fas fa-trash delete" onclick="deleteProduct(2)"></i>
+                            </td>
+                        </tr>
+                        <tr data-id="9">
+                            <td>9</td>
+                            <td>Arepa de huevo</td>
+                            <td>$5.000</td>
+                            <td>Arepa de huevo</td>
+                            <td class="action-buttons">
+                                <i class="fas fa-edit edit" onclick="openEditProductModal(2)"></i>
+                                <i class="fas fa-trash delete" onclick="deleteProduct(2)"></i>
+                            </td>
+                        </tr>
+                        <tr data-id="10">
+                            <td>10</td>
+                            <td>Hamburguesa tres carnes</td>
+                            <td>$9.000</td>
+                            <td>Hamburguesa tres carnes.</td>
+                            <td class="action-buttons">
+                                <i class="fas fa-edit edit" onclick="openEditProductModal(2)"></i>
+                                <i class="fas fa-trash delete" onclick="deleteProduct(2)"></i>
+                            </td>
+                        </tr>
+                        <tr data-id="11">
+                            <td>11</td>
+                            <td>Café con deditos de queso</td>
+                            <td>$4.000</td>
+                            <td>Café con deditos de queso.</td>
+                            <td class="action-buttons">
+                                <i class="fas fa-edit edit" onclick="openEditProductModal(2)"></i>
+                                <i class="fas fa-trash delete" onclick="deleteProduct(2)"></i>
+                            </td>
+                        </tr>
+                        <tr data-id="12">
+                            <td>12</td>
+                            <td>Pan de bono con trocitos de chocolate</td>
+                            <td>$6.000</td>
+                            <td>Pan de bono con trocitos de chocolate.</td>
+                            <td class="action-buttons">
+                                <i class="fas fa-edit edit" onclick="openEditProductModal(2)"></i>
+                                <i class="fas fa-trash delete" onclick="deleteProduct(2)"></i>
+                            </td>
+                        </tr>
+
                     </tbody>
                 </table>
                 <button onclick="openAddProductModal()">Agregar Producto</button>
             </div>
 
+            
             <!-- Sección Pedidos -->
             <div id="pedidos" class="menu-section" style="display:none;">
                 <h2>Pedidos</h2>
@@ -332,25 +445,61 @@
         </div>
     </div>
 
+    <!-- Modal Agregar Producto -->
+    <div id="add-product-modal" class="modal">
+        <div class="modal-content">
+            <h2>Agregar Producto</h2>
+            <input type="text" id="add-product-name" placeholder="Nombre">
+            <input type="number" id="add-product-price" placeholder="Precio" step="0.01">
+            <input type="text" id="add-product-description" placeholder="Descripción">
+            <button onclick="addProduct()">Agregar</button>
+            <button onclick="closeModal('add-product-modal')">Cerrar</button>
+        </div>
+    </div>
+
+    <!-- Modal Editar Producto -->
+    <div id="edit-product-modal" class="modal">
+        <div class="modal-content">
+            <h2>Editar Producto</h2>
+            <input type="hidden" id="edit-product-id">
+            <input type="text" id="edit-product-name" placeholder="Nombre">
+            <input type="number" id="edit-product-price" placeholder="Precio" step="0.01">
+            <input type="text" id="edit-product-description" placeholder="Descripción">
+            <button onclick="updateProduct()">Actualizar</button>
+            <button onclick="closeModal('edit-product-modal')">Cerrar</button>
+        </div>
+    </div>
+
     <footer>
-        &copy; 2024 Cafetería Ónix. Todos los derechos reservados.
+        &copy; 2024 Onix. Todos los derechos reservados.
     </footer>
 
     <script>
         let editingUserId = null;
         let userIdCounter = 3; // Inicializar el contador de ID (último ID + 1)
+        let editingProductId = null;
+        let productIdCounter = 3; // Inicializar el contador de ID (último ID + 1) para productos
 
         document.addEventListener('DOMContentLoaded', () => {
-            // Inicializa el contador con el último ID en la tabla, si existe
-            const rows = document.querySelectorAll('#usuarios-table tbody tr');
-            rows.forEach(row => {
+            // Inicializa el contador con el último ID en la tabla de usuarios, si existe
+            const userRows = document.querySelectorAll('#usuarios-table tbody tr');
+            userRows.forEach(row => {
                 const id = parseInt(row.getAttribute('data-id'));
                 if (id >= userIdCounter) {
                     userIdCounter = id + 1;
                 }
             });
-        });
 
+            // Inicializa el contador con el último ID en la tabla de productos, si existe
+            const productRows = document.querySelectorAll('#productos-table tbody tr');
+            productRows.forEach(row => {
+                const id = parseInt(row.getAttribute('data-id'));
+                if (id >= productIdCounter) {
+                    productIdCounter = id + 1;
+                }
+            });
+        });
+        
         function showSection(sectionId) {
             const sections = document.querySelectorAll('.menu-section');
             sections.forEach(section => {
@@ -383,7 +532,7 @@
         function closeModal(modalId) {
             document.getElementById(modalId).style.display = 'none';
         }
-
+        
         function addUser() {
             const name = document.getElementById('add-user-name').value;
             const email = document.getElementById('add-user-email').value;
@@ -455,6 +604,77 @@
         function deleteUser(userId) {
             const row = document.querySelector(`#usuarios-table tbody tr[data-id="${userId}"]`);
             if (confirm('¿Está seguro de que desea eliminar este usuario?')) {
+                row.remove();
+            }
+        }
+
+        function openAddProductModal() {
+            document.getElementById('add-product-modal').style.display = 'block';
+        }
+
+        function addProduct() {
+            const name = document.getElementById('add-product-name').value;
+            const price = document.getElementById('add-product-price').value;
+            const description = document.getElementById('add-product-description').value;
+
+            if (name && price && description) {
+                const table = document.getElementById('productos-table').getElementsByTagName('tbody')[0];
+                const newRow = table.insertRow();
+                const idCell = newRow.insertCell(0);
+                const nameCell = newRow.insertCell(1);
+                const priceCell = newRow.insertCell(2);
+                const descriptionCell = newRow.insertCell(3);
+                const actionsCell = newRow.insertCell(4);
+
+                idCell.textContent = productIdCounter;
+                nameCell.textContent = name;
+                priceCell.textContent = `$${parseFloat(price).toFixed(2)}`;
+                descriptionCell.textContent = description;
+
+                actionsCell.innerHTML = `
+                    <div class="action-buttons">
+                        <i class="fas fa-edit edit" onclick="openEditProductModal(${productIdCounter})"></i>
+                        <i class="fas fa-trash delete" onclick="deleteProduct(${productIdCounter})"></i>
+                    </div>
+                `;
+                newRow.setAttribute('data-id', productIdCounter);
+                productIdCounter++;
+                closeModal('add-product-modal');
+            } else {
+                alert('Por favor, complete todos los campos.');
+            }
+        }
+
+        function openEditProductModal(productId) {
+            editingProductId = productId;
+            const row = document.querySelector(`#productos-table tbody tr[data-id="${productId}"]`);
+            document.getElementById('edit-product-id').value = productId;
+            document.getElementById('edit-product-name').value = row.cells[1].textContent;
+            document.getElementById('edit-product-price').value = parseFloat(row.cells[2].textContent.replace('$', '')).toFixed(2);
+            document.getElementById('edit-product-description').value = row.cells[3].textContent;
+            document.getElementById('edit-product-modal').style.display = 'block';
+        }
+
+        function updateProduct() {
+            const id = document.getElementById('edit-product-id').value;
+            const name = document.getElementById('edit-product-name').value;
+            const price = document.getElementById('edit-product-price').value;
+            const description = document.getElementById('edit-product-description').value;
+
+            if (name && price && description) {
+                const row = document.querySelector(`#productos-table tbody tr[data-id="${id}"]`);
+                row.cells[1].textContent = name;
+                row.cells[2].textContent = `$${parseFloat(price).toFixed(2)}`;
+                row.cells[3].textContent = description;
+                closeModal('edit-product-modal');
+            } else {
+                alert('Por favor, complete todos los campos.');
+            }
+        }
+
+        function deleteProduct(productId) {
+            const row = document.querySelector(`#productos-table tbody tr[data-id="${productId}"]`);
+            if (confirm('¿Está seguro de que desea eliminar este producto?')) {
                 row.remove();
             }
         }
