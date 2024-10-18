@@ -7,17 +7,42 @@
     <link rel="stylesheet" href="../src/assets/css/login.css">
     <!-- Incluye Toastr CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+    <!-- Incluye Font Awesome para los íconos -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        .password-container {
+            position: relative;
+        }
+        .password-container input {
+            width: 100%;
+            padding-right: 40px; /* Espacio para el ícono */
+        }
+        .password-container i {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: #999;
+        }
+    </style>
 </head>
 <body>  
     <div class="login-container">
         <h2>Bienvenido</h2>
         <form id="loginForm">
-            <label for="email">Correo electrónico</label>
+            <label for="email">Correo electrónico <span style="color: red;">*</span></label>
             <input type="email" id="email" name="email" placeholder="Correo electrónico" required>
-            <label for="password">Contraseña</label>
-            <input type="password" id="password" name="password" placeholder="Contraseña" required>
+            
+            <label for="password">Contraseña <span style="color: red;">*</span></label>
+            <div class="password-container">
+                <input type="password" id="password" name="password" placeholder="Contraseña" required>
+                <i class="fas fa-eye" id="togglePassword"></i>
+            </div>
+            
             <button type="submit">Iniciar sesión</button>
         </form>
+        
         <a href="../modules/registro.html">¿No tienes Cuenta? Regístrate</a>
         <a class="volver" href="../public/index.html">Volver</a>
     </div>
@@ -25,11 +50,36 @@
     <!-- Incluye Toastr JS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
     <script>
+        const togglePassword = document.getElementById('togglePassword');
+        const passwordField = document.getElementById('password');
+
+        togglePassword.addEventListener('click', function() {
+            // Alternar el tipo de la contraseña entre 'password' y 'text'
+            const type = passwordField.type === 'password' ? 'text' : 'password';
+            passwordField.type = type;
+            
+            // Cambiar el ícono del ojo
+            this.classList.toggle('fa-eye-slash');
+        });
+
         document.getElementById('loginForm').addEventListener('submit', function(event) {
             event.preventDefault();
 
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
+
+            // Validaciones básicas
+            if (!email || !password) {
+                toastr.error('Todos los campos son obligatorios', 'Error');
+                return;
+            }
+
+            // Verificación de formato del correo
+            const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+            if (!emailPattern.test(email)) {
+                toastr.error('Formato de correo electrónico no válido', 'Error');
+                return;
+            }
 
             fetch('https://api.escuelajs.co/api/v1/users')
                 .then(response => response.json())
