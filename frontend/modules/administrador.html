@@ -104,47 +104,208 @@
                 </div>
             </div>
 
-            <!-- Sección Productos -->
-            <div id="productos" class="menu-section">
-                <h2>Productos</h2>
-                <div class="search-bar">
-                    <input type="text" id="search-productos" placeholder="Buscar productos..." onkeyup="searchTable('productos-table', 'search-productos')">
-                </div>
-                <table id="productos-table">
-                    <thead>
-                        <tr>
-                            <th>Nombre</th>
-                            <th>Precio</th>
-                            <th>Descripción</th>
-                            <th>Acciones</th>
-                        </tr>
-                    </thead>
-                    <tbody></tbody>
-                </table>
-                <button onclick="openAddProductModal()">Agregar Producto</button>
-            </div>
-
-            <!-- Sección Historial de Pedidos -->
-            <div id="historial" class="menu-section">
-                <h2>Historial de Pedidos</h2>
-                <div class="search-bar">
-                    <input type="text" id="search-historial" placeholder="Buscar pedidos..." onkeyup="searchTable('historial-table', 'search-historial')">
-                </div>
-                <table id="historial-table">
-                    <thead>
-                        <tr>
-                            <th>ID Pedido</th>
-                            <th>Usuario</th>
-                            <th>Producto</th>
-                            <th>Cantidad</th>
-                            <th>Fecha</th>
-                        </tr>
-                    </thead>
-                    <tbody></tbody>
-                </table>
-            </div>
-        </div>
+ <!-- Sección Productos -->
+<div id="productos" class="menu-section">
+    <h2>Productos</h2>
+    <div class="search-bar">
+        <input type="text" id="search-productos" placeholder="Buscar productos..." onkeyup="searchTable('productos-table', 'search-productos')">
     </div>
+    <table id="productos-table">
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Precio</th>
+                <th>Descripción</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+    <button onclick="openAddProductModal()">Agregar Producto</button>
+</div>
+
+<!-- Modal para agregar nuevo producto -->
+<div id="addProductModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal('addProductModal')">&times;</span>
+        <h3>Agregar Producto</h3>
+        <label for="new-product-name">Nombre:</label>
+        <input type="text" id="new-product-name" placeholder="Nombre del producto">
+        <label for="new-product-price">Precio:</label>
+        <input type="number" id="new-product-price" placeholder="Precio">
+        <label for="new-product-description">Descripción:</label>
+        <input type="text" id="new-product-description" placeholder="Descripción">
+        <button onclick="saveNewProduct()">Agregar Producto</button>
+    </div>
+</div>
+
+<!-- Modal para editar producto -->
+<div id="editProductModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal('editProductModal')">&times;</span>
+        <h3>Editar Producto</h3>
+        <input type="hidden" id="edit-product-id">
+        <label for="edit-product-name">Nombre:</label>
+        <input type="text" id="edit-product-name" placeholder="Nombre del producto">
+        <label for="edit-product-price">Precio:</label>
+        <input type="number" id="edit-product-price" placeholder="Precio">
+        <label for="edit-product-description">Descripción:</label>
+        <input type="text" id="edit-product-description" placeholder="Descripción">
+        <button onclick="saveEditedProduct()">Guardar Cambios</button>
+    </div>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // Función para obtener y mostrar los productos
+        function loadProductos() {
+            fetch("http://demo4284921.mockable.io/api/v1/Productos/getProductos")
+                .then(response => response.json())
+                .then(data => {
+                    const productosTable = document.querySelector("#productos-table tbody");
+                    productosTable.innerHTML = ''; // Limpiar la tabla
+
+                    // Iterar sobre los productos y agregarlos a la tabla
+                    data.forEach(producto => {
+                        const row = document.createElement("tr");
+                        row.setAttribute("data-id", producto.id);
+                        row.innerHTML = `
+                            <td>${producto.nombre}</td>
+                            <td>${producto.precio}</td>
+                            <td>${producto.descripcion}</td>
+                            <td>
+                                <button onclick="openEditProductModal(${producto.id}, '${producto.nombre}', ${producto.precio}, '${producto.descripcion}')">Editar</button>
+                            </td>
+                        `;
+                        productosTable.appendChild(row);
+                    });
+                })
+                .catch(error => console.error('Error al cargar los productos:', error));
+        }
+
+        // Llamar a la función para cargar los productos al cargar la página
+        loadProductos();
+    });
+
+    // Función para buscar productos en la tabla
+    function searchTable(tableId, inputId) {
+        const input = document.getElementById(inputId).value.toLowerCase();
+        const table = document.getElementById(tableId);
+        const rows = table.getElementsByTagName("tr");
+
+        for (let i = 1; i < rows.length; i++) {
+            const cells = rows[i].getElementsByTagName("td");
+            let found = false;
+
+            for (let j = 0; j < cells.length; j++) {
+                if (cells[j].innerText.toLowerCase().includes(input)) {
+                    found = true;
+                    break;
+                }
+            }
+
+            rows[i].style.display = found ? "" : "none";
+        }
+    }
+
+    // Función para abrir el modal de editar producto y precargar los datos
+    function openEditProductModal(id, nombre, precio, descripcion) {
+        document.getElementById("edit-product-id").value = id;
+        document.getElementById("edit-product-name").value = nombre;
+        document.getElementById("edit-product-price").value = precio;
+        document.getElementById("edit-product-description").value = descripcion;
+        document.getElementById("editProductModal").style.display = "block";
+    }
+
+    // Función para guardar los cambios del producto editado
+    function saveEditedProduct() {
+        const id = document.getElementById("edit-product-id").value;
+        const nombre = document.getElementById("edit-product-name").value;
+        const precio = document.getElementById("edit-product-price").value;
+        const descripcion = document.getElementById("edit-product-description").value;
+
+        fetch("http://demo4284921.mockable.io/api/v1/Productos/actualizarProducto", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                id: id,
+                nombre: nombre,
+                precio: precio,
+                descripcion: descripcion
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            alert("Producto actualizado exitosamente");
+            closeModal('editProductModal');
+
+            // Actualizar el producto en la tabla sin recargar
+            const row = document.querySelector(`#productos-table tbody tr[data-id='${id}']`);
+            row.innerHTML = `
+                <td>${nombre}</td>
+                <td>${precio}</td>
+                <td>${descripcion}</td>
+                <td>
+                    <button onclick="openEditProductModal(${id}, '${nombre}', ${precio}, '${descripcion}')">Editar</button>
+                </td>
+            `;
+        })
+        .catch(error => console.error("Error al actualizar el producto:", error));
+    }
+
+    // Función para abrir el modal de agregar producto
+    function openAddProductModal() {
+        document.getElementById("addProductModal").style.display = "block";
+    }
+
+    // Función para agregar un nuevo producto
+    function saveNewProduct() {
+        const nombre = document.getElementById("new-product-name").value;
+        const precio = document.getElementById("new-product-price").value;
+        const descripcion = document.getElementById("new-product-description").value;
+
+        fetch("http://demo4284921.mockable.io/api/v1/Productos/crearProductos", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                nombre: nombre,
+                precio: precio,
+                descripcion: descripcion
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            alert("Producto agregado exitosamente");
+            closeModal('addProductModal');
+
+            // Agregar el nuevo producto a la tabla sin recargar
+            const productosTable = document.querySelector("#productos-table tbody");
+            const row = document.createElement("tr");
+            row.setAttribute("data-id", data.id); // Asumimos que la respuesta incluye el ID del producto agregado
+            row.innerHTML = `
+                <td>${nombre}</td>
+                <td>${precio}</td>
+                <td>${descripcion}</td>
+                <td>
+                    <button onclick="openEditProductModal(${data.id}, '${nombre}', ${precio}, '${descripcion}')">Editar</button>
+                </td>
+            `;
+            productosTable.appendChild(row);
+        })
+        .catch(error => console.error("Error al agregar el producto:", error));
+    }
+
+    // Función para cerrar el modal
+    function closeModal(modalId) {
+        document.getElementById(modalId).style.display = "none";
+    }
+</script>
+
+
 
     <footer>
         <p>&copy; 2024 Onix. Todos los derechos reservados.</p>
@@ -297,10 +458,9 @@
             }
         }
 
-        // Función para cerrar sesión
         function logout() {
-            // Aquí puedes agregar la lógica para cerrar sesión
-            alert('Cerrando sesión...');
+            toastr.info('Sesión cerrada.', 'Información');
+            window.location.href = "../modules/login.html"; // Redirige a la página de login
         }
 
         // Función para mostrar la sección correspondiente
