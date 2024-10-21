@@ -46,58 +46,67 @@
         let orders = [];
 
         // Mostrar el perfil del cliente desde localStorage
-        function showProfile() {
-            const user = JSON.parse(localStorage.getItem('loggedInUser'));
+// Mostrar el perfil del cliente desde localStorage
+function showProfile() {
+    const user = JSON.parse(localStorage.getItem('loggedInUser'));
 
-            if (user) {
-                const profileContent = 
-                    `<div class="profile">
-                        <h2>Perfil de Usuario</h2>
-                        <p><strong>Nombre:</strong> ${user.name}</p>
-                        <p><strong>Email:</strong> ${user.email}</p>
-                        <p><strong>Teléfono:</strong> ${user.phone}</p>
-                        <button onclick="editProfile()">Editar Perfil</button>
-                    </div>`;
-                document.getElementById('content').innerHTML = profileContent;
-            } else {
-                toastr.warning('No hay información de perfil disponible.', 'Advertencia');
-            }
-        }
+    if (user) {
+        const profileContent = 
+            `<div class="profile">
+                <h2>Perfil de Usuario</h2>
+                <div class="profile-info">
+                    <p><strong>Nombre:</strong> ${user.name}</p>
+                    <p><strong>Email:</strong> ${user.email}</p>
+                    <p><strong>Teléfono:</strong> ${user.phone}</p>
+                </div>
+                <button class="btn" onclick="editProfile()">Editar Perfil</button>
+            </div>`;
+        document.getElementById('content').innerHTML = profileContent;
+    } else {
+        toastr.warning('No hay información de perfil disponible.', 'Advertencia');
+    }
+}
 
-        // Editar el perfil del cliente
-        function editProfile() {
-            const user = JSON.parse(localStorage.getItem('loggedInUser'));
+// Editar el perfil del cliente
+function editProfile() {
+    const user = JSON.parse(localStorage.getItem('loggedInUser'));
 
-            if (user) {
-                const editProfileContent = 
-                    `<div class="profile">
-                        <h2>Editar Perfil</h2>
-                        <form id="editProfileForm">
-                            <label for="name">Nombre:</label>
-                            <input type="text" id="name" name="name" value="${user.name}" required>
-                            <label for="email">Email:</label>
-                            <input type="email" id="email" name="email" value="${user.email}" required>
-                            <label for="phone">Teléfono:</label>
-                            <input type="tel" id="phone" name="phone" value="${user.phone}" required>
-                            <button type="submit">Guardar Cambios</button>
-                        </form>
-                    </div>`;
-                document.getElementById('content').innerHTML = editProfileContent;
+    if (user) {
+        const editProfileContent = 
+            `<div class="profile">
+                <h2>Editar Perfil</h2>
+                <form id="editProfileForm">
+                    <div class="form-group">
+                        <label for="name">Nombre:</label>
+                        <input type="text" id="name" name="name" value="${user.name}" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email:</label>
+                        <input type="email" id="email" name="email" value="${user.email}" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">Teléfono:</label>
+                        <input type="tel" id="phone" name="phone" value="${user.phone}" required>
+                    </div>
+                    <button type="submit" class="btn">Guardar Cambios</button>
+                </form>
+            </div>`;
+        document.getElementById('content').innerHTML = editProfileContent;
 
-                document.getElementById('editProfileForm').addEventListener('submit', function(event) {
-                    event.preventDefault();
-                    const updatedUser = {
-                        ...user,
-                        name: document.getElementById('name').value,
-                        email: document.getElementById('email').value,
-                        phone: document.getElementById('phone').value
-                    };
-                    localStorage.setItem('loggedInUser', JSON.stringify(updatedUser));
-                    showProfile();
-                    toastr.success('Perfil actualizado correctamente.', 'Éxito');
-                });
-            }
-        }
+        document.getElementById('editProfileForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const updatedUser = {
+                ...user,
+                name: document.getElementById('name').value,
+                email: document.getElementById('email').value,
+                phone: document.getElementById('phone').value
+            };
+            localStorage.setItem('loggedInUser', JSON.stringify(updatedUser));
+            showProfile();
+            toastr.success('Perfil actualizado correctamente.', 'Éxito');
+        });
+    }
+}
 
         // Mostrar el menú de productos
         function showMenu() {
