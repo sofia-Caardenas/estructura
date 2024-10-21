@@ -3,686 +3,140 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Panel de Administración - Cafetería Ónix</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+    <title>Administrador - Cafetería</title>
     <link rel="stylesheet" href="../src/assets/css/administrador.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-            background-color: #f5f5f5;
-        }
-        header {
-            background-color: #6f4e37; /* Café oscuro */
-            color: white;
-            padding: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-        .logo img {
-            width: 60px;
-            height: auto;
-        }
-        nav {
-            flex: 1;
-        }
-        nav ul {
-            list-style: none;
-            display: flex;
-            margin: 0;
-            padding: 0;
-            justify-content: space-around;
-        }
-        nav ul li {
-            display: inline;
-        }
-        nav ul li a {
-            color: white;
-            text-decoration: none;
-            padding: 10px 20px;
-            display: block;
-            transition: background-color 0.3s ease;
-        }
-        nav ul li a:hover {
-            background-color: #8e735b; /* Café intermedio */
-            border-radius: 4px;
-        }
-        .logout-button {
-            background-color: #4e3a24; /* Café oscuro */
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            cursor: pointer;
-            border-radius: 5px;
-            transition: background-color 0.3s ease;
-        }
-        .logout-button:hover {
-            background-color: #3b2b1b; /* Café más oscuro */
-        }
-        .container {
-            flex: 1;
-            width: 80%;
-            margin: 20px auto;
-            padding: 20px;
-            background-color: #ffffff;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-        .section-title {
-            font-size: 24px;
-            margin-bottom: 20px;
-            text-align: center;
-            color: #6f4e37; /* Café oscuro */
-        }
-        footer {
-            background-color: #6f4e37; /* Café oscuro */
-            color: white;
-            padding: 10px;
-            text-align: center;
-            border-radius: 8px 8px 0 0;
-            margin-top: 20px;
-            box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
-        }
-        .search-bar {
-            margin-bottom: 20px;
-            display: flex;
-            justify-content: flex-end;
-        }
-        .search-bar input[type="text"] {
-            padding: 10px;
-            width: 200px;
-            box-sizing: border-box;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            color: #333;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 20px;
-        }
-        th, td {
-            border: 1px solid #ddd;
-            padding: 10px;
-            text-align: left;
-        }
-        th {
-            background-color: #e8d7c1; /* Café claro */
-            color: #6f4e37; /* Café oscuro */
-        }
-        tr:nth-child(even) {
-            background-color: #f9f4f0; /* Café muy claro */
-        }
-        button {
-            padding: 5px 10px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        .action-buttons {
-            display: flex;
-            justify-content: space-around;
-        }
-        .action-buttons i {
-            cursor: pointer;
-            margin: 0 5px;
-            font-size: 18px;
-        }
-        .action-buttons .edit {
-            color: #8e735b; /* Café intermedio */
-        }
-        .action-buttons .delete {
-            color: #6f4e37; /* Café oscuro */
-        }
-        .action-buttons .edit:hover {
-            color: #7a5a42; /* Café oscuro intermedio */
-        }
-        .action-buttons .delete:hover {
-            color: #4e3a24; /* Café más oscuro */
-        }
-        .modal {
-            display: none; 
-            position: fixed;
-            z-index: 1;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            overflow: auto;
-            background-color: rgba(0,0,0,0.4);
-        }
-        .modal-content {
-            background-color: white;
-            margin: 15% auto;
-            padding: 20px;
-            border: 1px solid #888;
-            width: 40%;
-            border-radius: 5px;
-        }
-        .modal-content input {
-            width: 100%;
-            padding: 10px;
-            margin: 10px 0;
-            box-sizing: border-box;
-        }
-        .modal-content button {
-            width: 100%;
-            padding: 10px;
-            margin-top: 10px;
-        }
-    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
 </head>
 <body>
     <header>
         <div class="logo">
-            <link rel="icon" href="../src/assets/img/logocafsena.png" width type="image/x-icon">
+            <a class="logo"><img src="../src/assets/img/logocafsenablanco.png" width="25%" height="100%" alt="Logo Cafetería"></a>
         </div>
         <nav>
             <ul>
-                <li><a href="#usuarios" onclick="showSection('usuarios')">Usuarios</a></li>
-                <li><a href="#productos" onclick="showSection('productos')">Productos</a></li>
-                <li><a href="#historial" onclick="showSection('historial')">Historial</a></li>
+                <li><a href="#" onclick="showUsers(); return false;">Usuarios</a></li>
+                <li><a href="#" onclick="showProducts(); return false;">Productos</a></li>
+                <li><a href="#" onclick="showOrderHistory(); return false;">Historial de Pedidos</a></li>
             </ul>
         </nav>
         <button class="logout-button" onclick="logout()">Cerrar Sesión</button>
     </header>
-
     <div class="container">
-        <h1 class="section-title">Panel de Administración</h1>
+        <h1 class="section-title">Panel de Administrador</h1>
         <div id="content">
-            <!-- Sección Usuarios -->
-            <div id="usuarios" class="menu-section">
-                <h2>Usuarios</h2>
-                <div class="search-bar">
-                    <input type="text" id="search-usuarios" placeholder="Buscar usuarios..." onkeyup="searchTable('usuarios-table', 'search-usuarios')">
-                </div>
-                <table id="usuarios-table">
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Nombre</th>
-                            <th>Email</th>
-                            <th>Teléfono</th>
-                            <th>Dirección</th>
-                            <th>Fecha de Registro</th>
-                            <th>Acciones</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <!-- Ejemplos de datos -->
-                        <tr data-id="1">
-                            <td>1</td>
-                            <td>John Doe</td>
-                            <td>john@mail.com</td>
-                            <td>(123) 456-7890</td>
-                            <td>Calle Falsa 123</td>
-                            <td>2024-01-15</td>
-                            <td class="action-buttons">
-                                <i class="fas fa-edit edit" onclick="openEditUserModal(1)"></i>
-                                <i class="fas fa-trash delete" onclick="deleteUser(1)"></i>
-                            </td>
-                        </tr>
-                        <tr data-id="2">
-                            <td>2</td>
-                            <td>María López</td>
-                            <td>maria@mail.com</td>
-                            <td>(098) 765-4321</td>
-                            <td>Avenida Siempre Viva 742</td>
-                            <td>2024-02-20</td>
-                            <td class="action-buttons">
-                                <i class="fas fa-edit edit" onclick="openEditUserModal(2)"></i>
-                                <i class="fas fa-trash delete" onclick="deleteUser(2)"></i>
-                            </td>
-                        </tr>
-                        <tr data-id="3">
-                            <td>3</td>
-                            <td>Stiven Junco</td>
-                            <td>admin@mail.com</td>
-                            <td>(098) 765-4321</td>
-                            <td>Avenida Siempre Viva 742</td>
-                            <td>2024-02-20</td>
-                            <td class="action-buttons">
-                                <i class="fas fa-edit edit" onclick="openEditUserModal(2)"></i>
-                                <i class="fas fa-trash delete" onclick="deleteUser(2)"></i>
-                            </td>
-                        </tr>
-
-                    </tbody>
-                </table>
-                <button onclick="openAddUserModal()">Agregar Usuario</button>
-            </div>
-
-            <!-- Sección Productos -->
-            <div id="productos" class="menu-section" style="display:none;">
-                <h2>Productos</h2>
-                <div class="search-bar">
-                    <input type="text" id="search-productos" placeholder="Buscar productos..." onkeyup="searchTable('productos-table', 'search-productos')">
-                </div>
-                <table id="productos-table">
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Nombre</th>
-                            <th>Precio</th>
-                            <th>Descripción</th>
-                            <th>Acciones</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <!-- Ejemplos de datos -->
-                        <tr data-id="1">
-                            <td>1</td>
-                            <td>Carne asada</td>
-                            <td>$8.000</td>
-                            <td>Deliciosa carne asada.</td>
-                            <td class="action-buttons">
-                                <i class="fas fa-edit edit" onclick="openEditProductModal(1)"></i>
-                                <i class="fas fa-trash delete" onclick="deleteProduct(1)"></i>
-                            </td>
-                        </tr>
-                        <tr data-id="2">
-                            <td>2</td>
-                            <td>Costillas de cerdo con salsa BBQ</td>
-                            <td>$8.000</td>
-                            <td>Costillas de cerdo con salsa BBQ</td>
-                            <td class="action-buttons">
-                                <i class="fas fa-edit edit" onclick="openEditProductModal(2)"></i>
-                                <i class="fas fa-trash delete" onclick="deleteProduct(2)"></i>
-                            </td>
-                        </tr>
-                        <tr data-id="3">
-                            <td>3</td>
-                            <td>Bandeja Paisa</td>
-                            <td>$8.000</td>
-                            <td>Bandeja Paisa</td>
-                            <td class="action-buttons">
-                                <i class="fas fa-edit edit" onclick="openEditProductModal(2)"></i>
-                                <i class="fas fa-trash delete" onclick="deleteProduct(2)"></i>
-                            </td>
-                        </tr>
-                        <tr data-id="4">
-                            <td>4</td>
-                            <td>Chuleta valluna</td>
-                            <td>$8.000</td>
-                            <td>Chuleta valluna</td>
-                            <td class="action-buttons">
-                                <i class="fas fa-edit edit" onclick="openEditProductModal(2)"></i>
-                                <i class="fas fa-trash delete" onclick="deleteProduct(2)"></i>
-                            </td>
-                        </tr>
-                        <tr data-id="5">
-                            <td>5</td>
-                            <td>Frijolada</td>
-                            <td>$8.000</td>
-                            <td>Deliciosa frijolada</td>
-                            <td class="action-buttons">
-                                <i class="fas fa-edit edit" onclick="openEditProductModal(2)"></i>
-                                <i class="fas fa-trash delete" onclick="deleteProduct(2)"></i>
-                            </td>
-                        </tr>
-                        <tr data-id="6">
-                            <td>6</td>
-                            <td>Mojarra frita</td>
-                            <td>$8.000</td>
-                            <td>Deliciosa Mojarra frita</td>
-                            <td class="action-buttons">
-                                <i class="fas fa-edit edit" onclick="openEditProductModal(2)"></i>
-                                <i class="fas fa-trash delete" onclick="deleteProduct(2)"></i>
-                            </td>
-                        </tr>
-                        <tr data-id="7">
-                            <td>7</td>
-                            <td>Empanada de carne</td>
-                            <td>$8.000</td>
-                            <td>Empanada de carne.</td>
-                            <td class="action-buttons">
-                                <i class="fas fa-edit edit" onclick="openEditProductModal(2)"></i>
-                                <i class="fas fa-trash delete" onclick="deleteProduct(2)"></i>
-                            </td>
-                        </tr>
-                        <tr data-id="8">
-                            <td>8</td>
-                            <td>Buñuelos rellenos de arequipe</td>
-                            <td>$6.000</td>
-                            <td>Buñuelos rellenos de arequipe.</td>
-                            <td class="action-buttons">
-                                <i class="fas fa-edit edit" onclick="openEditProductModal(2)"></i>
-                                <i class="fas fa-trash delete" onclick="deleteProduct(2)"></i>
-                            </td>
-                        </tr>
-                        <tr data-id="9">
-                            <td>9</td>
-                            <td>Arepa de huevo</td>
-                            <td>$5.000</td>
-                            <td>Arepa de huevo</td>
-                            <td class="action-buttons">
-                                <i class="fas fa-edit edit" onclick="openEditProductModal(2)"></i>
-                                <i class="fas fa-trash delete" onclick="deleteProduct(2)"></i>
-                            </td>
-                        </tr>
-                        <tr data-id="10">
-                            <td>10</td>
-                            <td>Hamburguesa tres carnes</td>
-                            <td>$9.000</td>
-                            <td>Hamburguesa tres carnes.</td>
-                            <td class="action-buttons">
-                                <i class="fas fa-edit edit" onclick="openEditProductModal(2)"></i>
-                                <i class="fas fa-trash delete" onclick="deleteProduct(2)"></i>
-                            </td>
-                        </tr>
-                        <tr data-id="11">
-                            <td>11</td>
-                            <td>Café con deditos de queso</td>
-                            <td>$4.000</td>
-                            <td>Café con deditos de queso.</td>
-                            <td class="action-buttons">
-                                <i class="fas fa-edit edit" onclick="openEditProductModal(2)"></i>
-                                <i class="fas fa-trash delete" onclick="deleteProduct(2)"></i>
-                            </td>
-                        </tr>
-                        <tr data-id="12">
-                            <td>12</td>
-                            <td>Pan de bono con trocitos de chocolate</td>
-                            <td>$6.000</td>
-                            <td>Pan de bono con trocitos de chocolate.</td>
-                            <td class="action-buttons">
-                                <i class="fas fa-edit edit" onclick="openEditProductModal(2)"></i>
-                                <i class="fas fa-trash delete" onclick="deleteProduct(2)"></i>
-                            </td>
-                        </tr>
-
-                    </tbody>
-                </table>
-                <button onclick="openAddProductModal()">Agregar Producto</button>
-            </div>
-
-            
-            <!-- Sección Pedidos -->
-            <div id="pedidos" class="menu-section" style="display:none;">
-                <h2>Pedidos</h2>
-                <!-- Contenido de pedidos aquí -->
-            </div>
-
-            <!-- Sección Historial -->
-            <div id="historial" class="menu-section" style="display:none;">
-                <h2>Historial</h2>
-                <!-- Contenido de historial aquí -->
-            </div>
-        </div>
-    </div>
-
-    <!-- Modal Agregar Usuario -->
-    <div id="add-user-modal" class="modal">
-        <div class="modal-content">
-            <h2>Agregar Usuario</h2>
-            <input type="text" id="add-user-name" placeholder="Nombre">
-            <input type="email" id="add-user-email" placeholder="Email">
-            <input type="text" id="add-user-phone" placeholder="Teléfono">
-            <input type="text" id="add-user-address" placeholder="Dirección">
-            <button onclick="addUser()">Agregar</button>
-            <button onclick="closeModal('add-user-modal')">Cerrar</button>
-        </div>
-    </div>
-
-    <!-- Modal Editar Usuario -->
-    <div id="edit-user-modal" class="modal">
-        <div class="modal-content">
-            <h2>Editar Usuario</h2>
-            <input type="hidden" id="edit-user-id">
-            <input type="text" id="edit-user-name" placeholder="Nombre">
-            <input type="email" id="edit-user-email" placeholder="Email">
-            <input type="text" id="edit-user-phone" placeholder="Teléfono">
-            <input type="text" id="edit-user-address" placeholder="Dirección">
-            <button onclick="updateUser()">Actualizar</button>
-            <button onclick="closeModal('edit-user-modal')">Cerrar</button>
-        </div>
-    </div>
-
-    <!-- Modal Agregar Producto -->
-    <div id="add-product-modal" class="modal">
-        <div class="modal-content">
-            <h2>Agregar Producto</h2>
-            <input type="text" id="add-product-name" placeholder="Nombre">
-            <input type="number" id="add-product-price" placeholder="Precio" step="0.01">
-            <input type="text" id="add-product-description" placeholder="Descripción">
-            <button onclick="addProduct()">Agregar</button>
-            <button onclick="closeModal('add-product-modal')">Cerrar</button>
-        </div>
-    </div>
-
-    <!-- Modal Editar Producto -->
-    <div id="edit-product-modal" class="modal">
-        <div class="modal-content">
-            <h2>Editar Producto</h2>
-            <input type="hidden" id="edit-product-id">
-            <input type="text" id="edit-product-name" placeholder="Nombre">
-            <input type="number" id="edit-product-price" placeholder="Precio" step="0.01">
-            <input type="text" id="edit-product-description" placeholder="Descripción">
-            <button onclick="updateProduct()">Actualizar</button>
-            <button onclick="closeModal('edit-product-modal')">Cerrar</button>
+            <p>Bienvenido al panel de Administrador. Selecciona una opción del menú para comenzar.</p>
         </div>
     </div>
 
     <footer>
-        &copy; 2024 Onix. Todos los derechos reservados.
+        <p>&copy; 2024 Onix. Todos los derechos reservados.</p>
     </footer>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <script src="../src/js/admin.js"></script> <!-- Asegúrate de tener tu archivo JS -->
+    
     <script>
-        let editingUserId = null;
-        let userIdCounter = 3; // Inicializar el contador de ID (último ID + 1)
-        let editingProductId = null;
-        let productIdCounter = 3; // Inicializar el contador de ID (último ID + 1) para productos
+// Datos de ejemplo
+let users = [
+    { id: 1, name: "Juan Pérez" },
+    { id: 2, name: "María Gómez" },
+    { id: 3, name: "Carlos López" },
+    { id: 4, name: "Ana Martínez" },
+];
 
-        document.addEventListener('DOMContentLoaded', () => {
-            // Inicializa el contador con el último ID en la tabla de usuarios, si existe
-            const userRows = document.querySelectorAll('#usuarios-table tbody tr');
-            userRows.forEach(row => {
-                const id = parseInt(row.getAttribute('data-id'));
-                if (id >= userIdCounter) {
-                    userIdCounter = id + 1;
-                }
-            });
+let products = [
+    { id: 1, name: "Café Americano", price: 2.5 },
+    { id: 2, name: "Té Verde", price: 2.0 },
+    { id: 3, name: "Pastel de Chocolate", price: 3.5 },
+    { id: 4, name: "Galletas", price: 1.5 },
+];
 
-            // Inicializa el contador con el último ID en la tabla de productos, si existe
-            const productRows = document.querySelectorAll('#productos-table tbody tr');
-            productRows.forEach(row => {
-                const id = parseInt(row.getAttribute('data-id'));
-                if (id >= productIdCounter) {
-                    productIdCounter = id + 1;
-                }
-            });
-        });
-        
-        function showSection(sectionId) {
-            const sections = document.querySelectorAll('.menu-section');
-            sections.forEach(section => {
-                section.style.display = section.id === sectionId ? 'block' : 'none';
-            });
-        }
+let orders = []; // Array de pedidos (Ejemplo)
 
-        function searchTable(tableId, searchId) {
-            const input = document.getElementById(searchId);
-            const filter = input.value.toLowerCase();
-            const table = document.getElementById(tableId);
-            const rows = table.querySelectorAll('tbody tr');
+// Mostrar usuarios
+function showUsers() {
+    const userContent = `
+        <section class="users-section">
+            <h2 class="section-title">Usuarios</h2>
+            <input type="text" id="userSearch" placeholder="Buscar usuarios..." onkeyup="filterUsers()">
+            <div id="userList"></div>
+        </section>
+    `;
+    document.getElementById('content').innerHTML = userContent;
+    displayUsers(users);
+}
 
-            rows.forEach(row => {
-                const cells = row.querySelectorAll('td');
-                let match = false;
-                cells.forEach(cell => {
-                    if (cell.textContent.toLowerCase().includes(filter)) {
-                        match = true;
-                    }
-                });
-                row.style.display = match ? '' : 'none';
-            });
-        }
+// Filtrar usuarios
+function filterUsers() {
+    const input = document.getElementById('userSearch').value.toLowerCase();
+    const filteredUsers = users.filter(user => user.name.toLowerCase().includes(input));
+    displayUsers(filteredUsers);
+}
 
-        function openAddUserModal() {
-            document.getElementById('add-user-modal').style.display = 'block';
-        }
+// Mostrar usuarios en la lista
+function displayUsers(userArray) {
+    const userList = document.getElementById('userList');
+    userList.innerHTML = userArray.length === 0 ? '<p>No se encontraron usuarios.</p>' : userArray.map(user => `<p>${user.name}</p>`).join('');
+}
 
-        function closeModal(modalId) {
-            document.getElementById(modalId).style.display = 'none';
-        }
-        
-        function addUser() {
-            const name = document.getElementById('add-user-name').value;
-            const email = document.getElementById('add-user-email').value;
-            const phone = document.getElementById('add-user-phone').value;
-            const address = document.getElementById('add-user-address').value;
+// Mostrar productos
+function showProducts() {
+    const productContent = `
+        <section class="products-section">
+            <h2 class="section-title">Productos</h2>
+            <input type="text" id="productSearch" placeholder="Buscar productos..." onkeyup="filterProducts()">
+            <div id="productList"></div>
+        </section>
+    `;
+    document.getElementById('content').innerHTML = productContent;
+    displayProducts(products);
+}
 
-            if (name && email && phone && address) {
-                const table = document.getElementById('usuarios-table').getElementsByTagName('tbody')[0];
-                const newRow = table.insertRow();
-                const idCell = newRow.insertCell(0);
-                const nameCell = newRow.insertCell(1);
-                const emailCell = newRow.insertCell(2);
-                const phoneCell = newRow.insertCell(3);
-                const addressCell = newRow.insertCell(4);
-                const dateCell = newRow.insertCell(5);
-                const actionsCell = newRow.insertCell(6);
+// Filtrar productos
+function filterProducts() {
+    const input = document.getElementById('productSearch').value.toLowerCase();
+    const filteredProducts = products.filter(product => product.name.toLowerCase().includes(input));
+    displayProducts(filteredProducts);
+}
 
-                idCell.textContent = userIdCounter;
-                nameCell.textContent = name;
-                emailCell.textContent = email;
-                phoneCell.textContent = phone;
-                addressCell.textContent = address;
-                dateCell.textContent = new Date().toISOString().split('T')[0];
+// Mostrar productos en la lista
+function displayProducts(productArray) {
+    const productList = document.getElementById('productList');
+    productList.innerHTML = productArray.length === 0 ? '<p>No se encontraron productos.</p>' : productArray.map(product => `<p>${product.name} - $${product.price.toFixed(2)}</p>`).join('');
+}
 
-                actionsCell.innerHTML = `
-                    <div class="action-buttons">
-                        <i class="fas fa-edit edit" onclick="openEditUserModal(${userIdCounter})"></i>
-                        <i class="fas fa-trash delete" onclick="deleteUser(${userIdCounter})"></i>
-                    </div>
-                `;
-                newRow.setAttribute('data-id', userIdCounter);
-                userIdCounter++;
-                closeModal('add-user-modal');
-            } else {
-                alert('Por favor, complete todos los campos.');
-            }
-        }
+// Mostrar historial de pedidos
+function showOrderHistory() {
+    const orderContent = `
+        <section class="order-history-section">
+            <h2 class="section-title">Historial de Pedidos</h2>
+            <input type="text" id="orderSearch" placeholder="Buscar pedidos..." onkeyup="filterOrders()">
+            <div id="orderList"></div>
+        </section>
+    `;
+    document.getElementById('content').innerHTML = orderContent;
+    displayOrders(orders);
+}
 
-        function openEditUserModal(userId) {
-            editingUserId = userId;
-            const row = document.querySelector(`#usuarios-table tbody tr[data-id="${userId}"]`);
-            document.getElementById('edit-user-id').value = userId;
-            document.getElementById('edit-user-name').value = row.cells[1].textContent;
-            document.getElementById('edit-user-email').value = row.cells[2].textContent;
-            document.getElementById('edit-user-phone').value = row.cells[3].textContent;
-            document.getElementById('edit-user-address').value = row.cells[4].textContent;
-            document.getElementById('edit-user-modal').style.display = 'block';
-        }
+// Filtrar pedidos
+function filterOrders() {
+    const input = document.getElementById('orderSearch').value.toLowerCase();
+    const filteredOrders = orders.filter(order => order.id.toString().includes(input));
+    displayOrders(filteredOrders);
+}
 
-        function updateUser() {
-            const id = document.getElementById('edit-user-id').value;
-            const name = document.getElementById('edit-user-name').value;
-            const email = document.getElementById('edit-user-email').value;
-            const phone = document.getElementById('edit-user-phone').value;
-            const address = document.getElementById('edit-user-address').value;
+// Mostrar pedidos en la lista
+function displayOrders(orderArray) {
+    const orderList = document.getElementById('orderList');
+    orderList.innerHTML = orderArray.length === 0 ? '<p>No se encontraron pedidos.</p>' : orderArray.map(order => `<p>Pedido #${order.id}</p>`).join('');
+}
 
-            if (name && email && phone && address) {
-                const row = document.querySelector(`#usuarios-table tbody tr[data-id="${id}"]`);
-                row.cells[1].textContent = name;
-                row.cells[2].textContent = email;
-                row.cells[3].textContent = phone;
-                row.cells[4].textContent = address;
-                closeModal('edit-user-modal');
-            } else {
-                alert('Por favor, complete todos los campos.');
-            }
-        }
+// Función de cerrar sesión
+function logout() {
+    // Implementar lógica de cierre de sesión
+    toastr.success('Sesión cerrada.', 'Éxito');
+}
 
-        function deleteUser(userId) {
-            const row = document.querySelector(`#usuarios-table tbody tr[data-id="${userId}"]`);
-            if (confirm('¿Está seguro de que desea eliminar este usuario?')) {
-                row.remove();
-            }
-        }
-
-        function openAddProductModal() {
-            document.getElementById('add-product-modal').style.display = 'block';
-        }
-
-        function addProduct() {
-            const name = document.getElementById('add-product-name').value;
-            const price = document.getElementById('add-product-price').value;
-            const description = document.getElementById('add-product-description').value;
-
-            if (name && price && description) {
-                const table = document.getElementById('productos-table').getElementsByTagName('tbody')[0];
-                const newRow = table.insertRow();
-                const idCell = newRow.insertCell(0);
-                const nameCell = newRow.insertCell(1);
-                const priceCell = newRow.insertCell(2);
-                const descriptionCell = newRow.insertCell(3);
-                const actionsCell = newRow.insertCell(4);
-
-                idCell.textContent = productIdCounter;
-                nameCell.textContent = name;
-                priceCell.textContent = `$${parseFloat(price).toFixed(2)}`;
-                descriptionCell.textContent = description;
-
-                actionsCell.innerHTML = `
-                    <div class="action-buttons">
-                        <i class="fas fa-edit edit" onclick="openEditProductModal(${productIdCounter})"></i>
-                        <i class="fas fa-trash delete" onclick="deleteProduct(${productIdCounter})"></i>
-                    </div>
-                `;
-                newRow.setAttribute('data-id', productIdCounter);
-                productIdCounter++;
-                closeModal('add-product-modal');
-            } else {
-                alert('Por favor, complete todos los campos.');
-            }
-        }
-
-        function openEditProductModal(productId) {
-            editingProductId = productId;
-            const row = document.querySelector(`#productos-table tbody tr[data-id="${productId}"]`);
-            document.getElementById('edit-product-id').value = productId;
-            document.getElementById('edit-product-name').value = row.cells[1].textContent;
-            document.getElementById('edit-product-price').value = parseFloat(row.cells[2].textContent.replace('$', '')).toFixed(2);
-            document.getElementById('edit-product-description').value = row.cells[3].textContent;
-            document.getElementById('edit-product-modal').style.display = 'block';
-        }
-
-        function updateProduct() {
-            const id = document.getElementById('edit-product-id').value;
-            const name = document.getElementById('edit-product-name').value;
-            const price = document.getElementById('edit-product-price').value;
-            const description = document.getElementById('edit-product-description').value;
-
-            if (name && price && description) {
-                const row = document.querySelector(`#productos-table tbody tr[data-id="${id}"]`);
-                row.cells[1].textContent = name;
-                row.cells[2].textContent = `$${parseFloat(price).toFixed(2)}`;
-                row.cells[3].textContent = description;
-                closeModal('edit-product-modal');
-            } else {
-                alert('Por favor, complete todos los campos.');
-            }
-        }
-
-        function deleteProduct(productId) {
-            const row = document.querySelector(`#productos-table tbody tr[data-id="${productId}"]`);
-            if (confirm('¿Está seguro de que desea eliminar este producto?')) {
-                row.remove();
-            }
-        }
-
-        function logout() {
-            // Redirige a la página de inicio de sesión
-            window.location.href = 'login.html';
-        }
-    </script>
+    </script>    
 </body>
 </html>
