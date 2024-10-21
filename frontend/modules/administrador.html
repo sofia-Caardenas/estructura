@@ -6,7 +6,6 @@
     <title>Panel de Administración</title>
     <link rel="stylesheet" href="../src/assets/css/administrador.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
-
 </head>
 <body>
     <header>
@@ -26,83 +25,84 @@
     <div class="container">
         <h1 class="section-title">Panel de Administración</h1>
         <div id="content">
-<!-- Sección Usuarios -->
-<div id="usuarios" class="menu-section active">
-    <h2>Usuarios</h2>
-    <div class="search-bar">
-        <input type="text" id="search-usuarios" placeholder="Buscar usuarios..." onkeyup="searchTable('usuarios-table', 'search-usuarios')">
-    </div>
-    <table id="usuarios-table">
-        <thead>
-            <tr>
-                <th>Rol</th>
-                <th>Nombre</th>
-                <th>Email</th>
-                <th>Acciones</th>
-            </tr>
-        </thead>
-        <tbody>
-        </tbody>
-    </table>
-    <div class="pagination">
-        <button id="prev-page" onclick="changePage(currentPage - 1)">Anterior</button>
-        <span id="page-info"></span>
-        <button id="next-page" onclick="changePage(currentPage + 1)">Siguiente</button>
-    </div>
-</div>
+            <!-- Sección Usuarios -->
+            <div id="usuarios" class="menu-section active">
+                <h2>Usuarios</h2>
+                <div class="search-bar">
+                    <input type="text" id="search-usuarios" placeholder="Buscar usuarios..." onkeyup="searchTable('usuarios-table', 'search-usuarios')">
+                </div>
+                <table id="usuarios-table">
+                    <thead>
+                        <tr>
+                            <th>Rol</th>
+                            <th>Nombre</th>
+                            <th>Email</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+                <div class="pagination">
+                    <button id="prev-page" onclick="changePage(currentPage - 1)">Anterior</button>
+                    <span id="page-info"></span>
+                    <button id="next-page" onclick="changePage(currentPage + 1)">Siguiente</button>
+                </div>
+                
+                <!-- Botón para agregar usuario -->
+                <button onclick="openAddUserModal()">Agregar Usuario</button>
 
-            <script>
-                // Función para llenar la tabla de usuarios
-                let currentPage = 1;
-    const recordsPerPage = 5; // Cambia este valor según tus necesidades
-    let usuariosData = []; // Almacenará los datos de los usuarios
+                <!-- Modal para agregar usuario -->
+                <div id="addUserModal" class="modal">
+                    <div class="modal-content">
+                        <span class="close" onclick="closeAddUserModal()">&times;</span>
+                        <h2>Agregar Nuevo Usuario</h2>
+                        <form id="addUserForm">
+                            <label for="nombre">Nombre:</label>
+                            <input type="text" id="nombre" name="nombre" required>
 
-    // Función para llenar la tabla de usuarios
-    function llenarTabla(data) {
-        usuariosData = data; // Guardar todos los datos para la paginación
-        renderTable();
-    }
+                            <label for="email">Email:</label>
+                            <input type="email" id="email" name="email" required>
 
-    // Función para renderizar la tabla según la página actual
-    function renderTable() {
-        const tabla = document.getElementById('usuarios-table').getElementsByTagName('tbody')[0];
-        tabla.innerHTML = ''; // Limpiar la tabla antes de llenarla
+                            <label for="rol">Rol:</label>
+                            <select id="rol" name="rol" required>
+                                <option value="1">Administrador</option>
+                                <option value="2">Empleado</option>
+                                <option value="3">Cliente</option>
+                            </select>
 
-        const start = (currentPage - 1) * recordsPerPage;
-        const end = start + recordsPerPage;
-        const paginatedData = usuariosData.slice(start, end); // Obtener los datos para la página actual
+                            <label for="clave">Contraseña:</label>
+                            <input type="password" id="clave" name="clave" required>
 
-        paginatedData.forEach(usuario => {
-            const fila = tabla.insertRow();
-            fila.insertCell(0).textContent = usuario.roles.nombre;
-            fila.insertCell(1).textContent = usuario.nombre;
-            fila.insertCell(2).textContent = usuario.email;
-            fila.insertCell(3).innerHTML = '<button onclick="editarUsuario(' + usuario.id + ')">Editar</button>';
-        });
+                            <button type="submit">Agregar Usuario</button>
+                        </form>
+                    </div>
+                </div>
 
-        // Actualizar información de la página
-        document.getElementById('page-info').textContent = `Página ${currentPage} de ${Math.ceil(usuariosData.length / recordsPerPage)}`;
+                <!-- Modal para editar usuario -->
+                <div id="editUserModal" class="modal">
+                    <div class="modal-content">
+                        <span class="close" onclick="closeEditUserModal()">&times;</span>
+                        <h2>Editar Usuario</h2>
+                        <form id="editUserForm">
+                            <input type="hidden" id="edit-user-id">
+                            <label for="edit-nombre">Nombre:</label>
+                            <input type="text" id="edit-nombre" name="nombre" required>
 
-        // Habilitar/deshabilitar botones de paginación
-        document.getElementById('prev-page').disabled = currentPage === 1;
-        document.getElementById('next-page').disabled = currentPage === Math.ceil(usuariosData.length / recordsPerPage);
-    }
+                            <label for="edit-email">Email:</label>
+                            <input type="email" id="edit-email" name="email" required>
 
-    // Función para cambiar de página
-    function changePage(page) {
-        const totalPages = Math.ceil(usuariosData.length / recordsPerPage);
-        if (page < 1 || page > totalPages) return; // No hacer nada si la página es inválida
-        currentPage = page; // Actualizar la página actual
-        renderTable(); // Renderizar la tabla con los nuevos datos
-    }
+                            <label for="edit-rol">Rol:</label>
+                            <select id="edit-rol" name="rol" required>
+                                <option value="1">Administrador</option>
+                                <option value="2">Empleado</option>
+                                <option value="3">Cliente</option>
+                            </select>
 
-
-                // Obtener los datos de los usuarios desde la API
-                fetch('http://demo4284921.mockable.io/api/v1/Usuarios/getUsuarios')
-                    .then(response => response.json())
-                    .then(data => llenarTabla(data))
-                    .catch(error => console.error('Error al obtener los datos de usuarios:', error));
-            </script>
+                            <button type="submit">Actualizar Usuario</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
 
             <!-- Sección Productos -->
             <div id="productos" class="menu-section">
@@ -119,32 +119,10 @@
                             <th>Acciones</th>
                         </tr>
                     </thead>
-                    <tbody>
-                    </tbody>
+                    <tbody></tbody>
                 </table>
                 <button onclick="openAddProductModal()">Agregar Producto</button>
             </div>
-
-            <script>
-                // Función para llenar la tabla de productos
-                function llenarTablaProducto(data) {
-                    const tabla = document.getElementById('productos-table').getElementsByTagName('tbody')[0];
-                    tabla.innerHTML = ''; // Limpiar la tabla antes de llenarla
-                    data.forEach(producto => {
-                        const fila = tabla.insertRow();
-                        fila.insertCell(0).textContent = producto.nombre;
-                        fila.insertCell(1).textContent = '$' + producto.precio.toFixed(2);
-                        fila.insertCell(2).textContent = producto.descripcion;
-                        fila.insertCell(3).innerHTML = '<button onclick="editarProducto(' + producto.id + ')">Editar</button>';
-                    });
-                }
-
-                // Obtener los datos de los productos desde la API
-                fetch('http://demo4284921.mockable.io/api/v1/Productos/getProductos')
-                    .then(response => response.json())
-                    .then(data => llenarTablaProducto(data))
-                    .catch(error => console.error('Error al obtener los datos de productos:', error));
-            </script>
 
             <!-- Sección Historial de Pedidos -->
             <div id="historial" class="menu-section">
@@ -162,32 +140,9 @@
                             <th>Fecha</th>
                         </tr>
                     </thead>
-                    <tbody>
-                    </tbody>
+                    <tbody></tbody>
                 </table>
             </div>
-
-            <script>
-                // Función para llenar la tabla de historial de pedidos
-                function llenarTablaHistorial(data) {
-                    const tabla = document.getElementById('historial-table').getElementsByTagName('tbody')[0];
-                    tabla.innerHTML = ''; // Limpiar la tabla antes de llenarla
-                    data.forEach(pedido => {
-                        const fila = tabla.insertRow();
-                        fila.insertCell(0).textContent = pedido.id;
-                        fila.insertCell(1).textContent = pedido.usuario.nombre; // Cambia según la estructura de tus datos
-                        fila.insertCell(2).textContent = pedido.producto.nombre; // Cambia según la estructura de tus datos
-                        fila.insertCell(3).textContent = pedido.cantidad;
-                        fila.insertCell(4).textContent = pedido.fecha; // Cambia según la estructura de tus datos
-                    });
-                }
-
-                // Obtener los datos de historial de pedidos desde la API
-                fetch('http://demo4284921.mockable.io/api/v1/Pedidos/getPedidos') // Cambia esta URL según tu API
-                    .then(response => response.json())
-                    .then(data => llenarTablaHistorial(data))
-                    .catch(error => console.error('Error al obtener los datos de pedidos:', error));
-            </script>
         </div>
     </div>
 
@@ -195,30 +150,206 @@
         <p>&copy; 2024 Onix. Todos los derechos reservados.</p>
     </footer>
 
-    <!-- Incluimos las librerías de Toastr JS y jQuery -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
-
     <script>
-        // Función para mostrar la notificación de cierre de sesión
-        function logout() {
-            // Aquí puedes agregar la lógica para cerrar sesión, por ejemplo, eliminando el token o redirigiendo a otra página
-            toastr.success('Has cerrado sesión exitosamente.');
-    
-            // Simulamos un cierre de sesión y redirigimos al usuario (puedes cambiar la URL a donde desees redirigir)
-            setTimeout(() => {
-                window.location.href = 'login.html'; // Cambia esta URL a la página de inicio de sesión
-            }, 2000); // Redirigir después de 2 segundos
+        let currentPage = 1;
+        const recordsPerPage = 2;
+        let usuariosData = [];
+
+        // Función para llenar la tabla de usuarios
+        function llenarTabla(data) {
+            usuariosData = data;
+            renderTable();
         }
-    
-        // Función para mostrar la sección correspondiente
-        function showTab(tabName) {
-            const sections = document.getElementsByClassName('menu-section');
-            for (let i = 0; i < sections.length; i++) {
-                sections[i].classList.remove('active');
+
+        // Función para renderizar la tabla según la página actual
+        function renderTable() {
+            const tabla = document.getElementById('usuarios-table').getElementsByTagName('tbody')[0];
+            tabla.innerHTML = '';
+
+            const start = (currentPage - 1) * recordsPerPage;
+            const end = start + recordsPerPage;
+            const paginatedData = usuariosData.slice(start, end);
+
+            paginatedData.forEach(usuario => {
+                const fila = tabla.insertRow();
+                fila.insertCell(0).textContent = usuario.roles.nombre;
+                fila.insertCell(1).textContent = usuario.nombre;
+                fila.insertCell(2).textContent = usuario.email;
+                fila.insertCell(3).innerHTML = `<button onclick="editarUsuario(${usuario.id})">Editar</button>`;
+            });
+
+            document.getElementById('page-info').textContent = `Página ${currentPage} de ${Math.ceil(usuariosData.length / recordsPerPage)}`;
+            document.getElementById('prev-page').disabled = currentPage === 1;
+            document.getElementById('next-page').disabled = currentPage === Math.ceil(usuariosData.length / recordsPerPage);
+        }
+
+        // Cambiar de página
+        function changePage(page) {
+            const totalPages = Math.ceil(usuariosData.length / recordsPerPage);
+            if (page < 1 || page > totalPages) return;
+            currentPage = page;
+            renderTable();
+        }
+
+        // Obtener los datos de los usuarios
+        fetch('http://demo4284921.mockable.io/api/v1/Usuarios/getUsuarios')
+            .then(response => response.json())
+            .then(data => llenarTabla(data))
+            .catch(error => console.error('Error al obtener los datos de usuarios:', error));
+
+        // Abrir modal de agregar usuario
+        function openAddUserModal() {
+            document.getElementById('addUserModal').style.display = 'block';
+        }
+
+        // Cerrar modal de agregar usuario
+        function closeAddUserModal() {
+            document.getElementById('addUserModal').style.display = 'none';
+        }
+
+        // Agregar nuevo usuario
+        document.getElementById('addUserForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const nuevoUsuario = {
+                id: usuariosData.length + 1,
+                roles: { id: document.getElementById('rol').value, nombre: document.getElementById('rol').options[document.getElementById('rol').selectedIndex].text },
+                nombre: document.getElementById('nombre').value,
+                email: document.getElementById('email').value,
+                clave: document.getElementById('clave').value
+            };
+
+            usuariosData.push(nuevoUsuario);
+            renderTable();
+            toastr.success('Usuario agregado exitosamente');
+            closeAddUserModal();
+            document.getElementById('addUserForm').reset();
+        });
+
+        // Editar usuario
+        function editarUsuario(id) {
+            const usuario = usuariosData.find(u => u.id === id);
+            if (usuario) {
+                document.getElementById('edit-user-id').value = usuario.id;
+                document.getElementById('edit-nombre').value = usuario.nombre;
+                document.getElementById('edit-email').value = usuario.email;
+                document.getElementById('edit-rol').value = usuario.roles.id;
+                document.getElementById('editUserModal').style.display = 'block';
             }
-            document.getElementById(tabName).classList.add('active');
         }
-    </script>
+
+        // Cerrar modal de edición
+        function closeEditUserModal() {
+            document.getElementById('editUserModal').style.display = 'none';
+        }
+
+        // Actualizar usuario
+        document.getElementById('editUserForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const id = document.getElementById('edit-user-id').value;
+            const usuario = usuariosData.find(u => u.id === Number(id));
+            if (usuario) {
+                usuario.nombre = document.getElementById('edit-nombre').value;
+                usuario.email = document.getElementById('edit-email').value;
+                usuario.roles.id = document.getElementById('edit-rol').value;
+                usuario.roles.nombre = document.getElementById('edit-rol').options[document.getElementById('edit-rol').selectedIndex].text;
+
+                renderTable();
+                toastr.success('Usuario actualizado exitosamente');
+                closeEditUserModal();
+            }
+        });
+
+        // Lógica de cierre del modal al hacer clic fuera de él
+        window.onclick = function(event) {
+            const addModal = document.getElementById('addUserModal');
+            const editModal = document.getElementById('editUserModal');
+            if (event.target === addModal) {
+                closeAddUserModal();
+            }
+            if (event.target === editModal) {
+                closeEditUserModal();
+            }
+        };
+
+        // Función de búsqueda en la tabla
+        function searchTable(tableId, searchInputId) {
+            const input = document.getElementById(searchInputId);
+            const filter = input.value.toLowerCase();
+            const table = document.getElementById(tableId);
+            const tr = table.getElementsByTagName("tr");
+
+            for (let i = 1; i < tr.length; i++) {
+                const tdNombre = tr[i].getElementsByTagName("td")[1];
+                const tdEmail = tr[i].getElementsByTagName("td")[2];
+                if (tdNombre || tdEmail) {
+                    const txtValueNombre = tdNombre.textContent || tdNombre.innerText;
+                    const txtValueEmail = tdEmail.textContent || tdEmail.innerText;
+                    if (txtValueNombre.toLowerCase().indexOf(filter) > -1 || txtValueEmail.toLowerCase().indexOf(filter) > -1) {
+                        tr[i].style.display = "";
+                    } else {
+                        tr[i].style.display = "none";
+                    }
+                }       
+            }
+        }
+
+        // Función para cerrar sesión
+        function logout() {
+            // Aquí puedes agregar la lógica para cerrar sesión
+            alert('Cerrando sesión...');
+        }
+
+        // Función para mostrar la sección correspondiente
+        function showTab(tabId) {
+            const sections = document.querySelectorAll('.menu-section');
+            sections.forEach(section => {
+                section.classList.remove('active');
+                if (section.id === tabId) {
+                    section.classList.add('active');
+                }
+            });
+        }
+
+
+
+    // Lógica de cierre del modal al hacer clic fuera de él
+    window.onclick = function(event) {
+        const addModal = document.getElementById('addProductModal');
+        const editModal = document.getElementById('editProductModal');
+        if (event.target === addModal) {
+            closeAddProductModal();
+        }
+        if (event.target === editModal) {
+            closeEditProductModal();
+        }
+    };
+
+    // Función de búsqueda en la tabla
+    function searchTable(tableId, searchInputId) {
+        const input = document.getElementById(searchInputId);
+        const filter = input.value.toLowerCase();
+        const table = document.getElementById(tableId);
+        const tr = table.getElementsByTagName("tr");
+
+        for (let i = 1; i < tr.length; i++) {
+            const tdNombre = tr[i].getElementsByTagName("td")[0];
+            const tdPrecio = tr[i].getElementsByTagName("td")[1];
+            if (tdNombre || tdPrecio) {
+                const txtValueNombre = tdNombre.textContent || tdNombre.innerText;
+                const txtValuePrecio = tdPrecio.textContent || tdPrecio.innerText;
+                if (txtValueNombre.toLowerCase().indexOf(filter) > -1 || txtValuePrecio.toLowerCase().indexOf(filter) > -1) {
+                    tr[i].style.display = "";
+                } else {
+                    tr[i].style.display = "none";
+                }
+            }       
+        }
+    }
+</script>
+
 </body>
 </html>
