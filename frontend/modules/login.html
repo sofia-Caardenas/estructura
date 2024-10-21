@@ -5,9 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
     <link rel="stylesheet" href="../src/assets/css/login.css">
-    <!-- Incluye Toastr CSS -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
-    <!-- Incluye Font Awesome para los íconos -->
+    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         .password-container {
@@ -15,7 +13,7 @@
         }
         .password-container input {
             width: 100%;
-            padding-right: 40px; /* Espacio para el ícono */
+            padding-right: 40px; 
         }
         .password-container i {
             position: absolute;
@@ -47,18 +45,14 @@
         <a class="volver" href="../public/index.html">Volver</a>
     </div>
 
-    <!-- Incluye Toastr JS -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
     <script>
         const togglePassword = document.getElementById('togglePassword');
         const passwordField = document.getElementById('password');
 
         togglePassword.addEventListener('click', function() {
-            // Alternar el tipo de la contraseña entre 'password' y 'text'
             const type = passwordField.type === 'password' ? 'text' : 'password';
             passwordField.type = type;
             
-            // Cambiar el ícono del ojo
             this.classList.toggle('fa-eye-slash');
         });
 
@@ -70,50 +64,59 @@
 
             // Validaciones básicas
             if (!email || !password) {
-                toastr.error('Todos los campos son obligatorios', 'Error');
+                alert('Todos los campos son obligatorios');
                 return;
             }
 
             // Verificación de formato del correo
             const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
             if (!emailPattern.test(email)) {
-                toastr.error('Formato de correo electrónico no válido', 'Error');
+                alert('Formato de correo electrónico no válido');
                 return;
             }
 
-            fetch('https://api.escuelajs.co/api/v1/users')
-                .then(response => response.json())
-                .then(users => {
-                    console.log('Datos obtenidos:', users); // Imprime los datos obtenidos
-
-                    const user = users.find(user => user.email === email && user.password === password);
-                    
-                    console.log('Usuario encontrado:', user); // Imprime el usuario encontrado
-
-                    if (user) {
-                        const userId = user.id;
-
-                        // Guardar información del usuario en localStorage
-                        localStorage.setItem('loggedInUser', JSON.stringify(user));
-
-                        // Redirige basado en el rol y paridad del ID
-                        if (user.role === 'admin') {
-                            window.location.href = 'administrador.html';
-                        } else if (user.role === 'customer') {
-                            if (userId % 2 === 0) {
-                                window.location.href = 'cliente.html';
-                            } else {
-                                window.location.href = 'empleado.html';
-                            }
-                        }
-                    } else {
-                        toastr.error('Usuario o contraseña incorrectos', 'Error');
-                    }
+            // Realiza la solicitud POST a la API
+            fetch('http://demo4284921.mockable.io/api/v1/Usuarios/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    email: email,
+                    clave: password
                 })
-                .catch(error => {
-                    console.error('Error al verificar las credenciales:', error);
-                    toastr.error('Hubo un error al procesar la solicitud', 'Error');
-                });
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Verifica si las credenciales son correctas
+                if (!data.email) {
+                    alert(data[0].roles.id);
+                    const rolId = data[0].roles.id;
+                    
+                    switch(rolId) {
+                        case 1:
+                            window.location.href = "../modules/administrador.html";
+                        break;
+                        case 2:
+                            window.location.href = "../modules/empleado.html";
+                        break;
+                        case 3:
+                            window.location.href = "../modules/cliente.html";
+                        break;
+                        default:
+                            alert('Rol desconocido');
+                        break
+                        
+                    }    
+
+                } else {
+                    alert('Credenciales incorrectas');
+                }
+            })
+            .catch(error => {
+                console.error('Error en la solicitud:', error);
+                alert('Ocurrió un error al iniciar sesión');
+            });
         });
     </script>
 </body>
