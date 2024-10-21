@@ -87,7 +87,7 @@ body {
         }
 
         .order-item {
-            background-color: #f3e1c3;
+            background-color: #ffffff;
             padding: 15px;
             border-radius: 8px;
             margin-bottom: 20px;
@@ -323,7 +323,7 @@ footer {
 
 .item-price {
     font-size: 14px;
-    color: #999;
+    color: #010000;
 }
 
 .item-actions {
@@ -359,4 +359,153 @@ footer {
 
 .order-button:hover {
     background-color: #573d2d;
+}
+.order-history-section {
+    padding: 20px;
+}
+
+.order-card {
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    padding: 15px;
+    margin-bottom: 20px;
+    background-color: #f9f9f9;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.order-items {
+    list-style: none;
+    padding-left: 0;
+}
+
+.order-items li {
+    margin-bottom: 8px;
+}
+
+.pagination {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.pagination button {
+    margin: 0 5px;
+    padding: 8px 12px;
+    border: none;
+    background-color: #7a5230;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.pagination button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+.order-history-section, .order-status-section {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+}
+
+.history-list, .order-list {
+    list-style-type: none;
+    padding: 0;
+}
+
+.history-item, .order-item {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+}
+
+.item-details, .order-item h3 {
+    font-size: 16px;
+}
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 15px;
+}
+
+.pagination button {
+    margin: 0 5px;
+    padding: 5px 10px;
+    background-color: #7a5230;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.pagination button:disabled {
+    background-color: #ddd;
+    cursor: not-allowed;
+}
+/* CSS para estilizar los pedidos en dos columnas */
+.order-history-section {
+    background-color: #fafafa;
+    border: 1px solid #ddd;
+    padding: 20px;
+    border-radius: 5px;
+    max-width: 1000px; /* Aumentar el ancho para acomodar 2 columnas */
+    margin: 0 auto;
+    font-family: Arial, sans-serif;
+}
+
+.order-history-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* 2 columnas */
+    gap: 20px; /* Espacio entre columnas */
+}
+
+.order-history-item {
+    background-color: #fff;
+    padding: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.order-history-item strong {
+    font-size: 16px;
+}
+
+.order-history-item ul {
+    list-style-type: none;
+    padding-left: 0;
+    margin-bottom: 10px;
+}
+
+.order-history-item ul li {
+    font-size: 14px;
+}
+
+.order-history-item p {
+    margin: 5px 0;
+}
+.history-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between; /* Para dejar espacio entre columnas */
+}
+
+.history-item {
+    width: calc(50% - 10px); /* Dos columnas con un pequeño espacio entre ellas */
+    margin-bottom: 20px; /* Espacio entre filas */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Opción para darle un pequeño efecto de sombra */
+    padding: 10px; /* Espacio interno */
+    border-radius: 5px; /* Bordes redondeados */
+}
+.order-status-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* 2 columnas */
+    gap: 20px; /* Espacio entre columnas */
+}
+
+.order-item {
+    background-color: #fff;
+    padding: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
 }

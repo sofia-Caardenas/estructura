@@ -191,8 +191,7 @@
             toastr.success('Producto añadido al carrito.', 'Éxito');
         }
 
-        let currentPage = 1;
-const itemsPerPage = 5;
+
 
 // Función para agrupar productos iguales
 function groupCartItems(cart) {
@@ -228,73 +227,82 @@ function decreaseQuantity(productName) {
 }
 
 // Mostrar el carrito de compras con paginación y control de cantidad
+let cartPage = 1; // Nueva variable específica para el carrito
+const itemsPerPage = 5; // Productos por página en el carrito
+
+// Mostrar el carrito de compras con paginación
 function showCart() {
-    const groupedCart = groupCartItems(cart); // Agrupar productos iguales
+    const groupedCart = groupCartItems(cart);  
     const totalItems = groupedCart.length;
     const totalPages = Math.ceil(totalItems / itemsPerPage);
 
-    // Limitar el rango de los productos que se mostrarán en la página actual
-    const startIndex = (currentPage - 1) * itemsPerPage;
+    const startIndex = (cartPage - 1) * itemsPerPage;
     const endIndex = Math.min(startIndex + itemsPerPage, totalItems);
 
     const paginatedItems = groupedCart.slice(startIndex, endIndex);
+
+    const totalAmount = groupedCart.reduce((acc, item) => {
+        const price = parseFloat(item.price) || 0;  
+        const quantity = parseInt(item.quantity) || 0; 
+        return acc + (price * quantity);
+    }, 0);
 
     const cartContent = `
         <section class="cart-section">
             <h2>Carrito de compras</h2>
             ${cart.length === 0 ? '<p>No tienes productos en el carrito.</p>' : '<ul class="cart-items">'}
-            ${paginatedItems.map((item, index) => 
+            ${paginatedItems.map(item => 
                 `<li class="cart-item">
                     <div class="item-details">
-                        <div class="item-info">
-                            <span class="item-name">${item.product} x${item.quantity}</span> <!-- Mostrar cantidad -->
-                            <span class="item-price">$${item.price}</span>
-                        </div>
+                        <span class="item-name">${item.product} x${item.quantity}</span>
+                        <span class="item-price">$${item.price}</span>
                     </div>
                     <div class="item-actions">
                         <button onclick="decreaseQuantity('${item.product}')" class="quantity-button">-</button>
                         <span class="item-quantity">${item.quantity}</span>
                         <button onclick="increaseQuantity('${item.product}')" class="quantity-button">+</button>
-                        <button onclick="removeFromCart(${startIndex + index})" class="remove-button">Eliminar</button>
+                        <button onclick="removeFromCart('${item.product}')" class="remove-button">Eliminar</button>
                     </div>
                 </li>`
             ).join('')}
-            ${cart.length > 0 ? '</ul><button class="order-button" onclick="placeOrder()">Realizar Pedido</button>' : ''}
+            ${cart.length > 0 ? '</ul><div class="total">Total: $' + totalAmount.toLocaleString('es-ES', { minimumFractionDigits: 0 }) + '</div><button class="order-button" onclick="placeOrder()">Realizar Pedido</button>' : ''}
         </section>
-        
+
         <div class="pagination">
-            ${currentPage > 1 ? `<button onclick="changePage(${currentPage - 1})">Anterior</button>` : ''}
+            ${cartPage > 1 ? `<button onclick="changeCartPage(${cartPage - 1})">Anterior</button>` : ''}
             ${Array.from({ length: totalPages }, (_, i) => 
-                `<button onclick="changePage(${i + 1})" ${currentPage === i + 1 ? 'disabled' : ''}>${i + 1}</button>`
+                `<button onclick="changeCartPage(${i + 1})" ${cartPage === i + 1 ? 'disabled' : ''}>${i + 1}</button>`
             ).join('')}
-            ${currentPage < totalPages ? `<button onclick="changePage(${currentPage + 1})">Siguiente</button>` : ''}
+            ${cartPage < totalPages ? `<button onclick="changeCartPage(${cartPage + 1})">Siguiente</button>` : ''}
         </div>
     `;
 
     document.getElementById('content').innerHTML = cartContent;
 }
 
+// Función para cambiar de página en el carrito
+function changeCartPage(page) {
+    cartPage = page;
+    showCart();
+}
+
+
+// Función para eliminar completamente un producto del carrito
+function removeFromCart(productName) {
+    cart = cart.filter(item => item.product !== productName); // Elimina completamente el producto
+    showCart(); // Vuelve a mostrar el carrito actualizado
+    toastr.info('Producto eliminado del carrito.', 'Información'); // Mensaje de confirmación
+}
+
+
+
+
+
 // Función para cambiar de página
 function changePage(page) {
     currentPage = page;
     showCart();
 }
-
-// Función para eliminar completamente un producto del carrito
-function removeFromCart(index) {
-    cart.splice(index, 1); // Elimina el producto completamente
-    showCart();
-}
-
-
-
-
-        // Eliminar producto del carrito
-        function removeFromCart(index) {
-            cart.splice(index, 1);
-            showCart();
-            toastr.info('Producto eliminado del carrito.', 'Información');
-        }
 
 // Función para agrupar productos por cantidad en el pedido
 function groupCartItemsForOrder(cart) {
@@ -337,60 +345,135 @@ function placeOrder() {
 }
 
 // Ver estado de pedidos (sin imagen)
+// Variables de paginación para pedidos
+let currentOrderPage = 1;
+const orderItemsPerPage = 4;
+
+// Ver estado de pedidos con paginación
+// Ver estado de pedidos con paginación
 function checkOrderStatus() {
     let orders = JSON.parse(localStorage.getItem('orders')) || [];
     const activeOrders = orders.filter(order => order.status !== 'Entregado');
 
-    const orderStatusContent = 
-        `<section class="order-status">
+    const totalOrderItems = activeOrders.length;
+    const totalOrderPages = Math.ceil(totalOrderItems / orderItemsPerPage);
+
+    const startIndex = (currentOrderPage - 1) * orderItemsPerPage;
+    const endIndex = Math.min(startIndex + orderItemsPerPage, totalOrderItems);
+    
+    const paginatedOrders = activeOrders.slice(startIndex, endIndex);
+
+    let orderStatusContent = `
+        <section class="order-status-section">
             <h2 class="section-title">Estado de los Pedidos</h2>
-            ${activeOrders.length === 0 ? '<p>No tienes pedidos realizados.</p>' : '<ul class="order-list">'}
-            ${activeOrders.map(order => 
-                `<li class="order-item">
-                    <h3>Pedido #${order.id}</h3>
-                    <ul>
-                        ${order.items.map(item => 
-                            `<li>
-                                <div class="item-details">
-                                    <div class="item-info">
-                                        <span class="item-name">${item.product} x${item.quantity}</span> <!-- Mostrar cantidad correctamente -->
-                                        <span class="item-price">$${item.price}</span>
-                                    </div>
-                                </div>
-                            </li>`
-                        ).join('')}
-                    </ul>
-                    <p><strong>Estado:</strong> <span>${order.status}</span></p>
-                </li>`
-            ).join('')}
-            ${activeOrders.length > 0 ? '</ul>' : ''}
+            ${paginatedOrders.length === 0 ? '<p>No tienes pedidos realizados.</p>' : '<div class="order-status-grid">'} <!-- Cambiar a div para usar grid -->
+            ${paginatedOrders.map(order => {
+                const orderTotal = order.items.reduce((acc, item) => acc + item.price * item.quantity, 0);
+                return `
+                    <div class="order-item"> <!-- Cambiar a div para usar grid -->
+                        <h3>Pedido #${order.id}</h3>
+                        <ul>
+                            ${order.items.map(item => 
+                                `<li>${item.product} x${item.quantity} - $${item.price}</li>`
+                            ).join('')}
+                        </ul>
+                        <p><strong>Total:</strong> $${orderTotal.toLocaleString('es-ES', { minimumFractionDigits: 0 })}</p>
+                        <p><strong>Estado:</strong> <span>${order.status}</span></p>
+                    </div>`; // Cambiar cierre a div
+            }).join('')}
+            ${paginatedOrders.length > 0 ? '</div>' : ''} <!-- Cerrar el contenedor del grid -->
         </section>`;
+
+    orderStatusContent += `
+        <div class="pagination">
+            ${currentOrderPage > 1 ? `<button onclick="changeOrderPage(${currentOrderPage - 1})">Anterior</button>` : ''}
+            ${Array.from({ length: totalOrderPages }, (_, i) => 
+                `<button onclick="changeOrderPage(${i + 1})" ${currentOrderPage === i + 1 ? 'disabled' : ''}>${i + 1}</button>`
+            ).join('')}
+            ${currentOrderPage < totalOrderPages ? `<button onclick="changeOrderPage(${currentOrderPage + 1})">Siguiente</button>` : ''}
+        </div>`;
+
     document.getElementById('content').innerHTML = orderStatusContent;
 }
 
-// Mostrar historial de pedidos (sin imagen)
+
+// Función para cambiar de página en los pedidos activos
+function changeOrderPage(page) {
+    currentOrderPage = page;
+    checkOrderStatus();
+}
+
+
+
+
+// Mostrar historial de pedidos con estilo encapsulado y paginación
+// Variables de paginación
+let currentHistoryPage = 1;
+const historyItemsPerPage = 6;
+
+// Función para mostrar el historial de pedidos con paginación
+// Función para mostrar el historial de pedidos con paginación
 function showOrderHistory() {
     let orderHistory = JSON.parse(localStorage.getItem('orderHistory')) || [];
-    
-    let historyContent = 
-        `<h2>Historial de Pedidos</h2>
-        <ul class="history-list">`;
+    const totalHistoryItems = orderHistory.length;
+    const totalHistoryPages = Math.ceil(totalHistoryItems / historyItemsPerPage);
 
-    orderHistory.forEach((order, index) => {
-        historyContent += 
-            `<li>
-                 <h3>Pedido #${order.id}</h3>
-                 <ul>
-                     ${order.items.map(item => 
-                         `<li>${item.product} x${item.quantity} - $${item.price}</li>` // Mostrar cantidad correctamente
-                      ).join('')}
-                 </ul>
-            </li>`;
+    const startIndex = (currentHistoryPage - 1) * historyItemsPerPage;
+    const endIndex = Math.min(startIndex + historyItemsPerPage, totalHistoryItems);
+    
+    const paginatedHistory = orderHistory.slice(startIndex, endIndex);
+
+    let historyContent = `
+        <section class="order-history-section">
+            <h2>Historial de Pedidos</h2>
+            <div class="order-history-grid">`; // Agregar contenedor para el grid
+
+    paginatedHistory.forEach((order) => {
+        const orderTotal = order.items.reduce((acc, item) => acc + item.price * item.quantity, 0);
+        historyContent += `
+            <div class="order-history-item"> <!-- Cambiar a div para usar grid -->
+                <h3>Pedido #${order.id}</h3>
+                <ul>
+                    ${order.items.map(item => 
+                        `<li>${item.product} x${item.quantity} - $${item.price}</li>`
+                    ).join('')}
+                </ul>
+                <p><strong>Total:</strong> $${orderTotal.toLocaleString('es-ES', { minimumFractionDigits: 0 })}</p>
+            </div>`; // Cambiar cierre a div
     });
 
-    historyContent += '</ul>';
+    historyContent += `
+            </div>
+        </section>`; // Cerrar el contenedor del grid
+
+    historyContent += `
+        <div class="pagination">
+            ${currentHistoryPage > 1 ? `<button onclick="changeHistoryPage(${currentHistoryPage - 1})">Anterior</button>` : ''}
+            ${Array.from({ length: totalHistoryPages }, (_, i) => 
+                `<button onclick="changeHistoryPage(${i + 1})" ${currentHistoryPage === i + 1 ? 'disabled' : ''}>${i + 1}</button>`
+            ).join('')}
+            ${currentHistoryPage < totalHistoryPages ? `<button onclick="changeHistoryPage(${currentHistoryPage + 1})">Siguiente</button>` : ''}
+        </div>
+        </section>`;
+
     document.getElementById('content').innerHTML = historyContent;
 }
+
+
+// Función para cambiar de página en el historial de pedidos
+function changeHistoryPage(page) {
+    currentHistoryPage = page;
+    showOrderHistory();
+}
+
+
+
+// Función para cambiar de página
+function changePage(page) {
+    currentPage = page;
+    showOrderHistory();
+}
+
 
 // Cerrar sesión
 function logout() {
