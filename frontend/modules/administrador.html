@@ -3,9 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Administrador - Cafetería</title>
+    <title>Panel de Administración</title>
     <link rel="stylesheet" href="../src/assets/css/administrador.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+
 </head>
 <body>
     <header>
@@ -14,17 +15,179 @@
         </div>
         <nav>
             <ul>
-                <li><a href="#" onclick="showUsers(); return false;">Usuarios</a></li>
-                <li><a href="#" onclick="showProducts(); return false;">Productos</a></li>
-                <li><a href="#" onclick="showOrderHistory(); return false;">Historial de Pedidos</a></li>
+                <li><a class="tab-button" onclick="showTab('usuarios')">Usuarios</a></li>
+                <li><a class="tab-button" onclick="showTab('productos')">Productos</a></li>
+                <li><a class="tab-button" onclick="showTab('historial')">Historial de Pedidos</a></li>
             </ul>
         </nav>
         <button class="logout-button" onclick="logout()">Cerrar Sesión</button>
     </header>
+
     <div class="container">
-        <h1 class="section-title">Panel de Administrador</h1>
+        <h1 class="section-title">Panel de Administración</h1>
         <div id="content">
-            <p>Bienvenido al panel de Administrador. Selecciona una opción del menú para comenzar.</p>
+<!-- Sección Usuarios -->
+<div id="usuarios" class="menu-section active">
+    <h2>Usuarios</h2>
+    <div class="search-bar">
+        <input type="text" id="search-usuarios" placeholder="Buscar usuarios..." onkeyup="searchTable('usuarios-table', 'search-usuarios')">
+    </div>
+    <table id="usuarios-table">
+        <thead>
+            <tr>
+                <th>Rol</th>
+                <th>Nombre</th>
+                <th>Email</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+    <div class="pagination">
+        <button id="prev-page" onclick="changePage(currentPage - 1)">Anterior</button>
+        <span id="page-info"></span>
+        <button id="next-page" onclick="changePage(currentPage + 1)">Siguiente</button>
+    </div>
+</div>
+
+            <script>
+                // Función para llenar la tabla de usuarios
+                let currentPage = 1;
+    const recordsPerPage = 5; // Cambia este valor según tus necesidades
+    let usuariosData = []; // Almacenará los datos de los usuarios
+
+    // Función para llenar la tabla de usuarios
+    function llenarTabla(data) {
+        usuariosData = data; // Guardar todos los datos para la paginación
+        renderTable();
+    }
+
+    // Función para renderizar la tabla según la página actual
+    function renderTable() {
+        const tabla = document.getElementById('usuarios-table').getElementsByTagName('tbody')[0];
+        tabla.innerHTML = ''; // Limpiar la tabla antes de llenarla
+
+        const start = (currentPage - 1) * recordsPerPage;
+        const end = start + recordsPerPage;
+        const paginatedData = usuariosData.slice(start, end); // Obtener los datos para la página actual
+
+        paginatedData.forEach(usuario => {
+            const fila = tabla.insertRow();
+            fila.insertCell(0).textContent = usuario.roles.nombre;
+            fila.insertCell(1).textContent = usuario.nombre;
+            fila.insertCell(2).textContent = usuario.email;
+            fila.insertCell(3).innerHTML = '<button onclick="editarUsuario(' + usuario.id + ')">Editar</button>';
+        });
+
+        // Actualizar información de la página
+        document.getElementById('page-info').textContent = `Página ${currentPage} de ${Math.ceil(usuariosData.length / recordsPerPage)}`;
+
+        // Habilitar/deshabilitar botones de paginación
+        document.getElementById('prev-page').disabled = currentPage === 1;
+        document.getElementById('next-page').disabled = currentPage === Math.ceil(usuariosData.length / recordsPerPage);
+    }
+
+    // Función para cambiar de página
+    function changePage(page) {
+        const totalPages = Math.ceil(usuariosData.length / recordsPerPage);
+        if (page < 1 || page > totalPages) return; // No hacer nada si la página es inválida
+        currentPage = page; // Actualizar la página actual
+        renderTable(); // Renderizar la tabla con los nuevos datos
+    }
+
+
+                // Obtener los datos de los usuarios desde la API
+                fetch('http://demo4284921.mockable.io/api/v1/Usuarios/getUsuarios')
+                    .then(response => response.json())
+                    .then(data => llenarTabla(data))
+                    .catch(error => console.error('Error al obtener los datos de usuarios:', error));
+            </script>
+
+            <!-- Sección Productos -->
+            <div id="productos" class="menu-section">
+                <h2>Productos</h2>
+                <div class="search-bar">
+                    <input type="text" id="search-productos" placeholder="Buscar productos..." onkeyup="searchTable('productos-table', 'search-productos')">
+                </div>
+                <table id="productos-table">
+                    <thead>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Precio</th>
+                            <th>Descripción</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+                <button onclick="openAddProductModal()">Agregar Producto</button>
+            </div>
+
+            <script>
+                // Función para llenar la tabla de productos
+                function llenarTablaProducto(data) {
+                    const tabla = document.getElementById('productos-table').getElementsByTagName('tbody')[0];
+                    tabla.innerHTML = ''; // Limpiar la tabla antes de llenarla
+                    data.forEach(producto => {
+                        const fila = tabla.insertRow();
+                        fila.insertCell(0).textContent = producto.nombre;
+                        fila.insertCell(1).textContent = '$' + producto.precio.toFixed(2);
+                        fila.insertCell(2).textContent = producto.descripcion;
+                        fila.insertCell(3).innerHTML = '<button onclick="editarProducto(' + producto.id + ')">Editar</button>';
+                    });
+                }
+
+                // Obtener los datos de los productos desde la API
+                fetch('http://demo4284921.mockable.io/api/v1/Productos/getProductos')
+                    .then(response => response.json())
+                    .then(data => llenarTablaProducto(data))
+                    .catch(error => console.error('Error al obtener los datos de productos:', error));
+            </script>
+
+            <!-- Sección Historial de Pedidos -->
+            <div id="historial" class="menu-section">
+                <h2>Historial de Pedidos</h2>
+                <div class="search-bar">
+                    <input type="text" id="search-historial" placeholder="Buscar pedidos..." onkeyup="searchTable('historial-table', 'search-historial')">
+                </div>
+                <table id="historial-table">
+                    <thead>
+                        <tr>
+                            <th>ID Pedido</th>
+                            <th>Usuario</th>
+                            <th>Producto</th>
+                            <th>Cantidad</th>
+                            <th>Fecha</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+
+            <script>
+                // Función para llenar la tabla de historial de pedidos
+                function llenarTablaHistorial(data) {
+                    const tabla = document.getElementById('historial-table').getElementsByTagName('tbody')[0];
+                    tabla.innerHTML = ''; // Limpiar la tabla antes de llenarla
+                    data.forEach(pedido => {
+                        const fila = tabla.insertRow();
+                        fila.insertCell(0).textContent = pedido.id;
+                        fila.insertCell(1).textContent = pedido.usuario.nombre; // Cambia según la estructura de tus datos
+                        fila.insertCell(2).textContent = pedido.producto.nombre; // Cambia según la estructura de tus datos
+                        fila.insertCell(3).textContent = pedido.cantidad;
+                        fila.insertCell(4).textContent = pedido.fecha; // Cambia según la estructura de tus datos
+                    });
+                }
+
+                // Obtener los datos de historial de pedidos desde la API
+                fetch('http://demo4284921.mockable.io/api/v1/Pedidos/getPedidos') // Cambia esta URL según tu API
+                    .then(response => response.json())
+                    .then(data => llenarTablaHistorial(data))
+                    .catch(error => console.error('Error al obtener los datos de pedidos:', error));
+            </script>
         </div>
     </div>
 
@@ -32,111 +195,30 @@
         <p>&copy; 2024 Onix. Todos los derechos reservados.</p>
     </footer>
 
+    <!-- Incluimos las librerías de Toastr JS y jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
-    <script src="../src/js/admin.js"></script> <!-- Asegúrate de tener tu archivo JS -->
-    
+
     <script>
-// Datos de ejemplo
-let users = [
-    { id: 1, name: "Juan Pérez" },
-    { id: 2, name: "María Gómez" },
-    { id: 3, name: "Carlos López" },
-    { id: 4, name: "Ana Martínez" },
-];
-
-let products = [
-    { id: 1, name: "Café Americano", price: 2.5 },
-    { id: 2, name: "Té Verde", price: 2.0 },
-    { id: 3, name: "Pastel de Chocolate", price: 3.5 },
-    { id: 4, name: "Galletas", price: 1.5 },
-];
-
-let orders = []; // Array de pedidos (Ejemplo)
-
-// Mostrar usuarios
-function showUsers() {
-    const userContent = `
-        <section class="users-section">
-            <h2 class="section-title">Usuarios</h2>
-            <input type="text" id="userSearch" placeholder="Buscar usuarios..." onkeyup="filterUsers()">
-            <div id="userList"></div>
-        </section>
-    `;
-    document.getElementById('content').innerHTML = userContent;
-    displayUsers(users);
-}
-
-// Filtrar usuarios
-function filterUsers() {
-    const input = document.getElementById('userSearch').value.toLowerCase();
-    const filteredUsers = users.filter(user => user.name.toLowerCase().includes(input));
-    displayUsers(filteredUsers);
-}
-
-// Mostrar usuarios en la lista
-function displayUsers(userArray) {
-    const userList = document.getElementById('userList');
-    userList.innerHTML = userArray.length === 0 ? '<p>No se encontraron usuarios.</p>' : userArray.map(user => `<p>${user.name}</p>`).join('');
-}
-
-// Mostrar productos
-function showProducts() {
-    const productContent = `
-        <section class="products-section">
-            <h2 class="section-title">Productos</h2>
-            <input type="text" id="productSearch" placeholder="Buscar productos..." onkeyup="filterProducts()">
-            <div id="productList"></div>
-        </section>
-    `;
-    document.getElementById('content').innerHTML = productContent;
-    displayProducts(products);
-}
-
-// Filtrar productos
-function filterProducts() {
-    const input = document.getElementById('productSearch').value.toLowerCase();
-    const filteredProducts = products.filter(product => product.name.toLowerCase().includes(input));
-    displayProducts(filteredProducts);
-}
-
-// Mostrar productos en la lista
-function displayProducts(productArray) {
-    const productList = document.getElementById('productList');
-    productList.innerHTML = productArray.length === 0 ? '<p>No se encontraron productos.</p>' : productArray.map(product => `<p>${product.name} - $${product.price.toFixed(2)}</p>`).join('');
-}
-
-// Mostrar historial de pedidos
-function showOrderHistory() {
-    const orderContent = `
-        <section class="order-history-section">
-            <h2 class="section-title">Historial de Pedidos</h2>
-            <input type="text" id="orderSearch" placeholder="Buscar pedidos..." onkeyup="filterOrders()">
-            <div id="orderList"></div>
-        </section>
-    `;
-    document.getElementById('content').innerHTML = orderContent;
-    displayOrders(orders);
-}
-
-// Filtrar pedidos
-function filterOrders() {
-    const input = document.getElementById('orderSearch').value.toLowerCase();
-    const filteredOrders = orders.filter(order => order.id.toString().includes(input));
-    displayOrders(filteredOrders);
-}
-
-// Mostrar pedidos en la lista
-function displayOrders(orderArray) {
-    const orderList = document.getElementById('orderList');
-    orderList.innerHTML = orderArray.length === 0 ? '<p>No se encontraron pedidos.</p>' : orderArray.map(order => `<p>Pedido #${order.id}</p>`).join('');
-}
-
-// Función de cerrar sesión
-function logout() {
-    // Implementar lógica de cierre de sesión
-    toastr.success('Sesión cerrada.', 'Éxito');
-}
-
-    </script>    
+        // Función para mostrar la notificación de cierre de sesión
+        function logout() {
+            // Aquí puedes agregar la lógica para cerrar sesión, por ejemplo, eliminando el token o redirigiendo a otra página
+            toastr.success('Has cerrado sesión exitosamente.');
+    
+            // Simulamos un cierre de sesión y redirigimos al usuario (puedes cambiar la URL a donde desees redirigir)
+            setTimeout(() => {
+                window.location.href = 'login.html'; // Cambia esta URL a la página de inicio de sesión
+            }, 2000); // Redirigir después de 2 segundos
+        }
+    
+        // Función para mostrar la sección correspondiente
+        function showTab(tabName) {
+            const sections = document.getElementsByClassName('menu-section');
+            for (let i = 0; i < sections.length; i++) {
+                sections[i].classList.remove('active');
+            }
+            document.getElementById(tabName).classList.add('active');
+        }
+    </script>
 </body>
 </html>
