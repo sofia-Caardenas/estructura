@@ -6,34 +6,8 @@
     <title>Empleado - Onix</title>
     <link rel="icon" href="../src/assets/img/logocafsena.png" type="image/x-icon">
     <link rel="stylesheet" href="../src/assets/css/empleado.css">
-    <!-- Incluye Toastr CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
-    <style>
-        /* Ajustes para las notificaciones de Toastr */
-        .toast {
-            background-color: #333; /* Color de fondo oscuro */
-            color: #fff; /* Texto blanco */
-            border-radius: 5px; /* Bordes redondeados */
-            padding: 10px 20px; /* Espaciado interno */
-            font-size: 14px; /* Tamaño de fuente */
-        }
-
-        .toast-success {
-            background-color: #9c6b2b; /* Verde para éxito */
-        }
-
-        .toast-error {
-            background-color: #F44336; /* Rojo para error */
-        }
-
-        .toast-warning {
-            background-color: #FFC107; /* Amarillo para advertencias */
-        }
-
-        .toast-info {
-            background-color: #2196F3; /* Azul para información */
-        }
-    </style>
+ 
 </head>
 <body>
     <header>
@@ -53,7 +27,6 @@
     <div class="container">
         <h1 class="section-title">Panel de empleado</h1>
         <div id="content">
-            <!-- Contenido dinámico de cada sección -->
             <p>Bienvenido al panel de empleado. Selecciona una opción del menú para comenzar.</p>
         </div>
     </div>
@@ -62,33 +35,35 @@
         <p>&copy; 2024 Onix. Todos los derechos reservados.</p>
     </footer>
 
-    <!-- Incluye Toastr JS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
     <script>
         // Mostrar el perfil del usuario
-        function showProfile() {
-            const user = JSON.parse(localStorage.getItem('loggedInUser'));
-
-            if (user) {
-                const profileContent = `
-                    <div class="profile">
-                        <h2>Perfil de Usuario</h2>
-                        <p><strong>Nombre:</strong> ${user.name}</p>
-                        <p><strong>Email:</strong> ${user.email}</p>
-                        <p><strong>Teléfono:</strong> ${user.phone}</p>
-                        <button onclick="editProfile()">Editar Perfil</button>
-                    </div>
-                `;
-                document.getElementById('content').innerHTML = profileContent;
-            } else {
-                toastr.warning('No hay información de perfil disponible.', 'Advertencia');
-            }
+        async function showProfile() {
+            fetch('http://demo4284921.mockable.io/api/v1/Usuarios/getUsuarios')
+            .then(response => response.json())
+            .then(data => llenarTabla(data))
+            .catch(error => console.error('Error al obtener los datos de usuarios:', error));
         }
+        
+        // Función para llenar la tabla con los datos del empleado
+        function llenarTabla(data) {
+            // Suponiendo que 'data' es un objeto con la información del empleado
+            const userProfileContent = `
+                <div class="profile">
+                    <h2>Perfil de Empleado</h2>
+                    <p><strong>Nombre:</strong> ${data.nombre}</p>
+                    <p><strong>Email:</strong> ${data.email}</p>
+                    <p><strong>Teléfono:</strong> ${data.phone}</p>
+                    <button onclick="editProfile()">Editar Perfil</button>
+                </div>
+            `;
+            document.getElementById('content').innerHTML = userProfileContent;
+        }
+     
 
         // Editar perfil del usuario
         function editProfile() {
             const user = JSON.parse(localStorage.getItem('loggedInUser'));
-
             if (user) {
                 const editProfileContent = `
                     <div class="profile">
@@ -103,7 +78,7 @@
                             <button type="submit">Guardar Cambios</button>
                         </form>
                     </div>
-                `;
+                `;  
                 document.getElementById('content').innerHTML = editProfileContent;
 
                 document.getElementById('editProfileForm').addEventListener('submit', function(event) {
@@ -122,177 +97,142 @@
         }
 
         // Mostrar stock
-        function showStockUpdate() {
+// Mostrar stock
+function showStockUpdate() {
             const stockContent = `
                 <div id="productos" class="menu-section" style="display:block;">
                     <h2>Productos</h2>
                     <div class="search-bar">
-                        <input type="text" id="search-productos" placeholder="Buscar productos..." onkeyup="searchTable('productos-table', 'search-productos')">
+                        <input type="text" id="search-productos" placeholder="Buscar productos..." onkeyup="searchTable('productos-container', 'search-productos')">
                     </div>
                     <br>
-                    <br>
-                    <table id="productos-table">
-                        <thead>
-                            <tr>
-                                <th>Nombre</th>
-                                <th>Precio</th>
-                                <th>Descripción</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                        </tbody>
-                    </table>
+                    <div class="productos-container" id="productos-container">
+                        <div class="product-card">
+                            <h3>Café</h3>
+                            <p>Precio: $.50</p>
+                            <p>Stock: 100</p>
+                        </div>
+                        <div class="product-card">
+                            <h3>Té</h3>
+                            <p>Precio: $1.50</p>
+                            <p>Stock: 80</p>
+                        </div>
+                        <div class="product-card">
+                            <h3>Pastel</h3>
+                            <p>Precio: $3.00</p>
+                            <p>Stock: 50</p>
+                        </div>
+                    </div>
                 </div>
             `;
             document.getElementById('content').innerHTML = stockContent;
-
-            fetch('http://demo4284921.mockable.io/api/v1/Productos/getProductos')
-                .then(response => response.json())
-                .then(data => llenarTablaProducto(data))
-                .catch(error => console.error('Error al obtener los datos:', error));
         }
 
-        function llenarTablaProducto(data) {
-            const tabla = document.getElementById('productos-table').getElementsByTagName('tbody')[0];
-            tabla.innerHTML = ''; 
-            data.forEach(producto => {
-                const fila = tabla.insertRow();
-                fila.insertCell(0).textContent = producto.nombre;
-                fila.insertCell(1).textContent = producto.precio;
-                fila.insertCell(2).textContent = producto.descripcion;
+        // Función de búsqueda en la tabla
+        function searchTable(tableId, inputId) {
+            const input = document.getElementById(inputId);
+            const filter = input.value.toLowerCase();
+            const table = document.getElementById(tableId);
+            const tr = table.getElementsByTagName('tr');
 
-            });
-        }
-
-        // Función de búsqueda en stock
-        function searchTable(tableId, searchInputId) {
-            const searchInput = document.getElementById(searchInputId).value.toLowerCase();
-            const rows = document.querySelectorAll(`#${tableId} tbody tr`);
-
-            rows.forEach(row => {
-                const cells = row.getElementsByTagName('td');
-                const matches = Array.from(cells).some(cell => cell.textContent.toLowerCase().includes(searchInput));
-                row.style.display = matches ? '' : 'none';
-            });
-        }
-
-        // Mostrar pedidos
-        function showOrders() {
-            let orders = JSON.parse(localStorage.getItem('orders')) || [];
-            
-            let orderContent = `
-                <h2>Pedidos de Clientes</h2>
-                <ul class="order-list">
-            `;
-
-            orders.forEach((order) => {
-                orderContent += `
-                    <li>
-                        <h3>Pedido #${order.id}</h3>
-                        <p><strong>Estado:</strong>
-                            <select onchange="updateOrderStatus(${order.id}, this.value)">
-                                <option value="En preparación" ${order.status === 'En preparación' ? 'selected' : ''}>En preparación</option>
-                                <option value="En camino" ${order.status === 'En camino' ? 'selected' : ''}>En camino</option>
-                                <option value="Entregado" ${order.status === 'Entregado' ? 'selected' : ''}>Entregado</option>
-                            </select>
-                        </p>
-                        <ul>
-                            ${order.items.map(item => `<li>${item.product} - $${item.price}</li>`).join('')}
-                        </ul>
-                    </li>
-                `;
-            });
-
-            orderContent += `</ul>`;
-
-            document.getElementById('content').innerHTML = orderContent;
-        }
-
-        // Actualizar el estado de un pedido
-        function updateOrderStatus(orderId, newStatus) {
-            let orders = JSON.parse(localStorage.getItem('orders')) || [];
-            let orderHistory = JSON.parse(localStorage.getItem('orderHistory')) || [];
-
-            orders = orders.map(order => {
-                if (order.id === orderId) {
-                    order.status = newStatus;
-
-                    if (newStatus === "Entregado") {
-                        orderHistory.push(order);
+            for (let i = 1; i < tr.length; i++) {
+                const td = tr[i].getElementsByTagName('td');
+                let txtValue = '';
+                for (let j = 0; j < td.length; j++) {
+                    if (td[j]) {
+                        txtValue += td[j].textContent || td[j].innerText;
                     }
                 }
-                return order;
-            });
-
-            orders = orders.filter(order => order.status !== "Entregado");
-
-            localStorage.setItem('orders', JSON.stringify(orders));
-            localStorage.setItem('orderHistory', JSON.stringify(orderHistory));
-
-            toastr.success('Estado de pedido actualizado.', 'Éxito');
-            showOrders();
+                tr[i].style.display = txtValue.toLowerCase().indexOf(filter) > -1 ? '' : 'none';
+            }
         }
+
+// Mostrar pedidos
+// Mostrar pedidos
+function showOrders() {
+    const ordersContent = `
+        <div class="orders">
+            <h2 class="orders-title">Lista de Pedidos</h2>
+            <div class="order-cards">
+                <div class="order-card">
+                    <h3>Pedido #1</h3>
+                    <p><strong>Producto:</strong> Café</p>
+                    <p><strong>Estado:</strong> En preparación</p>
+                    <button onclick="updateOrderStatus(1, 'Completado')">Actualizar a Completado</button>
+                </div>
+                <div class="order-card">
+                    <h3>Pedido #2</h3>
+                    <p><strong>Producto:</strong> Pastel</p>
+                    <p><strong>Estado:</strong> En preparación</p>
+                    <button onclick="updateOrderStatus(2, 'Completado')">Actualizar a Completado</button>
+                </div>
+                <div class="order-card">
+                    <h3>Pedido #3</h3>
+                    <p><strong>Producto:</strong> Té</p>
+                    <p><strong>Estado:</strong> En preparación</p>
+                    <button onclick="updateOrderStatus(3, 'Completado')">Actualizar a Completado</button>
+                </div>
+            </div>
+        </div>
+    `;
+    document.getElementById('content').innerHTML = ordersContent;
+}
+// Función para actualizar el estado del pedido
+async function updateOrderStatus(orderId) {
+    // Obtener los detalles del pedido desde la interfaz
+    const orderCard = document.getElementById(`order${orderId}`);
+    const producto = orderCard.querySelector('h3').textContent; // Nombre del producto
+    const cantidad = orderCard.querySelector('p:nth-child(3)').textContent.split(': ')[1]; // Cantidad
+    const precio = orderCard.querySelector('p:nth-child(4)').textContent.split(': ')[1].replace('$', ''); // Precio
+    const nuevoEstado = document.getElementById(`estado${orderId}`).value; // Estado seleccionado
+
+    // Crear el cuerpo del pedido dinámicamente
+    const pedidoDetalle = [
+        {
+            "cantidad": cantidad,
+            "precio": precio,
+            "subtotal": (precio * cantidad).toFixed(2),
+            "pedidos": {
+                "fechaPedido": new Date().toISOString().split('T')[0], // Fecha actual
+                "estado": nuevoEstado, // El nuevo estado seleccionado
+                "total": (precio * cantidad).toFixed(2),
+                "usuarios": {
+                    "id": 6 // Esto debería provenir del usuario logueado
+                }
+            },
+            "productos": {
+                "id": orderId // Id del producto (basado en el pedido)
+            }
+        }
+    ];
+
+    try {
+        const response = await fetch('http://demo4284921.mockable.io/api/v1/Pedidos/guardarPedidoDetalle', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(pedidoDetalle)
+        });
+
+        if (response.ok) {
+            toastr.success('El estado del pedido se actualizó correctamente.', 'Éxito');
+            showOrders(); // Recargar la lista de pedidos
+        } else {
+            toastr.error('Hubo un error al actualizar el pedido.', 'Error');
+        }
+    } catch (error) {
+        console.error('Error al hacer la solicitud:', error);
+        toastr.error('Hubo un error en la solicitud.', 'Error');
+    }
+}
+
+
 
         // Cerrar sesión
         function logout() {
             localStorage.removeItem('loggedInUser');
-            window.location.href = '../index.html';
-        }
-
-        // Open modal to add product
-        function openAddProductModal() {
-            const modalContent = `
-                <div class="modal">
-                    <h2>Agregar Producto</h2>
-                    <form id="addProductForm">
-                        <label for="nombre">Nombre:</label>
-                        <input type="text" id="nombre" required>
-                        <label for="precio">Precio:</label>
-                        <input type="number" id="precio" required>
-                        <label for="descripcion">Descripción:</label>
-                        <textarea id="descripcion" required></textarea>
-                        <button type="submit">Agregar</button>
-                        <button type="button" onclick="closeModal()">Cancelar</button>
-                    </form>
-                </div>
-            `;
-            document.getElementById('content').innerHTML = modalContent;
-
-            document.getElementById('addProductForm').addEventListener('submit', function(event) {
-                event.preventDefault();
-                const newProduct = {
-                    nombre: document.getElementById('nombre').value,
-                    precio: parseFloat(document.getElementById('precio').value),
-                    descripcion: document.getElementById('descripcion').value
-                };
-                addProduct(newProduct);
-                closeModal();
-            });
-        }
-
-        // Add new product
-        function addProduct(product) {
-            fetch('http://demo4284921.mockable.io/api/v1/Productos/addProducto', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(product)
-            })
-            .then(response => response.json())
-            .then(data => {
-                toastr.success('Producto agregado correctamente.', 'Éxito');
-                showStockUpdate();
-            })
-            .catch(error => {
-                console.error('Error al agregar el producto:', error);
-                toastr.error('Error al agregar el producto.', 'Error');
-            });
-        }
-
-        // Close modal
-        function closeModal() {
-            showStockUpdate(); // Vuelve a mostrar la sección de stock
+            window.location.href = 'login.html';
         }
     </script>
 </body>

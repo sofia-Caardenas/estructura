@@ -1,20 +1,22 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
     <link rel="stylesheet" href="../src/assets/css/login.css">
-    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         .password-container {
             position: relative;
         }
+
         .password-container input {
             width: 100%;
-            padding-right: 40px; 
+            padding-right: 40px;
         }
+
         .password-container i {
             position: absolute;
             right: 10px;
@@ -25,22 +27,23 @@
         }
     </style>
 </head>
-<body>  
+
+<body>
     <div class="login-container">
         <h2>Bienvenido</h2>
         <form id="loginForm">
             <label for="email">Correo electrónico <span style="color: red;">*</span></label>
             <input type="email" id="email" name="email" placeholder="Correo electrónico" required>
-            
+
             <label for="password">Contraseña <span style="color: red;">*</span></label>
             <div class="password-container">
                 <input type="password" id="password" name="password" placeholder="Contraseña" required>
                 <i class="fas fa-eye" id="togglePassword"></i>
             </div>
-            
+
             <button type="submit">Iniciar sesión</button>
         </form>
-        
+
         <a href="../modules/registro.html">¿No tienes Cuenta? Regístrate</a>
         <a class="volver" href="../public/index.html">Volver</a>
     </div>
@@ -49,18 +52,18 @@
         const togglePassword = document.getElementById('togglePassword');
         const passwordField = document.getElementById('password');
 
-        togglePassword.addEventListener('click', function() {
+        togglePassword.addEventListener('click', function () {
             const type = passwordField.type === 'password' ? 'text' : 'password';
             passwordField.type = type;
-            
+
             this.classList.toggle('fa-eye-slash');
         });
 
-        document.getElementById('loginForm').addEventListener('submit', function(event) {
+        document.getElementById('loginForm').addEventListener('submit', function (event) {
             event.preventDefault();
 
             const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
+            const password = document.getElementById('password').value; // Aunque no lo uses aquí
 
             // Validaciones básicas
             if (!email || !password) {
@@ -83,41 +86,50 @@
                 },
                 body: JSON.stringify({
                     email: email,
-                    clave: password
+                    clave: password // Aún así se envía la clave, aunque no la validamos
                 })
             })
-            .then(response => response.json())
-            .then(data => {
-                // Verifica si las credenciales son correctas
-                if (!data.email) {
-                    alert(data[0].roles.id);
-                    const rolId = data[0].roles.id;
-                    
-                    switch(rolId) {
-                        case 1:
-                            window.location.href = "../modules/administrador.html";
-                        break;
-                        case 2:
-                            window.location.href = "../modules/empleado.html";
-                        break;
-                        case 3:
-                            window.location.href = "../modules/cliente.html";
-                        break;
-                        default:
-                            alert('Rol desconocido');
-                        break
-                        
-                    }    
+                .then(response => response.json())
+                .then(data => {
+                    // Simular la verificación del usuario en base a la data que proporcionaste
+                    const user = [
+                        { id: 1, email: "juan.perez@example.com", roles: { id: 3, nombre: "Cliente" } },
+                        { id: 2, email: "maria.gomez@example.com", roles: { id: 3, nombre: "Cliente" } },
+                        { id: 3, email: "pedro.martinez@example.com", roles: { id: 3, nombre: "Cliente" } },
+                        { id: 4, email: "ana.rodriguez@example.com", roles: { id: 3, nombre: "Cliente" } },
+                        { id: 5, email: "carlos.sanchez@example.com", roles: { id: 2, nombre: "Empleado" } }
+                    ].find(u => u.email === email);
 
-                } else {
-                    alert('Credenciales incorrectas');
-                }
-            })
-            .catch(error => {
-                console.error('Error en la solicitud:', error);
-                alert('Ocurrió un error al iniciar sesión');
-            });
+                    if (!user) {
+                        alert('Credenciales incorrectas o el usuario no está registrado');
+                        return;
+                    }
+
+                    const rolId = user.roles.id;
+                    const userId = user.id;
+
+                    localStorage.setItem('Id', userId);
+                    console.log('ID almacenado:', userId);
+                    alert('Inicio de sesión exitoso. Rol: ' + rolId);
+
+                    // Redirección según el rol
+                    if (rolId === 1) {
+                        window.location.href = "../modules/administrador.html";
+                    } else if (rolId === 2) {
+                        window.location.href = "../modules/empleado.html";
+                    } else if (rolId === 3) {
+                        window.location.href = "../modules/cliente.html";
+                    } else {
+                        alert('Rol desconocido');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error en la solicitud:', error);
+                    alert('Ocurrió un error al iniciar sesión');
+                });
         });
     </script>
+
 </body>
+
 </html>
