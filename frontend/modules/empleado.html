@@ -76,7 +76,6 @@
                         <p><strong>Nombre:</strong> ${user.name}</p>
                         <p><strong>Email:</strong> ${user.email}</p>
                         <p><strong>Teléfono:</strong> ${user.phone}</p>
-                        <p><strong>Direccion:</strong> ${user.phone}</p>
                         <button onclick="editProfile()">Editar Perfil</button>
                     </div>
                 `;
@@ -125,134 +124,55 @@
         // Mostrar stock
         function showStockUpdate() {
             const stockContent = `
-                <h2>Ver Stock</h2>
-                <input type="text" id="searchInput" placeholder="Buscar producto..." onkeyup="searchStock()">
-                <ul id="stockList" class="stock-list">
-                        <li data-name="Carne asada">
-                        <img src="../src/assets/img/carneasada.png" alt="Empanada de carne">
-                        <div>
-                            <h3>Carne asada</h3>
-                            <p>Deliciosa carne asada.</p>
-                            <span>Existencias: <input type="number" value="10" class="stock-input"></span>
-                           
-                        </div>    
-                    </li>
-                                        <li data-name="Costillas de cerdo">
-                        <img src="../src/assets/img/costillas de cerdo.png" alt="Empanada de carne">
-                        <div>
-                            <h3>Costillas de cerdo</h3>
-                            <p>Deliciosa costillas de cerdo.</p>
-                            <span>Existencias: <input type="number" value="10" class="stock-input"></span>
-                           
-                        </div>    
-                    </li>
-                                        <li data-name="Bandeja Paisa">
-                        <img src="../src/assets/img/bandeja paisa.png" alt="Empanada de carne">
-                        <div>
-                            <h3>Bandeja Paisa</h3>
-                            <p>Deliciosa Bandeja paisa.</p>
-                            <span>Existencias: <input type="number" value="10" class="stock-input"></span>
-                           
-                        </div>    
-                    </li>
-                                        <li data-name="chuleta valluna">
-                        <img src="../src/assets/img/chuleta valluna.png" alt="Empanada de carne">
-                        <div>
-                            <h3>chuleta valluna</h3>
-                            <p>Deliciosa chuleta valluna.</p>
-                            <span>Existencias: <input type="number" value="10" class="stock-input"></span>
-                           
-                        </div>    
-                    </li>
-                                        <li data-name="frijolada">
-                        <img src="../src/assets/img/frijolada.png" alt="Empanada de carne">
-                        <div>
-                            <h3>frijolada</h3>
-                            <p>Deliciosa frijolada.</p>
-                            <span>Existencias: <input type="number" value="10" class="stock-input"></span>
-                           
-                        </div>    
-                    </li>
-                                        <li data-name="Mojarra frita">
-                        <img src="../src/assets/img/pescado.png" alt="Empanada de carne">
-                        <div>
-                            <h3>Mojarra frita</h3>
-                            <p>Deliciosa mojarra frita.</p>
-                            <span>Existencias: <input type="number" value="10" class="stock-input"></span>
-                           
-                        </div>    
-                    </li>
-                    <li data-name="Empanada de carne">
-                        <img src="../src/assets/img/empanada.png" alt="Empanada de carne">
-                        <div>
-                            <h3>Empanada de carne</h3>
-                            <p>Deliciosa empanada rellena de carne, ideal para cualquier momento del día.</p>
-                            <span>Existencias: <input type="number" value="10" class="stock-input"></span>
-                           
-                        </div>    
-                    </li>
-                    <li data-name="Buñuelos rellenos de arequipe">
-                        <img src="../src/assets/img/buñuelo.png" alt="Buñuelos rellenos de arequipe">
-                        <div>
-                            <h3>Buñuelos rellenos de arequipe</h3>
-                            <p>Esponjosos buñuelos con un dulce relleno de arequipe.</p>
-                            <span>Existencias: <input type="number" value="15" class="stock-input"></span>
-                          
-                        </div>    
-                    </li>
-                    <li data-name="Arepa de huevo">
-                        <img src="../src/assets/img/arepadehuevo.png" alt="Arepa de huevo">
-                        <div>
-                            <h3>Arepa de huevo</h3>
-                            <p>Deliciosa arepa rellena con huevo y otros ingredientes.</p>
-                            <span>Existencias: <input type="number" value="20" class="stock-input"></span>
-                           
-                        </div>    
-                    </li>
-                    <li data-name="Hamburguesa tres carnes">
-                        <img src="../src/assets/img/hamburguesa.png" width="1024px" height="1024px" alt="Hamburguesa tres carnes">
-                        <div>
-                            <h3>Hamburguesa tres carnes</h3>
-                            <p>Hamburguesa con una mezcla de tres tipos de carne para un sabor inigualable.</p>
-                            <span>Existencias: <input type="number" value="8" class="stock-input"></span>
-                         
-                        </div>    
-                    </li>
-                    <li data-name="Café con deditos de queso">
-                        <img src="../src/assets/img/cafe.png" alt="Café con deditos de queso">
-                        <div>
-                            <h3>Café con deditos de queso</h3>
-                            <p>Acompaña tu café con deditos de queso recién horneados.</p>
-                            <span>Existencias: <input type="number" value="25" class="stock-input"></span>
-                   
-                        </div>    
-                    </li>
-                    <li data-name="Pan de bono con trocitos de chocolate">
-                        <img src="../src/assets/img/pan de bono.png" alt="Pan de bono con trocitos de chocolate">
-                        <div>
-                            <h3>Pan de bono con trocitos de chocolate</h3>
-                            <p>Suave pan de bono con deliciosos trocitos de chocolate.</p>
-                            <span>Existencias: <input type="number" value="12" class="stock-input"></span>
-                     
-                        </div>    
-                    </li>
-                </ul>
+                <div id="productos" class="menu-section" style="display:block;">
+                    <h2>Productos</h2>
+                    <div class="search-bar">
+                        <input type="text" id="search-productos" placeholder="Buscar productos..." onkeyup="searchTable('productos-table', 'search-productos')">
+                    </div>
+                    <br>
+                    <br>
+                    <table id="productos-table">
+                        <thead>
+                            <tr>
+                                <th>Nombre</th>
+                                <th>Precio</th>
+                                <th>Descripción</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
             `;
             document.getElementById('content').innerHTML = stockContent;
+
+            fetch('http://demo4284921.mockable.io/api/v1/Productos/getProductos')
+                .then(response => response.json())
+                .then(data => llenarTablaProducto(data))
+                .catch(error => console.error('Error al obtener los datos:', error));
+        }
+
+        function llenarTablaProducto(data) {
+            const tabla = document.getElementById('productos-table').getElementsByTagName('tbody')[0];
+            tabla.innerHTML = ''; 
+            data.forEach(producto => {
+                const fila = tabla.insertRow();
+                fila.insertCell(0).textContent = producto.nombre;
+                fila.insertCell(1).textContent = producto.precio;
+                fila.insertCell(2).textContent = producto.descripcion;
+
+            });
         }
 
         // Función de búsqueda en stock
-        function searchStock() {
-            const searchInput = document.getElementById('searchInput').value.toLowerCase();
-            const stockItems = document.querySelectorAll('#stockList li');
+        function searchTable(tableId, searchInputId) {
+            const searchInput = document.getElementById(searchInputId).value.toLowerCase();
+            const rows = document.querySelectorAll(`#${tableId} tbody tr`);
 
-            stockItems.forEach(item => {
-                const itemName = item.getAttribute('data-name').toLowerCase();
-                if (itemName.includes(searchInput)) {
-                    item.style.display = '';
-                } else {
-                    item.style.display = 'none';
-                }
+            rows.forEach(row => {
+                const cells = row.getElementsByTagName('td');
+                const matches = Array.from(cells).some(cell => cell.textContent.toLowerCase().includes(searchInput));
+                row.style.display = matches ? '' : 'none';
             });
         }
 
@@ -269,7 +189,7 @@
                 orderContent += `
                     <li>
                         <h3>Pedido #${order.id}</h3>
-                        <p><strong> Estado:</strong>
+                        <p><strong>Estado:</strong>
                             <select onchange="updateOrderStatus(${order.id}, this.value)">
                                 <option value="En preparación" ${order.status === 'En preparación' ? 'selected' : ''}>En preparación</option>
                                 <option value="En camino" ${order.status === 'En camino' ? 'selected' : ''}>En camino</option>
@@ -277,9 +197,7 @@
                             </select>
                         </p>
                         <ul>
-                            ${order.items.map(item => `\
-                                <li>${item.product} - $${item.price}</li>\
-                            `).join('')}
+                            ${order.items.map(item => `<li>${item.product} - $${item.price}</li>`).join('')}
                         </ul>
                     </li>
                 `;
@@ -311,37 +229,71 @@
             localStorage.setItem('orders', JSON.stringify(orders));
             localStorage.setItem('orderHistory', JSON.stringify(orderHistory));
 
-            toastr.success('El estado del pedido ha sido actualizado a: ' + newStatus, 'Éxito');
+            toastr.success('Estado de pedido actualizado.', 'Éxito');
             showOrders();
         }
 
-        // Función para cerrar sesión
+        // Cerrar sesión
         function logout() {
-            window.location.href = "login.html";
+            localStorage.removeItem('loggedInUser');
+            window.location.href = '../index.html';
         }
 
-        // Actualizar stock
-        function updateStock(button, action) {
-            const input = button.parentElement.querySelector('.stock-input');
-            let value = parseInt(input.value);
-
-            if (action === 'increase') {
-                value++;
-            } else if (action === 'decrease' && value > 0) {
-                value--;
-            }
-
-            input.value = value;
-        }
-
-        // Mostrar un contenido de bienvenida al cargar la página
-        window.onload = function() {
-            const contentDiv = document.getElementById('content');
-            contentDiv.innerHTML = `
-                <h2>Bienvenido al panel de empleado</h2>
-                <p>Selecciona una opción del menú para comenzar.</p>
+        // Open modal to add product
+        function openAddProductModal() {
+            const modalContent = `
+                <div class="modal">
+                    <h2>Agregar Producto</h2>
+                    <form id="addProductForm">
+                        <label for="nombre">Nombre:</label>
+                        <input type="text" id="nombre" required>
+                        <label for="precio">Precio:</label>
+                        <input type="number" id="precio" required>
+                        <label for="descripcion">Descripción:</label>
+                        <textarea id="descripcion" required></textarea>
+                        <button type="submit">Agregar</button>
+                        <button type="button" onclick="closeModal()">Cancelar</button>
+                    </form>
+                </div>
             `;
-        };
+            document.getElementById('content').innerHTML = modalContent;
+
+            document.getElementById('addProductForm').addEventListener('submit', function(event) {
+                event.preventDefault();
+                const newProduct = {
+                    nombre: document.getElementById('nombre').value,
+                    precio: parseFloat(document.getElementById('precio').value),
+                    descripcion: document.getElementById('descripcion').value
+                };
+                addProduct(newProduct);
+                closeModal();
+            });
+        }
+
+        // Add new product
+        function addProduct(product) {
+            fetch('http://demo4284921.mockable.io/api/v1/Productos/addProducto', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(product)
+            })
+            .then(response => response.json())
+            .then(data => {
+                toastr.success('Producto agregado correctamente.', 'Éxito');
+                showStockUpdate();
+            })
+            .catch(error => {
+                console.error('Error al agregar el producto:', error);
+                toastr.error('Error al agregar el producto.', 'Error');
+            });
+        }
+
+        // Close modal
+        function closeModal() {
+            showStockUpdate(); // Vuelve a mostrar la sección de stock
+        }
     </script>
 </body>
 </html>
