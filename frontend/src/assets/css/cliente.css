@@ -144,9 +144,9 @@ body {
 header {
     background-color: #4b2e1e;
     color: white;
-    padding: 20px;
+    padding: 1px;
     width: 100%;
-    position: relative;
+    position: fixed;
     display: flex;
     align-items: center;
     justify-content: space-between;

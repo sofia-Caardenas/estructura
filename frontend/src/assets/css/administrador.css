@@ -258,7 +258,7 @@ footer {
     text-align: center;
     padding: 10px;
     width: 100%;
-    position: fixed;
+    position: relative;
     bottom: 0;
 }
 
@@ -668,5 +668,12 @@ footer {
                     color: black;
                     text-decoration: none;
                     cursor: pointer;
+                }
+                .menu-section {
+                    display: none; /* Ocultar todas las secciones por defecto */
+                }
+                
+                .menu-section.active {
+                    display: block; /* Solo la sección activa será visible */
                 }
                 

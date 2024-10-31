@@ -16,7 +16,7 @@
             <ul>
                 <li><a class="tab-button" onclick="showTab('usuarios')">Usuarios</a></li>
                 <li><a class="tab-button" onclick="showTab('productos')">Productos</a></li>
-                <li><a class="tab-button" onclick="showTab('historial')">Historial de Pedidos</a></li>
+                <li><a class="tab-button" onclick="showTab('HistorialPedidos')">Historial de Pedidos</a></li>
             </ul>
         </nav>
         <button class="logout-button" onclick="logout()">Cerrar Sesión</button>
@@ -103,59 +103,85 @@
                     </div>
                 </div>
             </div>
+            
 
  <!-- Sección Productos -->
-<div id="productos" class="menu-section">
+    <div id="productos" class="menu-section">
     <h2>Productos</h2>
     <div class="search-bar">
         <input type="text" id="search-productos" placeholder="Buscar productos..." onkeyup="searchTable('productos-table', 'search-productos')">
     </div>
-    <table id="productos-table">
-        <thead>
-            <tr>
-                <th>Nombre</th>
-                <th>Precio</th>
-                <th>Descripción</th>
-                <th>Acciones</th>
-            </tr>
-        </thead>
-        <tbody></tbody>
-    </table>
-    <button onclick="openAddProductModal()">Agregar Producto</button>
-</div>
-
-<!-- Modal para agregar nuevo producto -->
-<div id="addProductModal" class="modal">
-    <div class="modal-content">
-        <span class="close" onclick="closeModal('addProductModal')">&times;</span>
-        <h3>Agregar Producto</h3>
-        <label for="new-product-name">Nombre:</label>
-        <input type="text" id="new-product-name" placeholder="Nombre del producto">
-        <label for="new-product-price">Precio:</label>
-        <input type="number" id="new-product-price" placeholder="Precio">
-        <label for="new-product-description">Descripción:</label>
-        <input type="text" id="new-product-description" placeholder="Descripción">
-        <button onclick="saveNewProduct()">Agregar Producto</button>
+        <table id="productos-table">
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Precio</th>
+                    <th>Descripción</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+        <button onclick="openAddProductModal()">Agregar Producto</button>
     </div>
-</div>
 
-<!-- Modal para editar producto -->
-<div id="editProductModal" class="modal">
-    <div class="modal-content">
-        <span class="close" onclick="closeModal('editProductModal')">&times;</span>
-        <h3>Editar Producto</h3>
-        <input type="hidden" id="edit-product-id">
-        <label for="edit-product-name">Nombre:</label>
-        <input type="text" id="edit-product-name" placeholder="Nombre del producto">
-        <label for="edit-product-price">Precio:</label>
-        <input type="number" id="edit-product-price" placeholder="Precio">
-        <label for="edit-product-description">Descripción:</label>
-        <input type="text" id="edit-product-description" placeholder="Descripción">
-        <button onclick="saveEditedProduct()">Guardar Cambios</button>
+ <!-- Modal para agregar nuevo producto -->
+ <div id="addProductModal" class="modal">
+     <div class="modal-content">
+         <span class="close" onclick="closeModal('addProductModal')">&times;</span>
+         <h3>Agregar Producto</h3>
+         <label for="new-product-name">Nombre:</label>
+         <input type="text" id="new-product-name" placeholder="Nombre del producto">
+         <label for="new-product-price">Precio:</label>
+         <input type="number" id="new-product-price" placeholder="Precio">
+         <label for="new-product-description">Descripción:</label>
+         <input type="text" id="new-product-description" placeholder="Descripción">
+         <button onclick="saveNewProduct()">Agregar Producto</button>
+     </div>
+ </div>
+ 
+ <!-- Modal para editar producto -->
+ <div id="editProductModal" class="modal">
+     <div class="modal-content">
+         <span class="close" onclick="closeModal('editProductModal')">&times;</span>
+         <h3>Editar Producto</h3>
+         <input type="hidden" id="edit-product-id">
+         <label for="edit-product-name">Nombre:</label>
+         <input type="text" id="edit-product-name" placeholder="Nombre del producto">
+         <label for="edit-product-price">Precio:</label>
+         <input type="number" id="edit-product-price" placeholder="Precio">
+         <label for="edit-product-description">Descripción:</label>
+         <input type="text" id="edit-product-description" placeholder="Descripción">
+         <button onclick="saveEditedProduct()">Guardar Cambios</button>
+     </div>
+ </div>
+ <!-- Historial de pedidos -->
+ <div id="HistorialPedidos" class="menu-section">
+    <h2>HistorialPedidos</h2>
+    <div class="search-bar">
+        <input type="text" id="search-HistorialPedidos" placeholder="Buscar Pedidos..." onkeyup="searchTable('HistorialPedidos-table', 'search-HistorialPedidos')">
     </div>
-</div>
+        <table id="HistorialPedidos-table">
+            <thead>
+                <tr>
+                    <th>idHistorial</th>
+                    <th>idUsuario</th>
+                    <th>idPedido</th>
+                    <th>fechaPedido</th>
+                    <th>estado</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+    
+
+ <footer>
+    <p>&copy; 2024 Onix. Todos los derechos reservados.</p>
+</footer>
 
 <script>
+
     document.addEventListener("DOMContentLoaded", function() {
         // Función para obtener y mostrar los productos
         function loadProductos() {
@@ -185,6 +211,38 @@
 
         // Llamar a la función para cargar los productos al cargar la página
         loadProductos();
+    });
+    
+    document.addEventListener("DOMContentLoaded", function() {
+        // Función para obtener y mostrar los productos
+        function loadHistorialPedidos() {
+            fetch("http://demo4284921.mockable.io/api/v1/HistorialPedidos/getHistorialPedidos")
+                .then(response => response.json())
+                .then(data => {
+                    const HistorialPedidosTable = document.querySelector("#HistorialPedidos-table tbody");
+                    HistorialPedidosTable.innerHTML = ''; // Limpiar la tabla
+
+                    // Iterar sobre los productos y agregarlos a la tabla
+                    data.forEach(HistorialPedidos => {
+                        const row = document.createElement("tr");
+                        row.setAttribute("data-id", HistorialPedidos.id);
+                        row.innerHTML = `
+                            <td>${HistorialPedidos.idHistorial}</td>
+                            <td>${HistorialPedidos.idUsuario}</td>
+                            <td>${HistorialPedidos.idPedido}</td>
+                            <td>${HistorialPedidos.fechaPedido}</td>
+                            <td>${HistorialPedidos.estado}</td>
+
+                        `;
+                        HistorialPedidosTable.appendChild(row);
+                    });
+                })
+                .catch(error => console.error('Error al cargar los productos:', error));
+        }
+
+        // Llamar a la función para cargar los productos al cargar la página
+        loadHistorialPedidos();
+        
     });
 
     // Función para buscar productos en la tabla
@@ -307,9 +365,6 @@
 
 
 
-    <footer>
-        <p>&copy; 2024 Onix. Todos los derechos reservados.</p>
-    </footer>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
@@ -509,6 +564,24 @@
             }       
         }
     }
+    document.addEventListener("DOMContentLoaded", function() {
+    // Función para mostrar la pestaña correspondiente
+    function showTab(tabId) {
+        const sections = document.querySelectorAll(".menu-section");
+        sections.forEach(section => {
+            section.classList.remove("active");
+        });
+        document.getElementById(tabId).classList.add("active");
+
+        // Cargar el historial de pedidos si la pestaña de historial está activa
+        if (tabId === "historial") {
+            loadHistorialPedidos();
+        }
+    }
+
+    // Función para obtener y mostrar el historial de pedidos
+
+});
 </script>
 
 </body>
