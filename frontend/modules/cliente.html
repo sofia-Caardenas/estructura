@@ -198,81 +198,98 @@ function editProfile() {
         }
 
         // Añadir producto al carrito
-        function addToCart(product, price, imageUrl) {
-            const newItem = {
-                product: product,
-                price: price,
-                imageUrl: imageUrl
-            };
-            cart.push(newItem);
-            toastr.success('Producto añadido al carrito.', 'Éxito');
-        }
+// Añadir producto al carrito
+
+// Añadir producto al carrito
+// Añadir producto al carrito
+function addToCart(product, price, imageUrl) {
+    // Verificar si el producto ya existe en el carrito
+    const existingItem = cart.find(item => item.product === product);
+
+    if (existingItem) {
+        // Si el producto ya existe, aumenta la cantidad
+        existingItem.quantity += 1;
+    } else {
+        // Si es un nuevo producto, agrégalo con cantidad inicial de 1
+        const newItem = {
+            product: product,
+            price: price,
+            imageUrl: imageUrl,
+            quantity: 1
+        };
+        cart.push(newItem);
+    }
+
+    // Mensaje de éxito sin cambiar de vista
+    toastr.success('Producto añadido al carrito.', 'Éxito');
+    
+    // Quita o comenta esta línea para que no cambie la vista
+    // showCart();
+}
 
 
 
+
+
+// Función para agrupar productos iguales
 // Función para agrupar productos iguales
 function groupCartItems(cart) {
     const groupedItems = {};
 
     cart.forEach(item => {
         if (groupedItems[item.product]) {
-            groupedItems[item.product].quantity += 1;
+            groupedItems[item.product].quantity += item.quantity;  // Suma la cantidad
         } else {
-            groupedItems[item.product] = { ...item, quantity: 1 };
+            groupedItems[item.product] = { ...item };
         }
     });
 
-    return Object.values(groupedItems); // Convertir el objeto en un array
+    return Object.values(groupedItems);
 }
 
+
+// Función para aumentar la cantidad de un producto
 // Función para aumentar la cantidad de un producto
 function increaseQuantity(productName) {
-    const itemIndex = cart.findIndex(item => item.product === productName);
-    if (itemIndex !== -1) {
-        cart.push(cart[itemIndex]); // Agrega una nueva instancia del producto
+    const item = cart.find(item => item.product === productName);
+    if (item) {
+        item.quantity += 1; // Incrementa la cantidad
     }
     showCart(); // Actualizar el carrito
 }
 
 // Función para disminuir la cantidad de un producto
 function decreaseQuantity(productName) {
-    const itemIndex = cart.findIndex(item => item.product === productName);
-    if (itemIndex !== -1) {
-        cart.splice(itemIndex, 1); // Elimina una instancia del producto
+    const item = cart.find(item => item.product === productName);
+    if (item) {
+        if (item.quantity > 1) {
+            item.quantity -= 1; // Disminuye la cantidad
+        } else {
+            cart = cart.filter(item => item.product !== productName); // Elimina el producto si la cantidad es 1
+        }
     }
     showCart(); // Actualizar el carrito
 }
+
 
 // Mostrar el carrito de compras con paginación y control de cantidad
 let cartPage = 1; // Nueva variable específica para el carrito
 const itemsPerPage = 5; // Productos por página en el carrito
 
 // Mostrar el carrito de compras con paginación
+// Mostrar el carrito de compras con paginación y control de cantidad
 function showCart() {
-    const groupedCart = groupCartItems(cart);  
-    const totalItems = groupedCart.length;
-    const totalPages = Math.ceil(totalItems / itemsPerPage);
-
-    const startIndex = (cartPage - 1) * itemsPerPage;
-    const endIndex = Math.min(startIndex + itemsPerPage, totalItems);
-
-    const paginatedItems = groupedCart.slice(startIndex, endIndex);
-
-    const totalAmount = groupedCart.reduce((acc, item) => {
-        const price = parseFloat(item.price) || 0;  
-        const quantity = parseInt(item.quantity) || 0; 
-        return acc + (price * quantity);
-    }, 0);
+    const totalAmount = cart.reduce((acc, item) => acc + (item.price * item.quantity), 0);
 
     const cartContent = `
         <section class="cart-section">
             <h2>Carrito de compras</h2>
             ${cart.length === 0 ? '<p>No tienes productos en el carrito.</p>' : '<ul class="cart-items">'}
-            ${paginatedItems.map(item => 
+            ${cart.map(item => 
                 `<li class="cart-item">
                     <div class="item-details">
                         <span class="item-name">${item.product} x${item.quantity}</span>
-                        <span class="item-price">$${item.price}</span>
+                        <span class="item-price">| $${(item.price * item.quantity).toLocaleString('es-ES', { minimumFractionDigits: 0 })}</span>
                     </div>
                     <div class="item-actions">
                         <button onclick="decreaseQuantity('${item.product}')" class="quantity-button">-</button>
@@ -283,19 +300,12 @@ function showCart() {
                 </li>`
             ).join('')}
             ${cart.length > 0 ? '</ul><div class="total">Total: $' + totalAmount.toLocaleString('es-ES', { minimumFractionDigits: 0 }) + '</div><button class="order-button" onclick="placeOrder()">Realizar Pedido</button>' : ''}
-        </section>
-
-        <div class="pagination">
-            ${cartPage > 1 ? `<button onclick="changeCartPage(${cartPage - 1})">Anterior</button>` : ''}
-            ${Array.from({ length: totalPages }, (_, i) => 
-                `<button onclick="changeCartPage(${i + 1})" ${cartPage === i + 1 ? 'disabled' : ''}>${i + 1}</button>`
-            ).join('')}
-            ${cartPage < totalPages ? `<button onclick="changeCartPage(${cartPage + 1})">Siguiente</button>` : ''}
-        </div>
-    `;
+        </section>`;
 
     document.getElementById('content').innerHTML = cartContent;
 }
+
+
 
 // Función para cambiar de página en el carrito
 function changeCartPage(page) {
@@ -338,27 +348,19 @@ function groupCartItemsForOrder(cart) {
 
 // Realizar pedido
 function placeOrder() {
-    const user = JSON.parse(localStorage.getItem('loggedInUser'));
-
-    // Agrupar los productos antes de guardarlos en el pedido
-    const groupedItems = groupCartItemsForOrder(cart);
-
-    const order = {
-        id: Date.now(),
-        items: groupedItems,  // Usar los productos agrupados
-        status: 'En preparación',
-        customerName: user.name,
-        customerEmail: user.email
+    const orders = JSON.parse(localStorage.getItem('orders')) || [];
+    const newOrder = {
+        id: orders.length + 1,
+        items: [...cart],
+        status: 'Pendiente'
     };
 
-    let orders = JSON.parse(localStorage.getItem('orders')) || [];
-    orders.push(order);
-
+    orders.push(newOrder);
     localStorage.setItem('orders', JSON.stringify(orders));
 
-    cart = [];
-    toastr.success('Pedido realizado con éxito.', 'Éxito');
-    showCart();
+    cart = [];  // Vaciar el carrito después de realizar el pedido
+    showCart(); // Actualizar la vista del carrito
+    checkOrderStatus(); // Mostrar el estado del pedido
 }
 
 // Ver estado de pedidos (sin imagen)
@@ -383,11 +385,11 @@ function checkOrderStatus() {
     let orderStatusContent = `
         <section class="order-status-section">
             <h2 class="section-title">Estado de los Pedidos</h2>
-            ${paginatedOrders.length === 0 ? '<p>No tienes pedidos realizados.</p>' : '<div class="order-status-grid">'} <!-- Cambiar a div para usar grid -->
+            ${paginatedOrders.length === 0 ? '<p>No tienes pedidos realizados.</p>' : '<div class="order-status-grid">'}
             ${paginatedOrders.map(order => {
                 const orderTotal = order.items.reduce((acc, item) => acc + item.price * item.quantity, 0);
                 return `
-                    <div class="order-item"> <!-- Cambiar a div para usar grid -->
+                    <div class="order-item">
                         <h3>Pedido #${order.id}</h3>
                         <ul>
                             ${order.items.map(item => 
@@ -396,9 +398,9 @@ function checkOrderStatus() {
                         </ul>
                         <p><strong>Total:</strong> $${orderTotal.toLocaleString('es-ES', { minimumFractionDigits: 0 })}</p>
                         <p><strong>Estado:</strong> <span>${order.status}</span></p>
-                    </div>`; // Cambiar cierre a div
+                    </div>`;
             }).join('')}
-            ${paginatedOrders.length > 0 ? '</div>' : ''} <!-- Cerrar el contenedor del grid -->
+            ${paginatedOrders.length > 0 ? '</div>' : ''}
         </section>`;
 
     orderStatusContent += `

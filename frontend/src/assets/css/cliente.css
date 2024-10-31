@@ -568,3 +568,17 @@ footer {
 .btn:hover {
     background-color: #7a5230; /* Color de fondo al pasar el mouse */
 }
+.item-details {
+    display: flex;
+    align-items: center;
+}
+
+.item-name {
+    flex-grow: 1;
+}
+
+.item-price {
+    margin-left: 10px; /* Espacio entre cantidad y precio */
+    font-weight: bold;
+    color: #000000; /* Color más oscuro para mejor visibilidad */
+}
