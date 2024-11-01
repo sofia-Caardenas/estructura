@@ -780,3 +780,197 @@ footer {
     background-color: #7a5230;
   }
 
+/* Estilos específicos del modal */
+#addProductModal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    justify-content: center;
+    align-items: center;
+    z-index: 1000; /* Asegúrate de que esté por encima de otros elementos */
+  }
+  
+  #addProductModal .modal-content {
+    background-color: #fff;
+    border-radius: 10px;
+    padding: 30px;
+    width: 90%;
+    max-width: 500px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    position: relative;
+    animation: slideIn 0.3s forwards;
+  }
+  
+  @keyframes slideIn {
+    from {
+      transform: translateY(-20px);
+      opacity: 0;
+    }
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+  
+  #addProductModal .close {
+    color: #555;
+    font-size: 20px;
+    font-weight: bold;
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    cursor: pointer;
+  }
+  
+  #addProductModal .close:hover {
+    color: #000;
+  }
+  
+  #addProductModal h3 {
+    margin-bottom: 20px;
+    font-size: 22px;
+    color: #333;
+    font-weight: bold;
+  }
+  
+  #addProductModal label {
+    display: block;
+    margin-bottom: 6px;
+    font-size: 14px;
+    color: #666;
+  }
+  
+  #addProductModal input[type="text"],
+  #addProductModal input[type="number"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+    transition: border-color 0.3s;
+  }
+  
+  #addProductModal input[type="text"]:focus,
+  #addProductModal input[type="number"]:focus {
+    border-color: #7a5230;
+    outline: none;
+  }
+  
+  #addProductModal button {
+    background-color: #7a5230;
+    color: #fff;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s;
+    width: 100%;
+  }
+  
+  #addProductModal button:hover {
+    background-color: #7a5230;
+  }
+  /* Estilos específicos del modal de edición */
+#editProductModal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    justify-content: center;
+    align-items: center;
+    z-index: 1000; /* Asegúrate de que esté por encima de otros elementos */
+  }
+  
+  #editProductModal .modal-content {
+    background-color: #fff;
+    border-radius: 10px;
+    padding: 30px;
+    width: 90%;
+    max-width: 500px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    position: relative;
+    animation: slideIn 0.3s forwards;
+  }
+  
+  @keyframes slideIn {
+    from {
+      transform: translateY(-20px);
+      opacity: 0;
+    }
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+  
+  #editProductModal .close {
+    color: #555;
+    font-size: 20px;
+    font-weight: bold;
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    cursor: pointer;
+  }
+  
+  #editProductModal .close:hover {
+    color: #000;
+  }
+  
+  #editProductModal h3 {
+    margin-bottom: 20px;
+    font-size: 22px;
+    color: #333;
+    font-weight: bold;
+  }
+  
+  #editProductModal label {
+    display: block;
+    margin-bottom: 6px;
+    font-size: 14px;
+    color: #666;
+  }
+  
+  #editProductModal input[type="text"],
+  #editProductModal input[type="number"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+    transition: border-color 0.3s;
+  }
+  
+  #editProductModal input[type="text"]:focus,
+  #editProductModal input[type="number"]:focus {
+    border-color: #7a5230;
+    outline: none;
+  }
+  
+  #editProductModal button {
+    background-color: #7a5230;
+    color: #fff;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s;
+    width: 100%;
+  }
+  
+  #editProductModal button:hover {
+    background-color: #7a5230;
+  }
+  
+  
