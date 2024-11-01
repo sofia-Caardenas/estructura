@@ -67,23 +67,23 @@
     <script>
         // Mostrar el perfil del usuario
         function showProfile() {
-            const user = JSON.parse(localStorage.getItem('loggedInUser'));
+    const user = JSON.parse(localStorage.getItem('loggedInUser'));
 
-            if (user) {
-                const profileContent = `
-                    <div class="profile">
-                        <h2>Perfil de Usuario</h2>
-                        <p><strong>Nombre:</strong> ${user.name}</p>
-                        <p><strong>Email:</strong> ${user.email}</p>
-                        <p><strong>Teléfono:</strong> ${user.phone}</p>
-                        <button onclick="editProfile()">Editar Perfil</button>
-                    </div>
-                `;
-                document.getElementById('content').innerHTML = profileContent;
-            } else {
-                toastr.warning('No hay información de perfil disponible.', 'Advertencia');
-            }
-        }
+    if (user) {
+        const profileContent = `
+            <div class="profile">
+                <h2>Perfil de Usuario</h2>
+                <p><strong>Nombre:</strong> ${user.name}</p>
+                <p><strong>Email:</strong> ${user.email}</p>
+                <p><strong>Teléfono:</strong> ${user.phone}</p>
+                <button onclick="editProfile()">Editar Perfil</button>
+            </div>
+        `;
+        document.getElementById('content').innerHTML = profileContent;
+    } else {
+        toastr.warning('No hay información de perfil disponible.', 'Advertencia');
+    }
+}
 
         // Editar perfil del usuario
         function editProfile() {
@@ -123,46 +123,56 @@
 
         // Mostrar stock
         function showStockUpdate() {
-            const stockContent = `
-                <div id="productos" class="menu-section" style="display:block;">
-                    <h2>Productos</h2>
-                    <div class="search-bar">
-                        <input type="text" id="search-productos" placeholder="Buscar productos..." onkeyup="searchTable('productos-table', 'search-productos')">
-                    </div>
-                    <br>
-                    <br>
-                    <table id="productos-table">
-                        <thead>
-                            <tr>
-                                <th>Nombre</th>
-                                <th>Precio</th>
-                                <th>Descripción</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                        </tbody>
-                    </table>
-                </div>
-            `;
-            document.getElementById('content').innerHTML = stockContent;
+    const stockContent = `
+        <div id="productos" class="menu-section" style="display:block;">
+            <h2>Productos</h2>
+            <div class="search-bar" style="text-align:center;">
+                <input type="text" id="search-productos" placeholder="Buscar productos..." 
+                onkeyup="searchTable('productos-table', 'search-productos')" style="padding: 10px; width: 60%; border: 1px solid #ccc; border-radius: 5px; font-size: 16px;">
+            </div>
+            <br><br>
+            <table id="productos-table" style="width: 100%; border-collapse: collapse;">
+                <thead>
+                    <tr style="background-color: #f2f2f2; color: #333;">
+                        <th style="padding: 12px; text-align: center; border-bottom: 1px solid #ddd;">Nombre</th>
+                        <th style="padding: 12px; text-align: center; border-bottom: 1px solid #ddd;">Precio</th>
+                        <th style="padding: 12px; text-align: center; border-bottom: 1px solid #ddd;">Descripción</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    `;
+    document.getElementById('content').innerHTML = stockContent;
 
-            fetch('http://demo4284921.mockable.io/api/v1/Productos/getProductos')
-                .then(response => response.json())
-                .then(data => llenarTablaProducto(data))
-                .catch(error => console.error('Error al obtener los datos:', error));
-        }
+    fetch('http://demo4284921.mockable.io/api/v1/Productos/getProductos')
+        .then(response => response.json())
+        .then(data => llenarTablaProducto(data))
+        .catch(error => console.error('Error al obtener los datos:', error));
+}
 
-        function llenarTablaProducto(data) {
-            const tabla = document.getElementById('productos-table').getElementsByTagName('tbody')[0];
-            tabla.innerHTML = ''; 
-            data.forEach(producto => {
-                const fila = tabla.insertRow();
-                fila.insertCell(0).textContent = producto.nombre;
-                fila.insertCell(1).textContent = producto.precio;
-                fila.insertCell(2).textContent = producto.descripcion;
+function llenarTablaProducto(data) {
+    const tabla = document.getElementById('productos-table').getElementsByTagName('tbody')[0];
+    tabla.innerHTML = ''; 
+    data.forEach(producto => {
+        const fila = tabla.insertRow();
+        fila.style.borderBottom = '1px solid #ddd';
+        fila.style.textAlign = 'center';
+        
+        const nombreCell = fila.insertCell(0);
+        const precioCell = fila.insertCell(1);
+        const descripcionCell = fila.insertCell(2);
+        
+        nombreCell.textContent = producto.nombre;
+        precioCell.textContent = `$${producto.precio.toFixed(2)}`;
+        descripcionCell.textContent = producto.descripcion;
+        
+        [nombreCell, precioCell, descripcionCell].forEach(cell => {
+            cell.style.padding = '10px';
+        });
+    });
+}
 
-            });
-        }
 
         // Función de búsqueda en stock
         function searchTable(tableId, searchInputId) {
@@ -236,7 +246,7 @@
         // Cerrar sesión
         function logout() {
             localStorage.removeItem('loggedInUser');
-            window.location.href = '../index.html';
+            window.location.href = 'login.html';
         }
 
         // Open modal to add product
