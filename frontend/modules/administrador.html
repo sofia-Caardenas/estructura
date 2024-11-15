@@ -103,24 +103,34 @@
             
 
  <!-- Sección Productos -->
-    <div id="productos" class="menu-section">
+ <div id="productos" class="menu-section">
     <h2>Productos</h2>
     <div class="search-bar">
         <input type="text" id="search-productos" placeholder="Buscar productos..." onkeyup="searchTable('productos-table', 'search-productos')">
     </div>
-        <table id="productos-table">
-            <thead>
-                <tr>
-                    <th>Nombre</th>
-                    <th>Precio</th>
-                    <th>Descripción</th>
-                    <th>Acciones</th>
-                </tr>
-            </thead>
-            <tbody></tbody>
-        </table>
-        <button onclick="openAddProductModal()">Agregar Producto</button>
-    </div>
+    <table id="productos-table">
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Precio</th>
+                <th>Descripción</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+<!-- Controles de Paginación para Productos -->
+<div>
+    <button id="prev-page-productos" onclick="changePageProductos(currentPageProductos - 1)">Anterior</button>
+    <span id="page-info-productos"></span>
+    <button id="next-page-productos" onclick="changePageProductos(currentPageProductos + 1)">Siguiente</button>
+</div>
+
+    <button onclick="openAddProductModal()">Agregar Producto</button>
+</div>
+
+
+    
 
  <!-- Modal para agregar nuevo producto -->
  <div id="addProductModal" class="modal">
@@ -135,7 +145,6 @@
          <input type="text" id="new-product-description" placeholder="Descripción">
          <button onclick="saveNewProduct()">Agregar Producto</button>
      </div>
-     
  </div>
  
  
@@ -184,6 +193,114 @@
  <footer>
     <p>&copy; 2024 Onix. Todos los derechos reservados.</p>
 </footer>
+<script>
+    let currentPageProductos = 1;
+    const recordsPerPageProductos = 2;
+    let productosData = [];
+
+    // Función para llenar la tabla de productos
+    function llenarTablaProductos(data) {
+        productosData = data;
+        renderTableProductos();
+    }
+
+    // Función para renderizar la tabla de productos según la página actual
+    function renderTableProductos() {
+        const tabla = document.getElementById('productos-table').getElementsByTagName('tbody')[0];
+        tabla.innerHTML = '';
+
+        const start = (currentPageProductos - 1) * recordsPerPageProductos;
+        const end = start + recordsPerPageProductos;
+        const paginatedData = productosData.slice(start, end);
+
+        paginatedData.forEach(producto => {
+            const fila = tabla.insertRow();
+            fila.insertCell(0).textContent = producto.nombre;
+            fila.insertCell(1).textContent = producto.precio;
+            fila.insertCell(2).textContent = producto.descripcion;
+            fila.insertCell(3).innerHTML = `<button onclick="openEditProductModal(${producto.id}, '${producto.nombre}', ${producto.precio}, '${producto.descripcion}')">Editar</button>`;
+        });
+
+        document.getElementById('page-info-productos').textContent = `Página ${currentPageProductos} de ${Math.ceil(productosData.length / recordsPerPageProductos)}`;
+        document.getElementById('prev-page-productos').disabled = currentPageProductos === 1;
+        document.getElementById('next-page-productos').disabled = currentPageProductos === Math.ceil(productosData.length / recordsPerPageProductos);
+    }
+
+    // Cambiar de página
+    function changePageProductos(page) {
+        const totalPages = Math.ceil(productosData.length / recordsPerPageProductos);
+        if (page < 1 || page > totalPages) return;
+        currentPageProductos = page;
+        renderTableProductos();
+    }
+
+    // Obtener los datos de los productos
+    fetch('http://demo4284921.mockable.io/api/v1/Productos/getProductos')
+        .then(response => response.json())
+        .then(data => llenarTablaProductos(data))
+        .catch(error => console.error('Error al obtener los datos de productos:', error));
+
+    // Función para buscar productos en la tabla
+    function searchTableProductos(tableId, searchInputId) {
+        const input = document.getElementById(searchInputId);
+        const filter = input.value.toLowerCase();
+        const table = document.getElementById(tableId);
+        const tr = table.getElementsByTagName("tr");
+
+        for (let i = 0; i < tr.length; i++) {
+            const tdNombre = tr[i].getElementsByTagName("td")[0];
+            const tdPrecio = tr[i].getElementsByTagName("td")[1];
+            if (tdNombre || tdPrecio) {
+                const txtValueNombre = tdNombre.textContent || tdNombre.innerText;
+                const txtValuePrecio = tdPrecio.textContent || tdPrecio.innerText;
+                if (txtValueNombre.toLowerCase().indexOf(filter) > -1 || txtValuePrecio.toLowerCase().indexOf(filter) > -1) {
+                    tr[i].style.display = "";
+                } else {
+                    tr[i].style.display = "none";
+                }
+            }
+        }
+    }
+
+    // Lógica de cierre del modal al hacer clic fuera de él
+    window.onclick = function(event) {
+        const addModal = document.getElementById('addProductModal');
+        const editModal = document.getElementById('editProductModal');
+        if (event.target === addModal) {
+            closeAddProductModal();
+        }
+        if (event.target === editModal) {
+            closeEditProductModal();
+        }
+    };
+
+    // Función de búsqueda en la tabla
+    function searchTable(tableId, searchInputId) {
+        const input = document.getElementById(searchInputId);
+        const filter = input.value.toLowerCase();
+        const table = document.getElementById(tableId);
+        const tr = table.getElementsByTagName("tr");
+
+        for (let i = 1; i < tr.length; i++) {
+            const tdNombre = tr[i].getElementsByTagName("td")[0];
+            const tdPrecio = tr[i].getElementsByTagName("td")[1];
+            if (tdNombre || tdPrecio) {
+                const txtValueNombre = tdNombre.textContent || tdNombre.innerText;
+                const txtValuePrecio = tdPrecio.textContent || tdPrecio.innerText;
+                if (txtValueNombre.toLowerCase().indexOf(filter) > -1 || txtValuePrecio.toLowerCase().indexOf(filter) > -1) {
+                    tr[i].style.display = "";
+                } else {
+                    tr[i].style.display = "none";
+                }
+            }
+        }
+    }
+
+    // Llamar a la función para cargar los productos al cargar la página
+    document.addEventListener("DOMContentLoaded", function() {
+        loadProductos();
+    });
+</script>
 
 <script>
 
