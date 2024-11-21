@@ -55,7 +55,6 @@
         togglePassword.addEventListener('click', function () {
             const type = passwordField.type === 'password' ? 'text' : 'password';
             passwordField.type = type;
-
             this.classList.toggle('fa-eye-slash');
         });
 
@@ -63,7 +62,7 @@
             event.preventDefault();
 
             const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value; // Aunque no lo uses aquí
+            const password = document.getElementById('password').value;
 
             // Validaciones básicas
             if (!email || !password) {
@@ -79,37 +78,33 @@
             }
 
             // Realiza la solicitud POST a la API
-            fetch('http://demo4284921.mockable.io/api/v1/Usuarios/login', {
+            fetch('http://localhost:8080/api/v1/Usuarios/login', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
                     email: email,
-                    clave: password // Aún así se envía la clave, aunque no la validamos
+                    clave: password
                 })
             })
-                .then(response => response.json())
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Credenciales incorrectas o el usuario no está registrado');
+                    }
+                    return response.json();
+                })
                 .then(data => {
-                    // Simular la verificación del usuario en base a la data que proporcionaste
-                    const user = [
-                        { id: 1, email: "juan.perez@example.com", roles: { id: 3, nombre: "Cliente" } },
-                        { id: 2, email: "maria.gomez@example.com", roles: { id: 3, nombre: "Cliente" } },
-                        { id: 3, email: "pedro.martinez@example.com", roles: { id: 3, nombre: "Cliente" } },
-                        { id: 4, email: "ana.rodriguez@example.com", roles: { id: 3, nombre: "Cliente" } },
-                        { id: 5, email: "carlos.sanchez@example.com", roles: { id: 2, nombre: "Empleado" } },
-                        { id: 6, email: "daniel.junco@example.com", roles: { id: 1, nombre: "Administrador" } },
-                        { id: 7, email: "sofia.cadenas@example.com", roles: { id: 1, nombre: "Administrador" } }
-                    ].find(u => u.email === email);
-
-                    if (!user) {
+                    if (!Array.isArray(data) || data.length === 0) {
                         alert('Credenciales incorrectas o el usuario no está registrado');
                         return;
                     }
 
+                    const user = data[0];
                     const rolId = user.roles.id;
                     const userId = user.id;
 
+                    // Almacenar ID de usuario en localStorage
                     localStorage.setItem('Id', userId);
                     console.log('ID almacenado:', userId);
                     alert('Inicio de sesión exitoso. Rol: ' + rolId);
