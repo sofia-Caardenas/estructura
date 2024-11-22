@@ -129,26 +129,26 @@
     <button onclick="openAddProductModal()">Agregar Producto</button>
 </div>
 
+<!-- Modal para agregar nuevo producto -->
+<div id="addProductModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal('addProductModal')">&times;</span>
+        <h3>Agregar Producto</h3>
+        <input id="new-product-name" type="text" placeholder="Nombre del producto">
+        <input id="new-product-description" type="text" placeholder="Descripción">
+        <input id="new-product-price" type="number" placeholder="Precio">
+        <input id="new-product-stock" type="number" placeholder="Stock">
+        <input id="new-product-image" type="text" placeholder="URL de la Imagen">
+        <select id="new-product-status">
+            <option value="Disponible">Disponible</option>
+            <option value="Agotado">Agotado</option>
+        </select>
+        <button onclick="saveNewProduct()">Agregar Producto</button>
+    </div>
+</div>
 
-    
-
- <!-- Modal para agregar nuevo producto -->
- <div id="addProductModal" class="modal">
-     <div class="modal-content">
-         <span class="close" onclick="closeModal('addProductModal')">&times;</span>
-         <h3>Agregar Producto</h3>
-         <label for="new-product-name">Nombre:</label>
-         <input type="text" id="new-product-name" placeholder="Nombre del producto">
-         <label for="new-product-price">Precio:</label>
-         <input type="number" id="new-product-price" placeholder="Precio">
-         <label for="new-product-description">Descripción:</label>
-         <input type="text" id="new-product-description" placeholder="Descripción">
-         <button onclick="saveNewProduct()">Agregar Producto</button>
-     </div>
- </div>
  
  
- <!-- Modal para editar producto -->
 <!-- Modal para editar producto -->
 <div id="editProductModal" class="modal">
     <div class="modal-content">
@@ -235,7 +235,7 @@
     }
 
     // Obtener los datos de los productos
-    fetch('http://demo4284921.mockable.io/api/v1/Productos/getProductos')
+    fetch('http://localhost:8080/api/v1/Productos/getProductos')
         .then(response => response.json())
         .then(data => llenarTablaProductos(data))
         .catch(error => console.error('Error al obtener los datos de productos:', error));
@@ -307,13 +307,12 @@
     document.addEventListener("DOMContentLoaded", function() {
         // Función para obtener y mostrar los productos
         function loadProductos() {
-            fetch("http://demo4284921.mockable.io/api/v1/Productos/getProductos")
+            fetch("http://localhost:8080/api/v1/Productos/getProductos")
                 .then(response => response.json())
                 .then(data => {
                     const productosTable = document.querySelector("#productos-table tbody");
                     productosTable.innerHTML = ''; // Limpiar la tabla
 
-                    // Iterar sobre los productos y agregarlos a la tabla
                     data.forEach(producto => {
                         const row = document.createElement("tr");
                         row.setAttribute("data-id", producto.id);
@@ -404,7 +403,7 @@
         const precio = document.getElementById("edit-product-price").value;
         const descripcion = document.getElementById("edit-product-description").value;
 
-        fetch("http://demo4284921.mockable.io/api/v1/Productos/actualizarProducto", {
+        fetch("http://localhost:8080/api/v1/Productos/actualizarProducto", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -435,56 +434,82 @@
         .catch(error => console.error("Error al actualizar el producto:", error));
     }
 
-    // Función para abrir el modal de agregar producto
-    function openAddProductModal() {
-        document.getElementById("addProductModal").style.display = "block";
+// Función para abrir el modal de agregar producto
+function openAddProductModal() {
+    document.getElementById("addProductModal").style.display = "block";
+}
+
+// Función para agregar un nuevo producto
+function saveNewProduct() {
+    // Obtener valores del formulario
+    const nombre = document.getElementById("new-product-name").value.trim();
+    const descripcion = document.getElementById("new-product-description").value.trim();
+    const precio = parseFloat(document.getElementById("new-product-price").value);
+    const stock = parseInt(document.getElementById("new-product-stock").value);
+    const fecha_Agregado = new Date().toISOString().slice(0, 10); // Fecha actual en formato yyyy-mm-dd
+    const ruta_Imagen = document.getElementById("new-product-image").value.trim();
+    const estado = document.getElementById("new-product-status").value.trim();
+
+    // Validar campos
+    if (!nombre || !descripcion || isNaN(precio) || isNaN(stock) || !ruta_Imagen || !estado) {
+        toast.error("Todos los campos son obligatorios. Asegúrate de completarlos correctamente.");
+        return;
     }
 
-    // Función para agregar un nuevo producto
-    function saveNewProduct() {
-        const nombre = document.getElementById("new-product-name").value;
-        const precio = document.getElementById("new-product-price").value;
-        const descripcion = document.getElementById("new-product-description").value;
-
-        fetch("http://demo4284921.mockable.io/api/v1/Productos/crearProductos", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                nombre: nombre,
-                precio: precio,
-                descripcion: descripcion
-            })
+    // Enviar la solicitud para crear un producto
+    fetch("http://localhost:8080/api/v1/Productos/crearProductos", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            nombre,
+            descripcion,
+            precio,
+            stock,
+            fecha_Agregado,
+            ruta_Imagen,
+            estado
         })
-        .then(response => response.json())
-        .then(data => {
-            alert("Producto agregado exitosamente");
-            closeModal('addProductModal');
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(`Error al agregar el producto: ${response.statusText}`);
+        }
+        return response.json(); // Asumimos que el backend devuelve el producto creado con su ID
+    })
+    .then(data => {
+        toast.success("Producto agregado exitosamente");
+        closeModal('addProductModal'); // Cerrar el modal
 
-            // Agregar el nuevo producto a la tabla sin recargar
-            const productosTable = document.querySelector("#productos-table tbody");
-            const row = document.createElement("tr");
-            row.setAttribute("data-id", data.id); // Asumimos que la respuesta incluye el ID del producto agregado
-            row.innerHTML = `
-                <td>${nombre}</td>
-                <td>${precio}</td>
-                <td>${descripcion}</td>
-                <td>
-                    <button onclick="openEditProductModal(${data.id}, '${nombre}', ${precio}, '${descripcion}')">Editar</button>
-                </td>
-            `;
-            productosTable.appendChild(row);
-        })
-        .catch(error => console.error("Error al agregar el producto:", error));
-    }
-
+        // Crear una nueva fila en la tabla
+        const productosTable = document.querySelector("#productos-table tbody");
+        const row = document.createElement("tr");
+        row.setAttribute("data-id", data.id); // Usar el ID retornado por el backend
+        row.innerHTML = `
+            <td>${nombre}</td>
+            <td>${precio.toFixed(2)}</td>
+            <td>${descripcion}</td>
+            <td>${stock}</td>
+            <td>${fecha_Agregado}</td>
+            <td><img src="${ruta_Imagen}" alt="${nombre}" style="width:50px; height:50px;"></td>
+            <td>${estado}</td>
+            <td>
+                <button onclick="openEditProductModal(${data.id}, '${nombre}', ${precio}, '${descripcion}', ${stock}, '${ruta_Imagen}', '${estado}')">Editar</button>
+            </td>
+        `;
+        productosTable.appendChild(row); // Agregar la fila a la tabla
+    })
+    .catch(error => {
+        console.error("Error al agregar el producto:", error);
+        toast.error("Hubo un error al agregar el producto. Por favor, verifica la conexión o la API.");
+    });
+}
     // Función para cerrar el modal
     function closeModal(modalId) {
         document.getElementById(modalId).style.display = "none";
     }
 </script>
-
 
 
 
@@ -532,7 +557,7 @@
         }
 
         // Obtener los datos de los usuarios
-        fetch('http://demo4284921.mockable.io/api/v1/Usuarios/getUsuarios')
+        fetch('http://localhost:8080/api/v1/Usuarios/getUsuarios')
             .then(response => response.json())
             .then(data => llenarTabla(data))
             .catch(error => console.error('Error al obtener los datos de usuarios:', error));
@@ -652,7 +677,6 @@
         }
 
 
-
     // Lógica de cierre del modal al hacer clic fuera de él
     window.onclick = function(event) {
         const addModal = document.getElementById('addProductModal');
@@ -708,3 +732,5 @@
 
 </body>
 </html>
+
+
