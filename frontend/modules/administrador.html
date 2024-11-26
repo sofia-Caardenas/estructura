@@ -433,7 +433,6 @@
         })
         .catch(error => console.error("Error al actualizar el producto:", error));
     }
-
 // Función para abrir el modal de agregar producto
 function openAddProductModal() {
     document.getElementById("addProductModal").style.display = "block";
@@ -441,20 +440,33 @@ function openAddProductModal() {
 
 // Función para agregar un nuevo producto
 function saveNewProduct() {
+    // Cerrar el modal inmediatamente
+    closeModal("addProductModal");
+
     // Obtener valores del formulario
     const nombre = document.getElementById("new-product-name").value.trim();
     const descripcion = document.getElementById("new-product-description").value.trim();
     const precio = parseFloat(document.getElementById("new-product-price").value);
     const stock = parseInt(document.getElementById("new-product-stock").value);
-    const fecha_Agregado = new Date().toISOString().slice(0, 10); // Fecha actual en formato yyyy-mm-dd
-    const ruta_Imagen = document.getElementById("new-product-image").value.trim();
+    const fechaAgregado = new Date().toISOString().slice(0, 10); // Cambiado a camelCase
+    const rutaImagen = document.getElementById("new-product-image").value.trim();
     const estado = document.getElementById("new-product-status").value.trim();
 
     // Validar campos
-    if (!nombre || !descripcion || isNaN(precio) || isNaN(stock) || !ruta_Imagen || !estado) {
+    if (!nombre || !descripcion || isNaN(precio) || isNaN(stock) || !rutaImagen || !estado) {
         toast.error("Todos los campos son obligatorios. Asegúrate de completarlos correctamente.");
         return;
     }
+
+    const producto = {
+        nombre,
+        descripcion,
+        precio,
+        stock,
+        fechaAgregado,
+        rutaImagen,
+        estado
+    };
 
     // Enviar la solicitud para crear un producto
     fetch("http://localhost:8080/api/v1/Productos/crearProductos", {
@@ -462,53 +474,44 @@ function saveNewProduct() {
         headers: {
             "Content-Type": "application/json"
         },
-        body: JSON.stringify({
-            nombre,
-            descripcion,
-            precio,
-            stock,
-            fecha_Agregado,
-            ruta_Imagen,
-            estado
+        body: JSON.stringify(producto)
+    })
+        .then(response => {
+            if (!response.ok) {
+                return response.text().then(errorText => {
+                    throw new Error(`Error al agregar el producto: ${errorText}`);
+                });
+            }
+            return response.json();
         })
-    })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error(`Error al agregar el producto: ${response.statusText}`);
-        }
-        return response.json(); // Asumimos que el backend devuelve el producto creado con su ID
-    })
-    .then(data => {
-        toast.success("Producto agregado exitosamente");
-        closeModal('addProductModal'); // Cerrar el modal
-
-        // Crear una nueva fila en la tabla
-        const productosTable = document.querySelector("#productos-table tbody");
-        const row = document.createElement("tr");
-        row.setAttribute("data-id", data.id); // Usar el ID retornado por el backend
-        row.innerHTML = `
-            <td>${nombre}</td>
-            <td>${precio.toFixed(2)}</td>
-            <td>${descripcion}</td>
-            <td>${stock}</td>
-            <td>${fecha_Agregado}</td>
-            <td><img src="${ruta_Imagen}" alt="${nombre}" style="width:50px; height:50px;"></td>
-            <td>${estado}</td>
-            <td>
-                <button onclick="openEditProductModal(${data.id}, '${nombre}', ${precio}, '${descripcion}', ${stock}, '${ruta_Imagen}', '${estado}')">Editar</button>
-            </td>
-        `;
-        productosTable.appendChild(row); // Agregar la fila a la tabla
-    })
-    .catch(error => {
-        console.error("Error al agregar el producto:", error);
-        toast.error("Hubo un error al agregar el producto. Por favor, verifica la conexión o la API.");
-    });
+        .then(data => {
+            toast.success("Producto agregado exitosamente");
+            agregarFilaProducto(data); // Agregar producto a la tabla
+        })
+        .catch(error => {
+            console.error("Error al agregar el producto:", error);
+            toast.error(`Hubo un error al agregar el producto: ${error.message}`);
+        })
+        .finally(() => {
+            // Limpiar los campos del formulario tras el intento de agregar el producto
+            limpiarFormularioAgregarProducto();
+        });
 }
-    // Función para cerrar el modal
-    function closeModal(modalId) {
-        document.getElementById(modalId).style.display = "none";
-    }
+
+// Función para cerrar el modal
+function closeModal(modalId) {
+    document.getElementById(modalId).style.display = "none";
+}
+
+// Función para limpiar el formulario después de cerrar el modal
+function limpiarFormularioAgregarProducto() {
+    document.getElementById("new-product-name").value = "";
+    document.getElementById("new-product-description").value = "";
+    document.getElementById("new-product-price").value = "";
+    document.getElementById("new-product-stock").value = "";
+    document.getElementById("new-product-image").value = "";
+    document.getElementById("new-product-status").value = "";
+}
 </script>
 
 
