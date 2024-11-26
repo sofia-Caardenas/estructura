@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registro ♥</title>
     <link rel="stylesheet" href="../src/assets/css/registro.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> <!-- Librería para las notificaciones -->
 </head>
-
 <body>
     <div class="registro-container">
         <h2>Regístrate ♥</h2>
@@ -24,24 +24,22 @@
 
     <script>
         document.getElementById('registroForm').addEventListener('submit', async function(event) {
-            event.preventDefault(); // Evita que se recargue la página
-            
-            const nombre = document.getElementById('nombre').value;
-            const email = document.getElementById('correo').value;
-            const clave = document.getElementById('password').value;
+            event.preventDefault();
+
+            const nombre = document.getElementById('nombre').value.trim();
+            const email = document.getElementById('correo').value.trim();
+            const clave = document.getElementById('password').value.trim();
 
             const usuario = {
                 nombre: nombre,
                 email: email,
                 clave: clave,
                 estado: "Activo",
-                roles: {
-                    id: 3
-                }
+                roles: { id: 3 } // ID del rol Cliente por defecto
             };
 
             try {
-                const response = await fetch('http://demo4284921.mockable.io/api/v1/Usuarios/crearUsuario', {
+                const response = await fetch('http://localhost:8080/api/v1/Usuarios/crearUsuario', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -50,14 +48,31 @@
                 });
 
                 if (response.ok) {
-                    alert('Usuario registrado con éxito');
-                    window.location.href = 'login.html';
+                    Swal.fire({
+                        icon: 'success',
+                        title: '¡Registro exitoso!',
+                        text: 'Usuario registrado correctamente.',
+                        confirmButtonText: 'Aceptar'
+                    }).then(() => {
+                        window.location.href = 'login.html';
+                    });
                 } else {
-                    alert('Error al registrar el usuario. Inténtalo de nuevo.');
+                    const errorData = await response.json();
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error al registrar',
+                        text: errorData.message || 'Inténtalo de nuevo.',
+                        confirmButtonText: 'Aceptar'
+                    });
                 }
             } catch (error) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error de conexión',
+                    text: 'No se pudo conectar con el servidor. Inténtalo más tarde.',
+                    confirmButtonText: 'Aceptar'
+                });
                 console.error('Error:', error);
-                alert('Ocurrió un error al registrar el usuario. Inténtalo de nuevo más tarde.');
             }
         });
     </script>
