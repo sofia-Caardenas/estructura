@@ -4,15 +4,124 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../src/assets/css/index.css">
-    <link rel="icon" href="../src/assets/img/logocafsena.png" width type="image/x-icon">
+    <link rel="icon" href="../src/assets/img/logocafsena.png" type="image/x-icon">
     <title>ONNIX ♥</title>
+    <style>
+        /* Ajustar tamaño del logo */
+        .logo img {
+            width: 150px;
+            height: auto;
+        }
+
+        /* Estilo del slider */
+        .slider-frame {
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+            max-height: 400px;
+        }
+        .slides {
+            display: flex;
+            transition: transform 0.3s ease;
+        }
+        .slide {
+            min-width: 100%;
+        }
+        .slide img {
+            width: 100%;
+            height: auto;
+            object-fit: cover;
+        }
+        .caption {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: white;
+            background-color: rgba(0, 0, 0, 0.5);
+            padding: 10px 20px;
+            font-size: 20px;
+            border-radius: 5px;
+        }
+
+        /* Estilo de collage para imágenes */
+        .product-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 5px;
+            margin: 20px 0;
+            padding: 0;
+        }
+        .product-card {
+            position: relative;
+            width: 100%;
+            overflow: hidden;
+            cursor: pointer;
+            aspect-ratio: 3/2; /* Proporción para un look de banner */
+        }
+        .product-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+        .product-card:hover img {
+            transform: scale(1.05);
+        }
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.3);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            font-weight: bold;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .product-card:hover .overlay {
+            opacity: 1;
+        }
+
+        /* Estilo de los métodos de pago */
+        #metodosdepago {
+            text-align: center;
+            padding: 20px;
+        }
+        #metodosdepago img {
+            margin: 10px;
+            max-width: 200px;
+            height: auto;
+        }
+
+        /* Footer */
+        .footer {
+            background-color: #333;
+            color: white;
+            padding: 20px 0;
+            text-align: center;
+        }
+        .footer-content .link h3 {
+            margin-bottom: 10px;
+        }
+        .footer-content .link ul {
+            list-style: none;
+            padding: 0;
+        }
+        .footer-content .link ul li {
+            margin: 5px 0;
+        }
+    </style>
 </head>
 <body>
     <header class="header"> 
         <div class="menu">
-            <a href="#" class="logo"><img src="../src/assets/img/logocafsena.png"  alt="Logo Onix"></a>
-            <input type="checkbox" id="menu">
-            </label>
+            <a href="#" class="logo"><img src="../src/assets/img/logocafsena.png" alt="Logo Onix"></a>
             <nav class="navbar">
                 <ul>
                     <li><a href="#Inicio"><h1>Inicio</h1></a></li>
@@ -23,159 +132,94 @@
                 </ul>
             </nav>
         </div>
+    </header>
 
-        <div class="slider-frame">
-            <ul class="slides">
-                <li class="slide">
-                    <img src="../src/assets/img/slider1.png" alt="Slide 1">
-                    <p class="caption">¡Bienvenidos a Onix!</p>
-                </li>
-                <li class="slide">
-                    <img src="../src/assets/img/slider2.png" alt="Slide 2">
-                    <p class="caption">¡Relájate y disfruta!</p>
-                </li>
-                <li class="slide">
-                    <img src="../src/assets/img/slider3.png" alt="Slide 3">
-                    <p class="caption">Disfruta de nuestros cafés y más.</p>
-                </li>
-                <li class="slide">
-                    <img src="../src/assets/img/slider4.png" alt="Slide 4">
-                    <p class="caption">Experimenta con nuestros sabores.</p>
-                </li>
-            </ul>
-        </div>
-        
-        <h2 class="section-title">Platos del día</h2>
-        <div class="products">
-            <div class="product">
-                <img src="../src/assets/img/carneasada.png" alt="Carne asada">
-                <div class="product-title">Carne asada</div>
-                <div class="product-price">$8.000</div>
-                <a href="../modules/login.html" class="product-button">Reservar ahora</a>
-            </div>
-            <div class="product">
-                <img src="../src/assets/img/costillas de cerdo.png" alt="Costillas de cerdo con salsa BBQ">
-                <div class="product-title">Costillas de cerdo con salsa BBQ</div>
-                <div class="product-price">$8.000</div>
-                <a href="../modules/login.html" class="product-button">Reservar ahora</a>
-            </div>
-            <div class="product">
-                <img src="../src/assets/img/bandeja paisa.png" alt="Bandeja Paisa">
-                <div class="product-title">Bandeja Paisa</div>
-                <div class="product-price">$8.000</div>
-                <a href="../modules/login.html" class="product-button">Reservar ahora</a>
-            </div>
-            <div class="product">
-                <img src="../src/assets/img/chuleta valluna.png" alt="Chuleta valluna">
-                <div class="product-title">Chuleta valluna</div>
-                <div class="product-price">$8.000</div>
-                <a href="../modules/login.html" class="product-button">Reservar ahora</a>
-            </div>
-            <div class="product">
-                <img src="../src/assets/img/frijolada.png" alt="Frijolada">
-                <div class="product-title">Frijolada</div>
-                <div class="product-price">$8.000</div>
-                <a href="../modules/login.html" class="product-button">Reservar ahora</a>
-            </div>
-            <div class="product">
-                <img src="../src/assets/img/pescado.png" alt="Mojarra frita">
-                <div class="product-title">Mojarra frita</div>
-                <div class="product-price">$8.000</div>
-                <a href="../modules/login.html" class="product-button">Reservar ahora</a>
-            </div>
-        </div>
+    <div class="slider-frame">
+        <ul class="slides">
+            <li class="slide">
+                <img src="../src/assets/img/slider1.png" alt="Slide 1">
+                <p class="caption">¡Bienvenidos a Onix!</p>
+            </li>
+            <li class="slide">
+                <img src="../src/assets/img/slider2.png" alt="Slide 2">
+                <p class="caption">¡Relájate y disfruta!</p>
+            </li>
+            <li class="slide">
+                <img src="../src/assets/img/slider3.png" alt="Slide 3">
+                <p class="caption">Disfruta de nuestros cafés y más.</p>
+            </li>
+            <li class="slide">
+                <img src="../src/assets/img/slider4.png" alt="Slide 4">
+                <p class="caption">Experimenta con nuestros sabores.</p>
+            </li>
+        </ul>
+    </div>
 
-        <h2 class="section-title">Lo más vendido</h2>
-        <div class="products">
-            <div class="product">
-                <img src="../src/assets/img/empanada.png" alt="Empanada de carne">
-                <div class="product-title">Empanada de carne</div>
-                <div class="product-price">$8.000</div>
-                <a href="../modules/login.html" class="product-button">Reservar ahora</a>
-            </div>
-            <div class="product">
-                <img src="../src/assets/img/buñuelo.png" alt="Buñuelos rellenos de arequipe">
-                <div class="product-title">Buñuelos rellenos de arequipe</div>
-                <div class="product-price">$6.000</div>
-                <a href="../modules/login.html" class="product-button">Reservar ahora</a>
-            </div>
-            <div class="product">
-                <img src="../src/assets/img/arepadehuevo.png" alt="Arepa de huevo">
-                <div class="product-title">Arepa de huevo</div>
-                <div class="product-price">$5.000</div>
-                <a href="../modules/login.html" class="product-button">Reservar ahora</a>
-            </div>
-            <div class="product">
-                <img src="../src/assets/img/hamburguesa.png" width="1024px" height="1024px" alt="Hamburguesa tres carnes">
-                <div class="product-title">Hamburguesa tres carnes</div>
-                <div class="product-price">$9.000</div>
-                <a href="../modules/login.html" class="product-button">Reservar ahora</a>
-            </div>
-            <div class="product">
-                <img src="../src/assets/img/cafe.png" alt="Café con deditos de queso">
-                <div class="product-title">Café con deditos de queso</div>
-                <div class="product-price">$4.000</div>
-                <a href="../modules/login.html" class="product-button">Reservar ahora</a>
-            </div>
-            <div class="product">
-                <img src="../src/assets/img/pan de bono.png" alt="Pan de bono con trozitos de chocolate">
-                <div class="product-title">Pan de bono con trocitos de chocolate</div>
-                <div class="product-price">$6.000</div>
-                <a href="../modules/login.html" class="product-button">Reservar ahora</a>
-            </div>
-        </div>
+    <h2 class="section-title">Productos Destacados</h2>
+    <div class="product-container">
+        <a href="../modules/login.html" class="product-card">
+            <img src="../src/assets/img/cafe.png" alt="Café">
+            <div class="overlay">Ir a ver el menú</div>
+        </a>
+        <a href="../modules/login.html" class="product-card">
+            <img src="../src/assets/img/empanada.png" alt="Empanadas">
+            <div class="overlay">Ir a ver el menú</div>
+        </a>
+        <a href="../modules/login.html" class="product-card">
+            <img src="../src/assets/img/buñuelo.png" alt="Buñuelos">
+            <div class="overlay">Ir a ver el menú</div>
+        </a>
+        <a href="../modules/login.html" class="product-card">
+            <img src="../src/assets/img/hamburguesa.png" alt="Hamburguesa">
+            <div class="overlay">Ir a ver el menú</div>
+        </a>
+    </div>
 
-        <section class="section" id="metodosdepago">
-            <h2>MÉTODOS DE PAGO</h2>
-            <div class="servicios-group">
-                <div class="servicios-1">
-                    <img src="../src/assets/img/nequi.jpg" alt="Método de Pago 1">
-                </div>
-                <div class="servicios-1">
-                    <img src="../src/assets/img/daviplata.png" width="260px" height="156px" alt="Método de Pago 2">
-                </div>
-                <div class="servicios-1">
-                    <img src="../src/assets/img/efectivo.png" width="240px" height="240px" alt="Método de Pago 3">
-                </div>
-            </div>
-        </section>
+    <section class="section" id="metodosdepago">
+        <h2>MÉTODOS DE PAGO</h2>
+        <div class="servicios-group">
+            <img src="../src/assets/img/nequi.jpg" alt="Método de Pago 1">
+            <img src="../src/assets/img/daviplata.png" alt="Método de Pago 2">
+            <img src="../src/assets/img/efectivo.png" alt="Método de Pago 3">
+        </div>
+    </section>
     
-        <footer class="footer">
-            <div class="footer-content">
-                <div class="link">
-                    <h3>Contacto</h3>
-                    <ul>
-                        <li><a href="#">Teléfono: 318-3888099</a></li>
-                        <li><a href="#">Email: Onix@soy.sena.edu.co</a></li>
-                        <li><a href="#">Dirección: Calle 52 No 13-65</a></li>
-                    </ul>   
-                </div>
-                <div class="link">
-                    <h3>Síguenos en</h3>
-                    <ul>
-                        <li><a href="https://www.facebook.com"><img src="../src/assets/img/Facebook.jpg" width="40px" alt="Facebook"></a></li>
-                        <li><a href="https://www.twitter.com"><img src="../src/assets/img/Twitter.jpg" width="40px" alt="Twitter"></a></li>
-                        <li><a href="https://www.instagram.com"><img src="../src/assets/img/Instagram.jpg" width="40px" alt="Instagram"></a></li>
-                    </ul>
-                </div>
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="link">
+                <h3>Contacto</h3>
+                <ul>
+                    <li><a href="#">Teléfono: 318-3888099</a></li>
+                    <li><a href="#">Email: Onix@soy.sena.edu.co</a></li>
+                    <li><a href="#">Dirección: Calle 52 No 13-65</a></li>
+                </ul>   
             </div>
-        </footer>
+            <div class="link">
+                <h3>Síguenos en</h3>
+                <ul>
+                    <li><a href="https://www.facebook.com"><img src="../src/assets/img/Facebook.jpg" width="40px" alt="Facebook"></a></li>
+                    <li><a href="https://www.twitter.com"><img src="../src/assets/img/Twitter.jpg" width="40px" alt="Twitter"></a></li>
+                    <li><a href="https://www.instagram.com"><img src="../src/assets/img/Instagram.jpg" width="40px" alt="Instagram"></a></li>
+                </ul>
+            </div>
+        </div>
+    </footer>
 
-        <script>
-            let slideIndex = 0;
-            const slides = document.querySelector('.slides');
-            const totalSlides = document.querySelectorAll('.slide').length;
+    <script>
+        let slideIndex = 0;
+        const slides = document.querySelector('.slides');
+        const totalSlides = document.querySelectorAll('.slide').length;
 
-            function nextSlide() {
-                slideIndex = (slideIndex + 1) % totalSlides;
-                slides.style.transform = `translateX(-${slideIndex * 100}%)`;
-            }
+        function nextSlide() {
+            slideIndex = (slideIndex + 1) % totalSlides;
+            slides.style.transform = `translateX(-${slideIndex * 100}%)`;
+        }
 
-            function startSlider() {
-                setInterval(nextSlide, 3000);
-            }
+        function startSlider() {
+            setInterval(nextSlide, 3000);
+        }
 
-            document.addEventListener('DOMContentLoaded', startSlider);
-        </script>
-    </body>
+        document.addEventListener('DOMContentLoaded', startSlider);
+    </script>
+</body>
 </html>
