@@ -103,11 +103,17 @@
                     const user = data[0];
                     const rolId = user.roles.id;
                     const userId = user.id;
+                    const estado = user.roles.estado;  // Verifica el estado
+
+                    // Verificar estado del usuario
+                    if (estado === "Inactivo") {
+                        alert("Tu cuenta está inactiva. Por favor, contacta al administrador.");
+                        return;
+                    }
 
                     // Almacenar ID de usuario en localStorage
                     localStorage.setItem('Id', userId);
                     console.log('ID almacenado:', userId);
-                    alert('Inicio de sesión exitoso. Rol: ' + userId);
 
                     // Redirección según el rol
                     if (rolId === 1) {

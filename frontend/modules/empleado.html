@@ -65,62 +65,127 @@
     <!-- Incluye Toastr JS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
     <script>
-        // Mostrar el perfil del usuario
-function showProfile() {
-    const user = JSON.parse(localStorage.getItem('loggedInUser'));
+        // API URLs
+        const apiUrl = 'http://localhost:8080/api/v1/Usuarios/getUsuariosById/';
+        const updateApiUrl = 'http://localhost:8080/api/v1/Usuarios/actualizarUsuario';
+        
+        // Obtener el ID de usuario desde localStorage
+        const userId = localStorage.getItem('Id');
+        if (userId) {
+            document.getElementById('userId').textContent = userId;
+        } else {
+            console.error("No se encontró un valor para 'Id' en localStorage.");
+        }
 
-    if (user) {
-        const profileContent = `
-            <div class="profile">
-                <h2>Perfil de Usuario</h2>
-                <p><strong>Nombre:</strong> ${user.name}</p>
-                <p><strong>Email:</strong> ${user.email}</p>
-                <p><strong>Teléfono:</strong> ${user.phone}</p>
-                <button onclick="editProfile()">Editar Perfil</button>
-            </div>
-        `;
-        document.getElementById('content').innerHTML = profileContent;
-    } else {
-        toastr.warning('No hay información de perfil disponible.', 'Advertencia');
-    }
-}
+        // Mostrar perfil de usuario
+        async function showProfile() {
+            if (!userId) {
+                toastr.warning("No se puede cargar el perfil. El ID de usuario no está disponible.", "Advertencia");
+                return;
+            }
 
-        // Editar perfil del usuario
-        function editProfile() {
-            const user = JSON.parse(localStorage.getItem('loggedInUser'));
+            try {
+                const response = await fetch(apiUrl + userId);
+                if (!response.ok) {
+                    throw new Error(`Error al obtener los datos del usuario: ${response.status}`);
+                }
 
-            if (user) {
-                const editProfileContent = `
+                const users = await response.json();
+                if (!users || users.length === 0 || !users[0].id || !users[0].nombre || !users[0].email) {
+                    console.error('Los datos del usuario están incompletos:', users);
+                    toastr.error("La respuesta de la API no contiene los datos esperados.", "Error");
+                    return;
+                }
+
+                const user = users[0];
+
+                const profileContent = `
                     <div class="profile">
-                        <h2>Editar Perfil</h2>
-                        <form id="editProfileForm">
-                            <label for="name">Nombre:</label>
-                            <input type="text" id="name" name="name" value="${user.name}" required>
-                            <label for="email">Email:</label>
-                            <input type="email" id="email" name="email" value="${user.email}" required>
-                            <label for="phone">Teléfono:</label>
-                            <input type="tel" id="phone" name="phone" value="${user.phone}" required>
-                            <button type="submit">Guardar Cambios</button>
-                        </form>
+                        <h2>Perfil de Usuario</h2>
+                        <div class="profile-info">
+                            <p><strong>ID:</strong> ${user.id}</p>
+                            <p><strong>Nombre:</strong> ${user.nombre}</p>
+                            <p><strong>Email:</strong> ${user.email}</p>
+                        </div>
+                        <button class="btn" onclick="openEditModal(${user.id})">Editar Perfil</button>
                     </div>
                 `;
-                document.getElementById('content').innerHTML = editProfileContent;
 
-                document.getElementById('editProfileForm').addEventListener('submit', function(event) {
-                    event.preventDefault();
-                    const updatedUser = {
-                        ...user,
-                        name: document.getElementById('name').value,
-                        email: document.getElementById('email').value,
-                        phone: document.getElementById('phone').value
-                    };
-                    localStorage.setItem('loggedInUser', JSON.stringify(updatedUser));
-                    showProfile();
-                    toastr.success('Perfil actualizado correctamente.', 'Éxito');
-                });
+                const contentElement = document.getElementById('content');
+                if (contentElement) {
+                    contentElement.innerHTML = profileContent;
+                }
+
+            } catch (error) {
+                console.error(error);
+                toastr.error("No se pudo cargar el perfil del usuario.", "Error");
             }
         }
 
+        // Función para abrir el modal de edición
+        function openEditModal(userId) {
+            // Mostrar el modal
+            const modal = document.getElementById('editModal');
+            modal.style.display = 'block';
+
+            // Obtener los detalles del usuario y rellenar el formulario
+            fetch(apiUrl + userId)
+                .then(response => response.json())
+                .then(users => {
+                    const user = users[0];
+                    document.getElementById('editName').value = user.nombre;
+                    document.getElementById('editEmail').value = user.email;
+                    document.getElementById('editUserId').value = user.id;
+                })
+                .catch(error => {
+                    toastr.error('Error al obtener los datos del usuario para edición.', 'Error');
+                });
+        }
+
+        // Función para cerrar el modal
+        function closeEditModal() {
+            const modal = document.getElementById('editModal');
+            modal.style.display = 'none';
+        }
+
+        // Manejo de la actualización de datos
+        document.getElementById('editProfileForm').addEventListener('submit', async function(event) {
+            event.preventDefault();
+
+            const updatedUser = {
+                id: document.getElementById('editUserId').value,
+                nombre: document.getElementById('editName').value,
+                email: document.getElementById('editEmail').value,
+                // Aquí puedes agregar la contraseña si es necesario, en tu caso
+                clave: document.getElementById('editPassword') ? document.getElementById('editPassword').value : undefined
+            };
+
+            try {
+                // Llamada al API para actualizar el usuario
+                const response = await fetch(updateApiUrl, {
+                    method: 'POST',  // Usamos POST en lugar de PUT
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(updatedUser),
+                });
+
+                if (!response.ok) {
+                    throw new Error(`Error al actualizar el perfil: ${response.status}`);
+                }
+
+                toastr.success('Perfil actualizado correctamente.', 'Éxito');
+                closeEditModal();
+                showProfile(); // Vuelve a cargar el perfil actualizado
+
+            } catch (error) {
+                console.error(error);
+                toastr.error('No se pudo actualizar el perfil.', 'Error');
+            }
+        });
+
+        // Llama a la función para mostrar el perfil al cargar la página
+        showProfile();
         // Mostrar stock
         function showStockUpdate() {
     const stockContent = `

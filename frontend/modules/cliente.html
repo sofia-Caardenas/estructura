@@ -14,6 +14,8 @@
         <div class="logo">
             <a class="logo"><img src="../src/assets/img/logocafsenablanco.png" width="25%" height="100%" alt="Logo Cafetería"></a>
         </div>
+        <p>Tu ID es: <span id="userId"></span></p>
+
         <nav>
             <ul>
                 <li><a href="#" onclick="showProfile(); return false;">Perfil de Usuario</a></li>
@@ -40,76 +42,153 @@
     <!-- Incluimos las librerías de Toastr JS y jQuery -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
-
+    <div id="content"></div>
+    
+<!-- Modal para editar perfil -->
+<div id="editModal" style="display: none;">
+    <div class="modal-content">
+        <span class="close" onclick="closeEditModal()">&times;</span>
+        <h2>Editar Perfil</h2>
+        <form id="editProfileForm">
+            <input type="hidden" id="editUserId" name="id">
+            <div class="form-group">
+                <label for="editName">Nombre:</label>
+                <input type="text" id="editName" name="name" readonly>
+            </div>
+            <div class="form-group">
+                <label for="editEmail">Email:</label>
+                <input type="email" id="editEmail" name="email" required>
+            </div>
+            <div class="form-group">
+                <label for="editPassword">Contraseña:</label>
+                <input type="password" id="editPassword" name="password">
+            </div>
+            <button type="submit" class="btn">Guardar Cambios</button>
+        </form>
+    </div>
+</div>
     <script>
-        let cart = [];
-        let orders = [];
+ // API URLs
+const apiUrl = 'http://localhost:8080/api/v1/Usuarios/getUsuariosById/';
+const updateApiUrl = 'http://localhost:8080/api/v1/Usuarios/actualizarUsuario';
 
-        // Mostrar el perfil del cliente desde localStorage
-// Mostrar el perfil del cliente desde localStorage
-function showProfile() {
-    const user = JSON.parse(localStorage.getItem('loggedInUser'));
+// Obtener el ID de usuario desde localStorage
+const userId = localStorage.getItem('Id');
+if (userId) {
+    document.getElementById('userId').textContent = userId;
+} else {
+    console.error("No se encontró un valor para 'Id' en localStorage.");
+}
 
-    if (user) {
-        const profileContent = 
-            `<div class="profile">
+// Mostrar perfil de usuario
+async function showProfile() {
+    if (!userId) {
+        toastr.warning("No se puede cargar el perfil. El ID de usuario no está disponible.", "Advertencia");
+        return;
+    }
+
+    try {
+        const response = await fetch(apiUrl + userId);
+        if (!response.ok) {
+            throw new Error(`Error al obtener los datos del usuario: ${response.status}`);
+        }
+
+        const users = await response.json();
+        if (!users || users.length === 0 || !users[0].id || !users[0].nombre || !users[0].email) {
+            console.error('Los datos del usuario están incompletos:', users);
+            toastr.error("La respuesta de la API no contiene los datos esperados.", "Error");
+            return;
+        }
+
+        const user = users[0];
+
+        const profileContent = `
+            <div class="profile">
                 <h2>Perfil de Usuario</h2>
                 <div class="profile-info">
-                    <p><strong>Nombre:</strong> ${user.name}</p>
+                    <p><strong>ID:</strong> ${user.id}</p>
+                    <p><strong>Nombre:</strong> ${user.nombre}</p>
                     <p><strong>Email:</strong> ${user.email}</p>
-                    <p><strong>Teléfono:</strong> ${user.phone}</p>
                 </div>
-                <button class="btn" onclick="editProfile()">Editar Perfil</button>
-            </div>`;
-        document.getElementById('content').innerHTML = profileContent;
-    } else {
-        toastr.warning('No hay información de perfil disponible.', 'Advertencia');
+                <button class="btn" onclick="openEditModal(${user.id})">Editar Perfil</button>
+            </div>
+        `;
+
+        const contentElement = document.getElementById('content');
+        if (contentElement) {
+            contentElement.innerHTML = profileContent;
+        }
+
+    } catch (error) {
+        console.error(error);
+        toastr.error("No se pudo cargar el perfil del usuario.", "Error");
     }
 }
 
-// Editar el perfil del cliente
-function editProfile() {
-    const user = JSON.parse(localStorage.getItem('loggedInUser'));
+// Función para abrir el modal de edición
+function openEditModal(userId) {
+    // Mostrar el modal
+    const modal = document.getElementById('editModal');
+    modal.style.display = 'block';
 
-    if (user) {
-        const editProfileContent = 
-            `<div class="profile">
-                <h2>Editar Perfil</h2>
-                <form id="editProfileForm">
-                    <div class="form-group">
-                        <label for="name">Nombre:</label>
-                        <input type="text" id="name" name="name" value="${user.name}" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="email">Email:</label>
-                        <input type="email" id="email" name="email" value="${user.email}" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="phone">Teléfono:</label>
-                        <input type="tel" id="phone" name="phone" value="${user.phone}" required>
-                    </div>
-                    <button type="submit" class="btn">Guardar Cambios</button>
-                </form>
-            </div>`;
-        document.getElementById('content').innerHTML = editProfileContent;
-
-        document.getElementById('editProfileForm').addEventListener('submit', function(event) {
-            event.preventDefault();
-            const updatedUser = {
-                ...user,
-                name: document.getElementById('name').value,
-                email: document.getElementById('email').value,
-                phone: document.getElementById('phone').value
-            };
-            localStorage.setItem('loggedInUser', JSON.stringify(updatedUser));
-            showProfile();
-            toastr.success('Perfil actualizado correctamente.', 'Éxito');
+    // Obtener los detalles del usuario y rellenar el formulario
+    fetch(apiUrl + userId)
+        .then(response => response.json())
+        .then(users => {
+            const user = users[0];
+            document.getElementById('editName').value = user.nombre;
+            document.getElementById('editEmail').value = user.email;
+            document.getElementById('editUserId').value = user.id;
+        })
+        .catch(error => {
+            toastr.error('Error al obtener los datos del usuario para edición.', 'Error');
         });
-    }
 }
 
-        // Mostrar el menú de productos
-        
+// Función para cerrar el modal
+function closeEditModal() {
+    const modal = document.getElementById('editModal');
+    modal.style.display = 'none';
+}
+
+// Manejo de la actualización de datos
+document.getElementById('editProfileForm').addEventListener('submit', async function(event) {
+    event.preventDefault();
+
+    const updatedUser = {
+        id: document.getElementById('editUserId').value,
+        nombre: document.getElementById('editName').value,
+        email: document.getElementById('editEmail').value,
+        // Aquí puedes agregar la contraseña si es necesario, en tu caso
+        clave: document.getElementById('editPassword') ? document.getElementById('editPassword').value : undefined
+    };
+
+    try {
+        // Llamada al API para actualizar el usuario
+        const response = await fetch(updateApiUrl, {
+            method: 'POST',  // Usamos POST en lugar de PUT
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(updatedUser),
+        });
+
+        if (!response.ok) {
+            throw new Error(`Error al actualizar el perfil: ${response.status}`);
+        }
+
+        toastr.success('Perfil actualizado correctamente.', 'Éxito');
+        closeEditModal();
+        showProfile(); // Vuelve a cargar el perfil actualizado
+
+    } catch (error) {
+        console.error(error);
+        toastr.error('No se pudo actualizar el perfil.', 'Error');
+    }
+});
+
+// Llama a la función para mostrar el perfil al cargar la página
+showProfile();
         function showMenu() {
     const menuContent = `
         <div id="productos" class="menu-section" style="display:block;">
@@ -343,6 +422,8 @@ function placeOrder() {
 
     orders.push(newOrder);
     localStorage.setItem('orders', JSON.stringify(orders));
+
+    alert(newOrder.items.cart);
 
     cart = [];  // Vaciar el carrito después de realizar el pedido
     showCart(); // Actualizar la vista del carrito

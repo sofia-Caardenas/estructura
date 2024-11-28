@@ -47,10 +47,10 @@
                     <span id="page-info"></span>
                     <button id="next-page" onclick="changePage(currentPage + 1)">Siguiente</button>
                 </div>
-                
+    
                 <!-- Botón para agregar usuario -->
                 <button onclick="openAddUserModal()">Agregar Usuario</button>
-
+    
                 <!-- Modal para agregar usuario -->
                 <div id="addUserModal" class="modal">
                     <div class="modal-content">
@@ -59,22 +59,22 @@
                         <form id="addUserForm">
                             <label for="nombre">Nombre:</label>
                             <input type="text" id="nombre" name="nombre" required>
-
+    
                             <label for="email">Email:</label>
                             <input type="email" id="email" name="email" required>
-
+    
                             <label for="rol">Rol:</label>
                             <select id="rol" name="rol" required>
                                 <option value="1">Administrador</option>
                                 <option value="2">Empleado</option>
                                 <option value="3">Cliente</option>
                             </select>
-
+    
                             <button type="submit">Agregar Usuario</button>
                         </form>
                     </div>
                 </div>
-
+    
                 <!-- Modal para editar usuario -->
                 <div id="editUserModal" class="modal">
                     <div class="modal-content">
@@ -84,22 +84,24 @@
                             <input type="hidden" id="edit-user-id">
                             <label for="edit-nombre">Nombre:</label>
                             <input type="text" id="edit-nombre" name="nombre" required>
-
+    
                             <label for="edit-email">Email:</label>
                             <input type="email" id="edit-email" name="email" required>
-
+    
                             <label for="edit-rol">Rol:</label>
                             <select id="edit-rol" name="rol" required>
                                 <option value="1">Administrador</option>
                                 <option value="2">Empleado</option>
                                 <option value="3">Cliente</option>
                             </select>
-
+    
                             <button type="submit">Actualizar Usuario</button>
                         </form>
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
             
 
  <!-- Sección Productos -->
@@ -349,7 +351,7 @@
                         row.setAttribute("data-id", HistorialPedidos.id);
                         row.innerHTML = `
                             <td>${HistorialPedidos.idHistorial}</td>
-                            <td>${HistorialPedidos.idUsuario}</td>
+                            <td>${HistorialPedidos.Usuario}</td>
                             <td>${HistorialPedidos.idPedido}</td>
                             <td>${HistorialPedidos.fechaPedido}</td>
                             <td>${HistorialPedidos.estado}</td>
@@ -418,6 +420,7 @@
         .then(response => response.json())
         .then(data => {
             alert("Producto actualizado exitosamente");
+            location.reload();
             closeModal('editProductModal');
 
             // Actualizar el producto en la tabla sin recargar
@@ -493,7 +496,7 @@ function saveNewProduct() {
             toast.error(`Hubo un error al agregar el producto: ${error.message}`);
         })
         .finally(() => {
-            // Limpiar los campos del formulario tras el intento de agregar el producto
+            location.reload();
             limpiarFormularioAgregarProducto();
         });
 }
@@ -565,69 +568,127 @@ function limpiarFormularioAgregarProducto() {
             .then(data => llenarTabla(data))
             .catch(error => console.error('Error al obtener los datos de usuarios:', error));
 
-        // Abrir modal de agregar usuario
-        function openAddUserModal() {
-            document.getElementById('addUserModal').style.display = 'block';
-        }
+// Abrir modal de agregar usuario
+function openAddUserModal() {
+    document.getElementById('addUserModal').style.display = 'block';
+}
 
-        // Cerrar modal de agregar usuario
-        function closeAddUserModal() {
-            document.getElementById('addUserModal').style.display = 'none';
-        }
+// Cerrar modal de agregar usuario
+function closeAddUserModal() {
+    document.getElementById('addUserModal').style.display = 'none';
+}
 
-        // Agregar nuevo usuario
-        document.getElementById('addUserForm').addEventListener('submit', function(e) {
-            e.preventDefault();
+// Agregar nuevo usuario
+document.getElementById('addUserForm').addEventListener('submit', function (e) {
+    e.preventDefault();
 
-            const nuevoUsuario = {
-                id: usuariosData.length + 1,
-                roles: { id: document.getElementById('rol').value, nombre: document.getElementById('rol').options[document.getElementById('rol').selectedIndex].text },
-                nombre: document.getElementById('nombre').value,
-                email: document.getElementById('email').value,
-                clave: document.getElementById('clave').value
-            };
+    // Obtén los valores del formulario
+    const nombre = document.getElementById('nombre').value;
+    const email = document.getElementById('email').value;
+    const idRol = document.getElementById('rol').value; // ID del rol seleccionado
 
-            usuariosData.push(nuevoUsuario);
-            renderTable();
-            toastr.success('Usuario agregado exitosamente');
+    // Construye la solicitud con el formato adecuado
+    fetch('http://localhost:8080/api/v1/Usuarios/crearUsuario', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            nombre: nombre,
+            email: email,
+            clave: "passwordbase123", // Clave predeterminada
+            estado: "Activo",         // Estado predeterminado
+            roles: {
+                id: parseInt(idRol) // El rol debe ser un objeto con el ID
+            }
+        })
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Error al agregar el usuario');
+            }
+            return response.json();
+        })
+        .then(data => {
+            // Notifica éxito y actualiza la tabla
+            toastr.success("Usuario agregado exitosamente");
+            renderTable(); // Refresca la tabla para mostrar al nuevo usuario
             closeAddUserModal();
-            document.getElementById('addUserForm').reset();
+            document.getElementById('addUserForm').reset(); // Limpia el formulario
+        })
+        .catch(error => {
+            console.error("Error al agregar el usuario:", error);
+            toastr.error("Error al agregar el usuario. Verifica los datos.");
         });
+});
+ // Función para abrir el modal de editar usuario y precargar los datos
+function editarUsuario(id) {
+    const usuario = usuariosData.find(u => u.id === id);
+    if (usuario) {
+        // Verifica que los elementos se encuentren antes de asignarles valores
+        console.log(document.getElementById('edit-user-id'));  // Verifica que el elemento existe
+        console.log(usuario);  // Verifica que los datos del usuario estén correctos
 
-        // Editar usuario
-        function editarUsuario(id) {
-            const usuario = usuariosData.find(u => u.id === id);
-            if (usuario) {
-                document.getElementById('edit-user-id').value = usuario.id;
-                document.getElementById('edit-nombre').value = usuario.nombre;
-                document.getElementById('edit-email').value = usuario.email;
-                document.getElementById('edit-rol').value = usuario.roles.id;
-                document.getElementById('editUserModal').style.display = 'block';
-            }
-        }
+        // Asigna los valores a los campos del formulario
+        document.getElementById('edit-user-id').value = usuario.id;
+        document.getElementById('edit-nombre').value = usuario.nombre;
+        document.getElementById('edit-email').value = usuario.email;
+        document.getElementById('edit-rol').value = usuario.roles.id;
+        document.getElementById('editUserModal').style.display = 'block';
+    }
+}
 
-        // Cerrar modal de edición
-        function closeEditUserModal() {
-            document.getElementById('editUserModal').style.display = 'none';
-        }
+// Función para cerrar el modal de edición
+function closeEditUserModal() {
+    document.getElementById('editUserModal').style.display = 'none';
+}
 
-        // Actualizar usuario
-        document.getElementById('editUserForm').addEventListener('submit', function(e) {
-            e.preventDefault();
+// Función para guardar los cambios del usuario editado
+function saveEditedUser(event) {
+    event.preventDefault();  // Evita que el formulario recargue la página
 
-            const id = document.getElementById('edit-user-id').value;
-            const usuario = usuariosData.find(u => u.id === Number(id));
-            if (usuario) {
-                usuario.nombre = document.getElementById('edit-nombre').value;
-                usuario.email = document.getElementById('edit-email').value;
-                usuario.roles.id = document.getElementById('edit-rol').value;
-                usuario.roles.nombre = document.getElementById('edit-rol').options[document.getElementById('edit-rol').selectedIndex].text;
+    const id = document.getElementById('edit-user-id').value;
+    const nombre = document.getElementById('edit-nombre').value;
+    const email = document.getElementById('edit-email').value;
+    const idRol = document.getElementById('edit-rol').value;
 
-                renderTable();
-                toastr.success('Usuario actualizado exitosamente');
-                closeEditUserModal();
-            }
-        });
+    // Verifica los valores antes de enviar la solicitud
+    console.log({id, nombre, email, idRol});
+
+    fetch('http://localhost:8080/api/v1/Usuarios/actualizarUsuario', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            id: id,
+            nombre: nombre,
+            email: email,
+            id_Rol: idRol
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        alert("Usuario actualizado exitosamente");
+        location.reload();
+        closeEditUserModal();
+
+        // Actualiza el usuario en la tabla sin recargar la página
+        const row = document.querySelector(`#usuarios-table tbody tr[data-id='${id}']`);
+        row.innerHTML = `
+            <td>${nombre}</td>
+            <td>${email}</td>
+            <td>${idRol}</td>
+            <td>
+                <button onclick="editarUsuario(${id})">Editar</button>
+            </td>
+        `;
+    })
+    .catch(error => console.error("Error al actualizar el usuario:", error));
+}
+
+// Asegúrate de asignar el evento al formulario de edición de usuario
+document.getElementById('editUserForm').addEventListener('submit', saveEditedUser);
 
         // Lógica de cierre del modal al hacer clic fuera de él
         window.onclick = function(event) {
