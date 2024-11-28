@@ -109,122 +109,109 @@ function editProfile() {
 }
 
         // Mostrar el menú de productos
+        
         function showMenu() {
-            const menuContent = 
-                `<section class="menu-section" id="menu">
-                    <h2 class="section-title">Platos del día</h2>
-                    <div class="products">
-                        <div class="product">
-                            <img src="../src/assets/img/carneasada.png" alt="Carne asada">
-                            <div class="product-title">Carne asada</div>
-                            <div class="product-price">$8.000</div>
-                            <a href="#" class="product-button" onclick="addToCart('Carne asada', 8000); return false;">Añadir al carrito</a>
-                        </div>
-                        <div class="product">
-                            <img src="../src/assets/img/costillas de cerdo.png" alt="Costillas de cerdo con salsa BBQ">
-                            <div class="product-title">Costillas de cerdo</div>
-                            <div class="product-price">$8.000</div>
-                            <a href="#" class="product-button" onclick="addToCart('Costillas de cerdo con salsa BBQ', 8000); return false;">Añadir al carrito</a>
-                        </div>
-                        <div class="product">
-                            <img src="../src/assets/img/bandeja paisa.png" alt="Bandeja Paisa">
-                            <div class="product-title">Bandeja Paisa</div>
-                            <div class="product-price">$8.000</div>
-                            <a href="#" class="product-button" onclick="addToCart('Bandeja Paisa', 8000); return false;">Añadir al carrito</a>
-                        </div>
-                        <div class="product">
-                            <img src="../src/assets/img/chuleta valluna.png" alt="Chuleta valluna">
-                            <div class="product-title">Chuleta valluna</div>
-                            <div class="product-price">$8.000</div>
-                            <a href="#" class="product-button" onclick="addToCart('Chuleta valluna', 8000); return false;">Añadir al carrito</a>
-                        </div>
-                        <div class="product">
-                            <img src="../src/assets/img/frijolada.png" alt="Frijolada">
-                            <div class="product-title">Frijolada</div>
-                            <div class="product-price">$8.000</div>
-                            <a href="#" class="product-button" onclick="addToCart('Frijolada', 8000); return false;">Añadir al carrito</a>
-                        </div>
-                        <div class="product">
-                            <img src="../src/assets/img/pescado.png" alt="Mojarra frita">
-                            <div class="product-title">Mojarra frita</div>
-                            <div class="product-price">$8.000</div>
-                            <a href="#" class="product-button" onclick="addToCart('Mojarra frita', 8000); return false;">Añadir al carrito</a>
-                        </div>
-                        
-                    </div>
-                    <h2 class="section-title">Lo más vendido</h2>
-                    <div class="products">
-                        <div class="product">
-                            <img src="../src/assets/img/empanada.png" alt="Empanada de carne">
-                            <div class="product-title">Empanada de carne</div>
-                            <div class="product-price">$8.000</div>
-                            <a href="#" class="product-button" onclick="addToCart('Empanada de carne', 8000); return false;">Añadir al carrito</a>
-                        </div>
-                        <div class="product">
-                            <img src="../src/assets/img/buñuelo.png" alt="Buñuelos rellenos de arequipe">
-                            <div class="product-title">Buñuelos de arequipe</div>
-                            <div class="product-price">$6.000</div>
-                            <a href="#" class="product-button" onclick="addToCart('Buñuelos rellenos de arequipe', 6000); return false;">Añadir al carrito</a>
-                        </div>
-                        <div class="product">
-                            <img src="../src/assets/img/arepadehuevo.png" alt="Arepa de huevo">
-                            <div class="product-title">Arepa de huevo</div>
-                            <div class="product-price">$5.000</div>
-                            <a href="#" class="product-button" onclick="addToCart('Arepa de huevo', 5000); return false;">Añadir al carrito</a>
-                        </div>
-                        <div class="product">
-                            <img src="../src/assets/img/pan de bono.png" alt="Pandebonos">
-                            <div class="product-title">Pandebonos</div>
-                            <div class="product-price">$4.000</div>
-                            <a href="#" class="product-button" onclick="addToCart('Pandebonos', 4000); return false;">Añadir al carrito</a>
-                        </div>
-                            <div class="product">
-                            <img src="../src/assets/img/cafe.png" alt="cafe">
-                            <div class="product-title">Cafe </div>
-                            <div class="product-price">$4.000</div>
-                            <a href="#" class="product-button" onclick="addToCart('Cafe', 4000); return false;">Añadir al carrito</a>
-                        </div>
-                        </div>
-                            <div class="product">
-                            <img src="../src/assets/img/pechuga de pollo.png" alt="pechuga de pollo">
-                            <div class="product-title">Pechuga de pollo </div>
-                            <div class="product-price">$8.000</div>
-                            <a href="#" class="product-button" onclick="addToCart('Pechuga de pollo', 8000); return false;">Añadir al carrito</a>
-                        </div>
-                    </div>
-                </section>`;
-            document.getElementById('content').innerHTML = menuContent;
+    const menuContent = `
+        <div id="productos" class="menu-section" style="display:block;">
+            <h2>Productos</h2>
+            <div class="search-bar" style="text-align:center;">
+                <input type="text" id="search-productos" placeholder="Buscar productos..." 
+                onkeyup="searchTable('productos-table', 'search-productos')" style="padding: 10px; width: 60%; border: 1px solid #ccc; border-radius: 5px; font-size: 16px;">
+            </div>
+            <br><br>
+            <table id="productos-table" style="width: 100%; border-collapse: collapse;">
+                <thead>
+                    <tr style="background-color: #f2f2f2; color: #333;">
+                        <th style="padding: 12px; text-align: center; border-bottom: 1px solid #ddd;">ID</th>
+                        <th style="padding: 12px; text-align: center; border-bottom: 1px solid #ddd;">Nombre</th>
+                        <th style="padding: 12px; text-align: center; border-bottom: 1px solid #ddd;">Precio</th>
+                        <th style="padding: 12px; text-align: center; border-bottom: 1px solid #ddd;">Descripción</th>
+                        <th style="padding: 12px; text-align: center; border-bottom: 1px solid #ddd;">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    `;
+    document.getElementById('content').innerHTML = menuContent;
+
+    // Fetch de datos desde la API
+    fetch('http://localhost:8080/api/v1/Productos/getProductos')
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(data => llenarTablaProducto(data))
+        .catch(error => console.error('Error al obtener los datos:', error));
+}
+
+function llenarTablaProducto(data) {
+    const tabla = document.getElementById('productos-table').getElementsByTagName('tbody')[0];
+    tabla.innerHTML = ''; 
+    data.forEach(producto => {
+        const fila = tabla.insertRow();
+        fila.style.borderBottom = '1px solid #ddd';
+        fila.style.textAlign = 'center';
+        
+        const idCell = fila.insertCell(0);
+        const nombreCell = fila.insertCell(1);
+        const precioCell = fila.insertCell(2);
+        const descripcionCell = fila.insertCell(3);
+        const accionCell = fila.insertCell(4); // Nueva celda para acciones
+        
+        // Asegurarse de que los datos de la API contienen ID, nombre y precio
+        if (!producto.id || !producto.nombre || !producto.precio) {
+            console.warn('Producto con datos incompletos:', producto);
+            return;
         }
 
-        // Añadir producto al carrito
-// Añadir producto al carrito
+        idCell.textContent = producto.id; // Mostrar el ID del producto
+        nombreCell.textContent = producto.nombre;
+        precioCell.textContent = `$${producto.precio.toFixed(2)}`;
+        descripcionCell.textContent = producto.descripcion;
+
+        // Crear botón para añadir al carrito
+        const addButton = document.createElement('button');
+        addButton.textContent = 'Añadir al carrito';
+        addButton.style.padding = '8px 12px';
+        addButton.style.backgroundColor = '#4CAF50';
+        addButton.style.color = '#fff';
+        addButton.style.border = 'none';
+        addButton.style.borderRadius = '5px';
+        addButton.style.cursor = 'pointer';
+
+        // Pasar el ID del producto junto con nombre y precio
+        addButton.onclick = () => addToCart(producto.id, producto.nombre, producto.precio);
+
+        accionCell.appendChild(addButton);
+
+        [idCell, nombreCell, precioCell, descripcionCell, accionCell].forEach(cell => {
+            cell.style.padding = '10px';
+        });
+    });
+}
+
+
+
+// Carrito global
+
 
 // Añadir producto al carrito
-// Añadir producto al carrito
-function addToCart(product, price, imageUrl) {
-    // Verificar si el producto ya existe en el carrito
-    const existingItem = cart.find(item => item.product === product);
+function addToCart(id, product, price) {
+    const existingItem = cart.find(item => item.id === id);
 
     if (existingItem) {
-        // Si el producto ya existe, aumenta la cantidad
         existingItem.quantity += 1;
     } else {
-        // Si es un nuevo producto, agrégalo con cantidad inicial de 1
-        const newItem = {
-            product: product,
-            price: price,
-            imageUrl: imageUrl,
-            quantity: 1
-        };
-        cart.push(newItem);
+        cart.push({ id, product, price, quantity: 1 });
     }
 
-    // Mensaje de éxito sin cambiar de vista
     toastr.success('Producto añadido al carrito.', 'Éxito');
-    
-    // Quita o comenta esta línea para que no cambie la vista
-    // showCart();
 }
+
+
 
 
 
