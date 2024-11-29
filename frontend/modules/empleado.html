@@ -252,61 +252,95 @@ function llenarTablaProducto(data) {
         }
 
         // Mostrar pedidos
-        function showOrders() {
-            let orders = JSON.parse(localStorage.getItem('orders')) || [];
-            
-            let orderContent = `
-                <h2>Pedidos de Clientes</h2>
-                <ul class="order-list">
+ // Mostrar pedidos
+// Mostrar pedidos
+async function showOrders() {
+    try {
+        // Consumo del endpoint para obtener pedidos no entregados
+        const response = await fetch("http://localhost:8080/api/v1/HistorialPedidos/getHistorialPedidosSinEntregar");
+        if (!response.ok) {
+            throw new Error(`Error al obtener pedidos: ${response.statusText}`);
+        }
+
+        const orders = await response.json();
+
+        // Construcción del contenido
+        let orderContent = `
+            <h2>Pedidos de Clientes</h2>
+            <ul class="order-list">
+        `;
+
+        orders.forEach(order => {
+            orderContent += `
+                <li>
+                    <h3>Pedido #${order.pedidos.id}</h3>
+                    <p><strong>Cliente:</strong> ${order.usuarios.nombre}</p>
+                    <p><strong>Estado:</strong>
+                        <select onchange="updateOrderStatus(${order.pedidos.id}, '${order.fechaPedido}', ${order.usuarios.id}, this.value)">
+                            <option value="En preparación" ${order.pedidos.estado === 'En preparación' ? 'selected' : ''}>En preparación</option>
+                            <option value="En camino" ${order.pedidos.estado === 'En camino' ? 'selected' : ''}>En camino</option>
+                            <option value="Entregado" ${order.pedidos.estado === 'Entregado' ? 'selected' : ''}>Entregado</option>
+                        </select>
+                    </p>
+                    <ul>
+                        <li><strong>Fecha del Pedido:</strong> ${new Date(order.fechaPedido).toLocaleDateString('es-ES')}</li>
+                    </ul>
+                </li>
             `;
+        });
 
-            orders.forEach((order) => {
-                orderContent += `
-                    <li>
-                        <h3>Pedido #${order.id}</h3>
-                        <p><strong>Estado:</strong>
-                            <select onchange="updateOrderStatus(${order.id}, this.value)">
-                                <option value="En preparación" ${order.status === 'En preparación' ? 'selected' : ''}>En preparación</option>
-                                <option value="En camino" ${order.status === 'En camino' ? 'selected' : ''}>En camino</option>
-                                <option value="Entregado" ${order.status === 'Entregado' ? 'selected' : ''}>Entregado</option>
-                            </select>
-                        </p>
-                        <ul>
-                            ${order.items.map(item => `<li>${item.product} - $${item.price}</li>`).join('')}
-                        </ul>
-                    </li>
-                `;
-            });
+        orderContent += `</ul>`;
 
-            orderContent += `</ul>`;
+        // Mostrar en el contenedor
+        document.getElementById('content').innerHTML = orderContent;
+    } catch (error) {
+        console.error(error);
+        document.getElementById('content').innerHTML = `<p>Error al cargar los pedidos. Inténtalo más tarde.</p>`;
+    }
+}
 
-            document.getElementById('content').innerHTML = orderContent;
-        }
 
-        // Actualizar el estado de un pedido
-        function updateOrderStatus(orderId, newStatus) {
-            let orders = JSON.parse(localStorage.getItem('orders')) || [];
-            let orderHistory = JSON.parse(localStorage.getItem('orderHistory')) || [];
 
-            orders = orders.map(order => {
-                if (order.id === orderId) {
-                    order.status = newStatus;
 
-                    if (newStatus === "Entregado") {
-                        orderHistory.push(order);
-                    }
+// Actualizar el estado de un pedido
+async function updateOrderStatus(orderId, fechaPedido, userId, newStatus) {
+    try {
+        // Crear objeto de actualización
+        const updatedOrder = {
+            pedidos: {
+                id: orderId,
+                estado: newStatus,
+                fechaPedido: fechaPedido, // Fecha original del pedido
+                usuarios: {
+                    id: userId // ID del cliente
                 }
-                return order;
-            });
+            }
+        };
 
-            orders = orders.filter(order => order.status !== "Entregado");
+        // Enviar la actualización al backend
+        const response = await fetch(`http://localhost:8080/api/v1/Pedidos/guardarPedidoDetalle`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(updatedOrder)
+        });
 
-            localStorage.setItem('orders', JSON.stringify(orders));
-            localStorage.setItem('orderHistory', JSON.stringify(orderHistory));
-
-            toastr.success('Estado de pedido actualizado.', 'Éxito');
-            showOrders();
+        if (!response.ok) {
+            throw new Error(`Error al actualizar el estado del pedido: ${response.statusText}`);
         }
+
+        // Notificar éxito al usuario
+        toastr.success('Estado de pedido actualizado.', 'Éxito');
+
+        // Recargar la lista de pedidos
+        showOrders();
+    } catch (error) {
+        console.error(error);
+        toastr.error('Error al actualizar el estado del pedido.', 'Error');
+    }
+}
+
 
         // Cerrar sesión
         function logout() {

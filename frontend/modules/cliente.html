@@ -78,7 +78,7 @@ if (userId) {
     document.getElementById('userId').textContent = userId;
 } else {
     console.error("No se encontró un valor para 'Id' en localStorage.");
-}
+} 
 
 // Mostrar perfil de usuario
 async function showProfile() {
@@ -123,7 +123,7 @@ async function showProfile() {
         console.error(error);
         toastr.error("No se pudo cargar el perfil del usuario.", "Error");
     }
-}
+} 
 
 // Función para abrir el modal de edición
 function openEditModal(userId) {
@@ -186,6 +186,8 @@ document.getElementById('editProfileForm').addEventListener('submit', async func
         toastr.error('No se pudo actualizar el perfil.', 'Error');
     }
 });
+
+let cart = []; // Carrito inicializado como un arreglo vacío
 
 // Llama a la función para mostrar el perfil al cargar la página
 showProfile();
@@ -272,7 +274,17 @@ function llenarTablaProducto(data) {
     });
 }
 
+        // Función de búsqueda en stock
+        function searchTable(tableId, searchInputId) {
+            const searchInput = document.getElementById(searchInputId).value.toLowerCase();
+            const rows = document.querySelectorAll(`#${tableId} tbody tr`);
 
+            rows.forEach(row => {
+                const cells = row.getElementsByTagName('td');
+                const matches = Array.from(cells).some(cell => cell.textContent.toLowerCase().includes(searchInput));
+                row.style.display = matches ? '' : 'none';
+            });
+        }
 
 // Carrito global
 
@@ -316,23 +328,23 @@ function groupCartItems(cart) {
 // Función para aumentar la cantidad de un producto
 // Función para aumentar la cantidad de un producto
 function increaseQuantity(productName) {
+    cart.map((producto) => {
+        producto.product === productName
+        ? {...producto, quantity: producto.quantity++}
+        : producto;
+    })
     const item = cart.find(item => item.product === productName);
-    if (item) {
-        item.quantity += 1; // Incrementa la cantidad
-    }
+    console.log(item);
     showCart(); // Actualizar el carrito
 }
 
 // Función para disminuir la cantidad de un producto
 function decreaseQuantity(productName) {
-    const item = cart.find(item => item.product === productName);
-    if (item) {
-        if (item.quantity > 1) {
-            item.quantity -= 1; // Disminuye la cantidad
-        } else {
-            cart = cart.filter(item => item.product !== productName); // Elimina el producto si la cantidad es 1
-        }
-    }
+    cart.map((producto) => {
+        producto.product === productName
+        ? {...producto, quantity: producto.quantity--}
+        : producto;
+    })
     showCart(); // Actualizar el carrito
 }
 
@@ -342,6 +354,7 @@ let cartPage = 1; // Nueva variable específica para el carrito
 const itemsPerPage = 5; // Productos por página en el carrito
 
 // Mostrar el carrito de compras con paginación
+// Mostrar el carrito de compras con paginación y control de cantidad
 // Mostrar el carrito de compras con paginación y control de cantidad
 function showCart() {
     const totalAmount = cart.reduce((acc, item) => acc + (item.price * item.quantity), 0);
@@ -365,10 +378,51 @@ function showCart() {
                 </li>`
             ).join('')}
             ${cart.length > 0 ? '</ul><div class="total">Total: $' + totalAmount.toLocaleString('es-ES', { minimumFractionDigits: 0 }) + '</div><button class="order-button" onclick="placeOrder()">Realizar Pedido</button>' : ''}
+                                                                                                                                                                                                                                
         </section>`;
 
     document.getElementById('content').innerHTML = cartContent;
 }
+
+
+// Función para cambiar de página en el carrito
+function changeCartPage(page) {
+    cartPage = page;
+    showCart();
+}
+
+
+// Función para eliminar completamente un producto del carrito
+function removeFromCart(productName) {
+    cart = cart.filter(item => item.product !== productName); // Elimina completamente el producto
+    showCart(); // Vuelve a mostrar el carrito actualizado
+    toastr.info('Producto eliminado del carrito.', 'Información'); // Mensaje de confirmación
+}
+
+
+
+
+
+// Función para cambiar de página
+function changePage(page) {
+    currentPage = page;
+    showCart();
+}
+// Función para agrupar productos por cantidad en el pedido
+function groupCartItemsForOrder(cart) {
+    const groupedItems = {};
+
+    cart.forEach(item => {
+        if (groupedItems[item.product]) {
+            groupedItems[item.product].quantity += 1; // Incrementar la cantidad
+        } else {
+            groupedItems[item.product] = { ...item, quantity: 1 }; // Inicializar con cantidad 1
+        }
+    });
+
+    return Object.values(groupedItems); // Convertir el objeto en un array
+}
+
 
 
 
@@ -412,23 +466,65 @@ function groupCartItemsForOrder(cart) {
 }
 
 // Realizar pedido
+// Función para realizar un pedido
 function placeOrder() {
     const orders = JSON.parse(localStorage.getItem('orders')) || [];
-    const newOrder = {
-        id: orders.length + 1,
-        items: [...cart],
-        status: 'Pendiente'
-    };
-
+    const newOrder = cart.map((prospectOrder) => {
+        const totalPriceOrder = prospectOrder.price * prospectOrder.quantity;
+        return {
+            cantidad: prospectOrder.quantity,
+            precio: totalPriceOrder,
+            subtotal: prospectOrder.price, 
+            pedidos: {
+                fechaPedido: "2024-10-18",
+                estado: "En preparacion",
+                total: totalPriceOrder,
+                usuarios: {
+                    id: userId,
+                },
+            },
+            productos: {
+                id: prospectOrder.id,
+            },
+        };
+    });
+    console.log(newOrder);
     orders.push(newOrder);
     localStorage.setItem('orders', JSON.stringify(orders));
 
-    alert(newOrder.items.cart);
+    fetch("http://localhost:8080/api/v1/Pedidos/guardarPedidoDetalle", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(newOrder)
+            
 
-    cart = [];  // Vaciar el carrito después de realizar el pedido
-    showCart(); // Actualizar la vista del carrito
-    checkOrderStatus(); // Mostrar el estado del pedido
+    })
+
+        .then(hola => {
+            console.log(hola);
+            cart = [];  // Vaciar el carrito después de realizar el pedido
+            showCart(); // Actualizar la vista del carrito
+            checkOrderStatus(); // Mostrar el estado del pedido
+            /* 
+                <div class="order-item">
+                    <h3>Pedido #${order.pedidos.id}</h3>
+                    <ul>
+                        <li>${order.productos.nombre} x${order.cantidad} - $${parseFloat(order.precio).toLocaleString('es-ES', { minimumFractionDigits: 2 })}</li>
+                    </ul>
+                    <p><strong>Total:</strong> $${parseFloat(order.subtotal).toLocaleString('es-ES', { minimumFractionDigits: 2 })}</p>
+                    <p><strong>Estado:</strong> <span>${order.pedidos.estado || "Desconocido"}</span></p>
+                </div>
+            */
+        })
+
 }
+
+
+
+
+
 
 // Ver estado de pedidos (sin imagen)
 // Variables de paginación para pedidos
@@ -437,50 +533,69 @@ const orderItemsPerPage = 4;
 
 // Ver estado de pedidos con paginación
 // Ver estado de pedidos con paginación
-function checkOrderStatus() {
-    let orders = JSON.parse(localStorage.getItem('orders')) || [];
-    const activeOrders = orders.filter(order => order.status !== 'Entregado');
 
-    const totalOrderItems = activeOrders.length;
-    const totalOrderPages = Math.ceil(totalOrderItems / orderItemsPerPage);
 
-    const startIndex = (currentOrderPage - 1) * orderItemsPerPage;
-    const endIndex = Math.min(startIndex + orderItemsPerPage, totalOrderItems);
-    
-    const paginatedOrders = activeOrders.slice(startIndex, endIndex);
+async function checkOrderStatus() {
+    try {
+        // Realiza la solicitud GET al endpoint de pedidos
+        const response = await fetch(`http://localhost:8080/api/v1/Pedidos/getPedidosSinEntregarCliente/${userId}`);
+        
+        if (!response.ok) {
+            throw new Error(`Error al obtener los pedidos: ${response.statusText}`);
+        }
 
-    let orderStatusContent = `
-        <section class="order-status-section">
-            <h2 class="section-title">Estado de los Pedidos</h2>
-            ${paginatedOrders.length === 0 ? '<p>No tienes pedidos realizados.</p>' : '<div class="order-status-grid">'}
-            ${paginatedOrders.map(order => {
-                const orderTotal = order.items.reduce((acc, item) => acc + item.price * item.quantity, 0);
-                return `
+        const orders = await response.json();
+        console.log(orders);
+        
+        // Paginación
+        const totalOrderItems = orders.length;
+        const totalOrderPages = Math.ceil(totalOrderItems / orderItemsPerPage);
+        const startIndex = (currentOrderPage - 1) * orderItemsPerPage;
+        const endIndex = Math.min(startIndex + orderItemsPerPage, totalOrderItems);
+        const paginatedOrders = orders.slice(startIndex, endIndex);
+
+        let orderStatusContent = `
+            <section class="order-status-section">
+                <h2 class="section-title">Estado de los Pedidos</h2>
+                ${paginatedOrders.length === 0 ? '<p>No tienes pedidos realizados.</p>' : '<div class="order-status-grid">'}
+                ${paginatedOrders.map(order => `
                     <div class="order-item">
-                        <h3>Pedido #${order.id}</h3>
+                        <h3>Pedido #${order.pedidos.id}</h3>
                         <ul>
-                            ${order.items.map(item => 
-                                `<li>${item.product} x${item.quantity} - $${item.price}</li>`
-                            ).join('')}
+                            <li><strong>Producto:</strong> ${order.productos.nombre}</li>
                         </ul>
-                        <p><strong>Total:</strong> $${orderTotal.toLocaleString('es-ES', { minimumFractionDigits: 0 })}</p>
-                        <p><strong>Estado:</strong> <span>${order.status}</span></p>
-                    </div>`;
-            }).join('')}
-            ${paginatedOrders.length > 0 ? '</div>' : ''}
-        </section>`;
+                        <p><strong>Cantidad:</strong> <span>${order.cantidad}</span></p>
+                        <p><strong>Unidad:</strong> <span>$${parseFloat(order.subtotal).toLocaleString('es-ES', { minimumFractionDigits: 2 })}</span></p>
+                        <p><strong>Total:</strong> <span>$${parseFloat(order.precio).toLocaleString('es-ES', { minimumFractionDigits: 2 })}</span></p>
+                    </div>
+                `).join('')}
+                ${paginatedOrders.length > 0 ? '</div>' : ''}
+            </section>`;
 
-    orderStatusContent += `
-        <div class="pagination">
-            ${currentOrderPage > 1 ? `<button onclick="changeOrderPage(${currentOrderPage - 1})">Anterior</button>` : ''}
-            ${Array.from({ length: totalOrderPages }, (_, i) => 
-                `<button onclick="changeOrderPage(${i + 1})" ${currentOrderPage === i + 1 ? 'disabled' : ''}>${i + 1}</button>`
-            ).join('')}
-            ${currentOrderPage < totalOrderPages ? `<button onclick="changeOrderPage(${currentOrderPage + 1})">Siguiente</button>` : ''}
-        </div>`;
+        // Controles de paginación
+        orderStatusContent += `
+            <div class="pagination">
+                ${currentOrderPage > 1 ? `<button onclick="changeOrderPage(${currentOrderPage - 1})">Anterior</button>` : ''}
+                ${Array.from({ length: totalOrderPages }, (_, i) => 
+                    `<button onclick="changeOrderPage(${i + 1})" ${currentOrderPage === i + 1 ? 'disabled' : ''}>${i + 1}</button>`
+                ).join('')}
+                ${currentOrderPage < totalOrderPages ? `<button onclick="changeOrderPage(${currentOrderPage + 1})">Siguiente</button>` : ''}
+            </div>`;
 
-    document.getElementById('content').innerHTML = orderStatusContent;
+        // Inyecta el contenido en el contenedor
+        document.getElementById('content').innerHTML = orderStatusContent;
+    } catch (error) {
+        console.error(error);
+        document.getElementById('content').innerHTML = `<p>Error al cargar los pedidos. Inténtalo más tarde.</p>`;
+    }
 }
+
+
+
+
+
+
+
 
 
 // Función para cambiar de página en los pedidos activos
@@ -499,64 +614,135 @@ const historyItemsPerPage = 6;
 
 // Función para mostrar el historial de pedidos con paginación
 // Función para mostrar el historial de pedidos con paginación
-function showOrderHistory() {
-    let orderHistory = JSON.parse(localStorage.getItem('orderHistory')) || [];
-    const totalHistoryItems = orderHistory.length;
-    const totalHistoryPages = Math.ceil(totalHistoryItems / historyItemsPerPage);
+// function showOrderHistory() {
+//     let orderHistory = JSON.parse(localStorage.getItem('orderHistory')) || [];
+//     const totalHistoryItems = orderHistory.length;
+//     const totalHistoryPages = Math.ceil(totalHistoryItems / historyItemsPerPage);
 
-    const startIndex = (currentHistoryPage - 1) * historyItemsPerPage;
-    const endIndex = Math.min(startIndex + historyItemsPerPage, totalHistoryItems);
+//     const startIndex = (currentHistoryPage - 1) * historyItemsPerPage;
+//     const endIndex = Math.min(startIndex + historyItemsPerPage, totalHistoryItems);
     
-    const paginatedHistory = orderHistory.slice(startIndex, endIndex);
+//     const paginatedHistory = orderHistory.slice(startIndex, endIndex);
 
-    let historyContent = `
-        <section class="order-history-section">
-            <h2>Historial de Pedidos</h2>
-            <div class="order-history-grid">`; // Agregar contenedor para el grid
+//     let historyContent = `
+//         <section class="order-history-section">
+//             <h2>Historial de Pedidos</h2>
+//             <div class="order-history-grid">`; // Agregar contenedor para el grid
 
-    paginatedHistory.forEach((order) => {
-        const orderTotal = order.items.reduce((acc, item) => acc + item.price * item.quantity, 0);
+//     paginatedHistory.forEach((order) => {
+//         const orderTotal = order.items.reduce((acc, item) => acc + item.price * item.quantity, 0);
+//         historyContent += `
+//             <div class="order-history-item"> <!-- Cambiar a div para usar grid -->
+//                 <h3>Pedido #${order.id}</h3>
+//                 <ul>
+//                     ${order.items.map(item => 
+//                         `<li>${item.product} x${item.quantity} - $${item.price}</li>`
+//                     ).join('')}
+//                 </ul>
+//                 <p><strong>Total:</strong> $${orderTotal.toLocaleString('es-ES', { minimumFractionDigits: 0 })}</p>
+//             </div>`; // Cambiar cierre a div
+//     });
+
+//     historyContent += `
+//             </div>
+//         </section>`; // Cerrar el contenedor del grid
+
+//     historyContent += `
+//         <div class="pagination">
+//             ${currentHistoryPage > 1 ? `<button onclick="changeHistoryPage(${currentHistoryPage - 1})">Anterior</button>` : ''}
+//             ${Array.from({ length: totalHistoryPages }, (_, i) => 
+//                 `<button onclick="changeHistoryPage(${i + 1})" ${currentHistoryPage === i + 1 ? 'disabled' : ''}>${i + 1}</button>`
+//             ).join('')}
+//             ${currentHistoryPage < totalHistoryPages ? `<button onclick="changeHistoryPage(${currentHistoryPage + 1})">Siguiente</button>` : ''}
+//         </div>
+//         </section>`;
+
+//     document.getElementById('content').innerHTML = historyContent;
+// }
+
+
+// // Función para cambiar de página en el historial de pedidos
+// function changeHistoryPage(page) {
+//     currentHistoryPage = page;
+//     showOrderHistory();
+// }
+
+
+
+// // Función para cambiar de página
+// function changePage(page) {
+//     currentPage = page;
+//     showOrderHistory();
+// }
+
+async function showOrderHistory() {
+    try {
+        // Realiza la solicitud GET al endpoint
+        const response = await fetch(`http://localhost:8080/api/v1/HistorialPedidos/getHistorialPedidosSinEntregarCliente/${userId}`);
+
+        // Verifica si la solicitud fue exitosa
+        if (!response.ok) {
+            throw new Error(`Error al obtener el historial de pedidos: ${response.statusText}`);
+        }
+
+        // Parseamos la respuesta como JSON
+        const orderHistory = await response.json();
+
+        // Filtra los pedidos con estado "Entregado"
+        const deliveredOrders = orderHistory.filter(order => order.estado === "Entregado");
+
+        const totalHistoryItems = deliveredOrders.length;
+        const totalHistoryPages = Math.ceil(totalHistoryItems / historyItemsPerPage);
+
+        const startIndex = (currentHistoryPage - 1) * historyItemsPerPage;
+        const endIndex = Math.min(startIndex + historyItemsPerPage, totalHistoryItems);
+
+        const paginatedHistory = deliveredOrders.slice(startIndex, endIndex);
+
+        let historyContent = `
+            <section class="order-history-section">
+                <h2>Historial de Pedidos</h2>
+                ${paginatedHistory.length === 0 ? '<p>No tienes pedidos entregados.</p>' : '<div class="order-history-grid">'}
+        `;
+
+        paginatedHistory.forEach(order => {
+            historyContent += `
+                <div class="order-history-item">
+                    <h3>Pedido #${order.id}</h3>
+                    <p><strong>Fecha:</strong> ${new Date(order.fechaPedido).toLocaleDateString('es-ES')}</p>
+                    <p><strong>Estado:</strong> ${order.estado}</p>
+                    <p><strong>Cliente:</strong> ${order.usuarios.nombre}</p>
+                </div>
+            `;
+        });
+
         historyContent += `
-            <div class="order-history-item"> <!-- Cambiar a div para usar grid -->
-                <h3>Pedido #${order.id}</h3>
-                <ul>
-                    ${order.items.map(item => 
-                        `<li>${item.product} x${item.quantity} - $${item.price}</li>`
-                    ).join('')}
-                </ul>
-                <p><strong>Total:</strong> $${orderTotal.toLocaleString('es-ES', { minimumFractionDigits: 0 })}</p>
-            </div>`; // Cambiar cierre a div
-    });
+                </div>
+            </section>
+        `;
 
-    historyContent += `
+        // Paginación
+        historyContent += `
+            <div class="pagination">
+                ${currentHistoryPage > 1 ? `<button onclick="changeHistoryPage(${currentHistoryPage - 1})">Anterior</button>` : ''}
+                ${Array.from({ length: totalHistoryPages }, (_, i) => 
+                    `<button onclick="changeHistoryPage(${i + 1})" ${currentHistoryPage === i + 1 ? 'disabled' : ''}>${i + 1}</button>`
+                ).join('')}
+                ${currentHistoryPage < totalHistoryPages ? `<button onclick="changeHistoryPage(${currentHistoryPage + 1})">Siguiente</button>` : ''}
             </div>
-        </section>`; // Cerrar el contenedor del grid
+        `;
 
-    historyContent += `
-        <div class="pagination">
-            ${currentHistoryPage > 1 ? `<button onclick="changeHistoryPage(${currentHistoryPage - 1})">Anterior</button>` : ''}
-            ${Array.from({ length: totalHistoryPages }, (_, i) => 
-                `<button onclick="changeHistoryPage(${i + 1})" ${currentHistoryPage === i + 1 ? 'disabled' : ''}>${i + 1}</button>`
-            ).join('')}
-            ${currentHistoryPage < totalHistoryPages ? `<button onclick="changeHistoryPage(${currentHistoryPage + 1})">Siguiente</button>` : ''}
-        </div>
-        </section>`;
-
-    document.getElementById('content').innerHTML = historyContent;
+        // Inyecta el contenido en el contenedor
+        document.getElementById('content').innerHTML = historyContent;
+    } catch (error) {
+        console.error(error);
+        document.getElementById('content').innerHTML = `<p>Error al cargar el historial de pedidos. Inténtalo más tarde.</p>`;
+    }
 }
-
 
 // Función para cambiar de página en el historial de pedidos
 function changeHistoryPage(page) {
     currentHistoryPage = page;
-    showOrderHistory();
-}
-
-
-
-// Función para cambiar de página
-function changePage(page) {
-    currentPage = page;
     showOrderHistory();
 }
 
