@@ -1,132 +1,136 @@
-DROP DATABASE IF EXISTS CAFSENA;
-CREATE DATABASE CAFSENA;
-USE CAFSENA;
+DROP DATABASE IF EXISTS OnnixDB;
+CREATE DATABASE OnnixDB;
+USE OnnixDB;
 
+-- Tabla de Roles
 CREATE TABLE Roles (
-    idRol INT AUTO_INCREMENT PRIMARY KEY,
+    id_Rol INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(20) NOT NULL UNIQUE,
     estado VARCHAR(10) NOT NULL
 );
 
+-- Tabla de Usuarios
 CREATE TABLE Usuarios (
-    idUsuario INT AUTO_INCREMENT PRIMARY KEY,
+    id_Usuario INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(50) NOT NULL,
     email VARCHAR(100) NOT NULL UNIQUE,
-    clave CHAR(32) NOT NULL,
-    idRol INT,
+    clave VARCHAR(32) NOT NULL,
     estado VARCHAR(10) NOT NULL,
-    FOREIGN KEY (idRol) REFERENCES Roles(idRol) ON DELETE CASCADE
+    id_Rol INT,
+    FOREIGN KEY (id_Rol) REFERENCES Roles(id_Rol) ON DELETE CASCADE
 );
 
+-- Tabla de Contacto
+CREATE TABLE Contacto (
+    id_Contacto INT AUTO_INCREMENT PRIMARY KEY,
+    telefono1 VARCHAR(15) NOT NULL,
+    telefono2 VARCHAR(15),
+    direccion VARCHAR(100),
+    estado VARCHAR(10) NOT NULL,
+    id_Usuario INT,
+    FOREIGN KEY (id_Usuario) REFERENCES Usuarios(id_Usuario) ON DELETE CASCADE
+);
+
+-- Tabla de Productos
 CREATE TABLE Productos (
-    idProducto INT AUTO_INCREMENT PRIMARY KEY,
+    id_Producto INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(50) NOT NULL,
     descripcion VARCHAR(255),
     precio DECIMAL(10, 2) NOT NULL,
     stock INT NOT NULL,
-    fechaAgregado DATE DEFAULT CURDATE(),
+    fecha_Agregado DATE NOT NULL,
+    ruta_Imagen VARCHAR(500),
     estado VARCHAR(10) NOT NULL
 );
 
+-- Tabla de Pedidos
 CREATE TABLE Pedidos (
-    idPedido INT AUTO_INCREMENT PRIMARY KEY,
-    idUsuario INT,
-    fechaPedido DATE DEFAULT CURDATE(),
+    id_Pedido INT AUTO_INCREMENT PRIMARY KEY,
+    fecha_Pedido DATE NOT NULL,
     estado VARCHAR(30) NOT NULL,
     total DECIMAL(10, 2) NOT NULL,
-    FOREIGN KEY (idUsuario) REFERENCES Usuarios(idUsuario) ON DELETE CASCADE
+    id_Usuario INT,
+    FOREIGN KEY (id_Usuario) REFERENCES Usuarios(id_Usuario) ON DELETE CASCADE
 );
 
-CREATE TABLE DetallesPedidos (
-    idDetalle INT AUTO_INCREMENT PRIMARY KEY,
-    idPedido INT,
-    idProducto INT,
+-- Tabla de Detalles de Pedidos
+CREATE TABLE Detalles_Pedidos (
+    id_Detalle INT AUTO_INCREMENT PRIMARY KEY,
     cantidad INT NOT NULL,
     precio DECIMAL(10, 2) NOT NULL,
     subtotal DECIMAL(10, 2) NOT NULL,
-    FOREIGN KEY (idPedido) REFERENCES Pedidos(idPedido) ON DELETE CASCADE,
-    FOREIGN KEY (idProducto) REFERENCES Productos(idProducto) ON DELETE CASCADE
+    id_Pedido INT,
+    id_Producto INT,
+    FOREIGN KEY (id_Pedido) REFERENCES Pedidos(id_Pedido) ON DELETE CASCADE,
+    FOREIGN KEY (id_Producto) REFERENCES Productos(id_Producto) ON DELETE CASCADE
 );
 
-CREATE TABLE RegistroPagos (
-    idPago INT AUTO_INCREMENT PRIMARY KEY,
-    idPedido INT,
-    metodoPago VARCHAR(30) NOT NULL,
-    fechaPago DATE DEFAULT CURDATE(),
+-- Tabla de Registro de Pagos
+CREATE TABLE Registro_Pagos (
+    id_Pago INT AUTO_INCREMENT PRIMARY KEY,
+    metodo_Pago VARCHAR(30) NOT NULL,
+    fecha_Pago DATE NOT NULL,
     monto DECIMAL(10, 2) NOT NULL,
-    detalleRegistro VARCHAR(255),
-    FOREIGN KEY (idPedido) REFERENCES Pedidos(idPedido) ON DELETE CASCADE
+    detalle_Registro VARCHAR(255),
+    id_Pedido INT,
+    FOREIGN KEY (id_Pedido) REFERENCES Pedidos(id_Pedido) ON DELETE CASCADE
 );
 
-CREATE TABLE HistorialPedidos (
-    idHistorial INT AUTO_INCREMENT PRIMARY KEY,
-    idUsuario INT,
-    idPedido INT,
-    fechaPedido DATE,
+-- Tabla de Historial de Pedidos
+CREATE TABLE Historial_Pedidos (
+    id_Historial INT AUTO_INCREMENT PRIMARY KEY,
+    fecha_Pedido DATE NOT NULL,
     estado VARCHAR(30) NOT NULL,
-    FOREIGN KEY (idUsuario) REFERENCES Usuarios(idUsuario) ON DELETE CASCADE,
-    FOREIGN KEY (idPedido) REFERENCES Pedidos(idPedido) ON DELETE CASCADE
+    id_Usuario INT NOT NULL,
+    id_Pedido INT NOT NULL,
+    FOREIGN KEY (id_Usuario) REFERENCES Usuarios(id_Usuario) ON DELETE CASCADE,
+    FOREIGN KEY (id_Pedido) REFERENCES Pedidos(id_Pedido) ON DELETE CASCADE
 );
 
-CREATE TABLE Contacto (
-    idContacto INT AUTO_INCREMENT PRIMARY KEY,
-    idUsuario INT,
-    telefono1 VARCHAR(15),
-    telefono2 VARCHAR(15),
-    direccion VARCHAR(100),
-    FOREIGN KEY (idUsuario) REFERENCES Usuarios(idUsuario) ON DELETE CASCADE
-);
-
+-- Insertar datos iniciales en Roles
 INSERT INTO Roles (nombre, estado) VALUES
 ('Admin', 'Activo'),
 ('Empleado', 'Activo'),
 ('Cliente', 'Activo');
 
-INSERT INTO Usuarios (nombre, email, clave, idRol, estado) VALUES
+-- Insertar datos iniciales en Usuarios
+INSERT INTO Usuarios (nombre, email, clave, id_Rol, estado) VALUES
 ('Juan Perez', 'juan.perez@example.com', MD5('password123'), 3, 'Activo'),
 ('Maria Gomez', 'maria.gomez@example.com', MD5('password123'), 3, 'Activo'),
 ('Pedro Martinez', 'pedro.martinez@example.com', MD5('password123'), 3, 'Activo'),
 ('Ana Rodriguez', 'ana.rodriguez@example.com', MD5('password123'), 3, 'Activo'),
 ('Carlos Sanchez', 'carlos.sanchez@example.com', MD5('password123'), 2, 'Inactivo');
 
-INSERT INTO Productos (nombre, descripcion, precio, stock, estado) VALUES
-('Caf  Premium', 'Caf  colombiano de alta calidad', 15000.00, 50, 'Activo'),
-('T  Verde', 'T  natural antioxidante', 8000.00, 30, 'Activo'),
-('Galletas de Avena', 'Galletas caseras con avena y miel', 5000.00, 100, 'Activo'),
-('Chocolate Caliente', 'Chocolate con leche', 12000.00, 25, 'Activo'),
-('Jugo Natural', 'Jugo de frutas frescas', 6000.00, 40, 'Inactivo');
+-- Insertar datos iniciales en Contacto
+INSERT INTO Contacto (id_Usuario, telefono1, telefono2, direccion, estado) VALUES
+(1, '3001234567', NULL, 'Calle 123 #45-67', 'Activo'),
+(2, '3102345678', NULL, 'Carrera 12 #34-56', 'Activo'),
+(3, '3203456789', NULL, 'Avenida 45 #67-89', 'Activo'),
+(4, '3304567890', NULL, 'Calle 56 #78-90', 'Activo'),
+(5, '3405678901', NULL, 'Carrera 23 #45-67', 'Activo');
 
-INSERT INTO Pedidos (idUsuario, estado, total) VALUES
-(1, 'En Preparacion', 35000.00),
-(2, 'En Preparacion', 18000.00),
+-- Insertar datos iniciales en Productos
+INSERT INTO Productos (nombre, descripcion, precio, stock, fecha_Agregado, ruta_Imagen, estado) VALUES
+('Café Premium', 'Café Colombiano de alta calidad', 1500.00, 50, CURDATE(), 'ruta_imagen_1.jpg', 'Activo'),
+('Tamal', 'Tamal Colombiano', 7000.00, 50, CURDATE(), 'ruta_imagen_2.jpg', 'Activo'),
+('Coca Cola', 'Coca Cola tamaño personal', 5000.00, 50, CURDATE(), 'ruta_imagen_3.jpg', 'Activo');
+
+-- Insertar datos iniciales en Pedidos
+INSERT INTO Pedidos (id_Usuario, estado, total) VALUES
+(1, 'En Preparación', 35000.00),
+(2, 'En Preparación', 18000.00),
 (3, 'Listo para Recoger', 23000.00),
 (4, 'Entregado', 25000.00),
-(5, 'En Preparacion', 12000.00);
+(5, 'En Preparación', 12000.00);
 
-INSERT INTO DetallesPedidos (idPedido, idProducto, cantidad, precio, subtotal) VALUES
-(1, 1, 2, 15000.00, 30000.00),
-(1, 2, 1, 8000.00, 8000.00),
-(2, 3, 3, 5000.00, 15000.00),
-(3, 4, 1, 12000.00, 12000.00),
-(4, 5, 2, 6000.00, 12000.00);
+-- Insertar datos iniciales en Detalles_Pedidos
+INSERT INTO Detalles_Pedidos (id_Pedido, id_Producto, cantidad, precio, subtotal) VALUES
+(1, 1, 2, 15000.00, 30000.00);
 
-INSERT INTO RegistroPagos (idPedido, metodoPago, monto, detalleRegistro) VALUES
-(1, 'Tarjeta de Credito', 35000.00, 'Pago realizado con tarjeta'),
-(2, 'Efectivo', 18000.00, 'Pago en tienda'),
-(3, 'Pago Movil', 23000.00, 'Pago desde app m vil'),
-(4, 'Tarjeta de Debito', 25000.00, 'Pago con d bito'),
-(5, 'Efectivo', 12000.00, 'Pago en tienda');
+-- Insertar datos iniciales en Registro_Pagos
+INSERT INTO Registro_Pagos (id_Pedido, metodo_Pago, monto, detalle_Registro) VALUES
+(1, 'Tarjeta de Crédito', 35000.00, 'Pago realizado con tarjeta');
 
-INSERT INTO HistorialPedidos (idUsuario, idPedido, fechaPedido, estado) VALUES
-(1, 1, '2024-10-01', 'Entregado'),
-(2, 2, '2024-10-02', 'Listo para Recoger'),
-(3, 3, '2024-10-03', 'En Preparacion'),
-(4, 4, '2024-10-04', 'En Preparacion'),
-(5, 5, '2024-10-05', 'Entregado');
-
-INSERT INTO Contacto (idUsuario, telefono1, telefono2, direccion) VALUES
-(1, '3001234567', NULL, 'Calle 123 #45-67'),
-(2, '3102345678', NULL, 'Carrera 12 #34-56'),
-(3, '3203456789', NULL, 'Avenida 45 #67-89'),
-(4, '3304567890', NULL, 'Calle 56 #78-90'),
-(5, '3405678901', NULL, 'Carrera 23 #45-67');
+-- Insertar datos iniciales en Historial_Pedidos
+INSERT INTO Historial_Pedidos (id_Usuario, id_Pedido, fecha_Pedido, estado) VALUES
+(1, 1, '2024-10-01', 'Entregado');
