@@ -9,138 +9,178 @@ body {
     min-height: 100vh;
     box-sizing: border-box;
 }
-        /* Estilos generales */
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #faf7e9;
-            margin: 0;
-            padding: 0;
-        }
 
-        header {
-            background-color: #4b2e1e;
-            color: white;
-            padding: 12px 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        header {
-            max-width: 100%;
-            box-sizing: border-box;
-        }
+/* Estilos generales */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #faf7e9;
+    margin: 0;
+    padding: 0;
+}
 
-        nav {
-            background-color: #7a5230;
-            flex-grow: 1;
-            margin-left: 20px; /* Añadimos un margen entre el logo y el nav */
-            border-radius: 5px;
-        }
+header {
+    background-color: #4b2e1e;
+    color: white;
+    padding: 12px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
 
-        nav ul {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-            display: flex;
-            justify-content: space-around; /* Distribuir las opciones de manera uniforme */
-            flex-grow: 1;
-        }
-        nav ul li {
-            margin: 0 15px;
-        }
-        
-        nav ul li a {
-            color: white;
-            text-decoration: none;
-            font-weight: bold;
-            padding: 15px 20px;
-            display: block;
-            transition: background-color 0.3s ease;
-        }
-        
-        nav ul li a:hover {
-            background-color: #573d2d;
-            border-radius: 0px;
-        }
+header {
+    max-width: 100%;
+    box-sizing: border-box;
+}
 
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-        
-        .section-title {
-            font-size: 24px;
-            color: #5a2e0a;
-            margin-bottom: 20px;
-            text-align: center;
-        }
-        
+nav {
+    background-color: #7a5230;
+    flex-grow: 1;
+    margin-left: 20px;
+    /* Añadimos un margen entre el logo y el nav */
+    border-radius: 5px;
+}
 
-        .order-status {
-            background-color: #fff7e6;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            max-width: 100%;
-            margin: 0 auto;
-        }
+nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    justify-content: space-around;
+    /* Distribuir las opciones de manera uniforme */
+    flex-grow: 1;
+}
 
-        .order-item {
-            background-color: #ffffff;
-            padding: 15px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-        }
+nav ul li {
+    margin: 0 15px;
+}
 
-        .order-item h3 {
-            margin-top: 0;
-            font-size: 20px;
-            color: #4d2e0b;
-        }
+nav ul li a {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    padding: 15px 20px;
+    display: block;
+    transition: background-color 0.3s ease;
+}
 
-        .order-item ul {
-            list-style-type: none;
-            padding: 0;
-        }
+nav ul li a:hover {
+    background-color: #573d2d;
+    border-radius: 0px;
+}
+.pagination-button {
+    background-color: #f0f0f0; /* Color de fondo */
+    border: 1px solid #ccc; /* Borde suave */
+    color: #333; /* Color del texto */
+    padding: 8px 16px; /* Relleno para hacerlo más grande */
+    margin: 5px; /* Espacio entre los botones */
+    border-radius: 5px; /* Bordes redondeados */
+    cursor: pointer; /* Cambia el cursor al pasar por encima */
+    font-size: 14px; /* Tamaño de fuente */
+    transition: background-color 0.3s ease, transform 0.2s ease; /* Transición suave */
+}
 
-        .order-item li {
-            font-size: 16px;
-            color: #5a2e0a;
-            margin: 5px 0;
-        }
+/* Estilo cuando el botón está activo (seleccionado) */
+.pagination-button.active {
+    background-color: #007bff; /* Color de fondo azul para el botón activo */
+    color: white; /* Texto blanco */
+    font-weight: bold; /* Resaltar texto */
+}
 
-        .order-item p {
-            font-weight: bold;
-            color: #4d2e0b;
-        }
+/* Efecto al pasar el ratón sobre los botones */
+.pagination-button:hover {
+    background-color: #e0e0e0; /* Fondo gris claro al pasar el ratón */
+    transform: scale(1.1); /* Aumentar ligeramente el tamaño */
+}
 
-        .order-item p span {
-            font-weight: normal;
-            color: #5a2e0a;
-        }
+/* Asegura que los botones estén centrados y en una línea */
+#pagination {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f7e9cc;
+    padding: 40px;
+    margin: 20px 0;
+}
 
-        .item-image {
-            width: 50px;
-            height: 50px;
-            object-fit: cover;
-            margin-right: 10px;
-            border-radius: 5px;
-        }
 
-        .order-item h4 {
-            margin: 0;
-        }
+.section-title {
+    font-size: 24px;
+    color: #5a2e0a;
+    margin-bottom: 20px;
+    text-align: center;
+}
 
-        .item-details {
-            display: flex;
-            align-items: center;
-        }
 
-        .item-info {
-            display: flex;
-            flex-direction: column;
-        }
+.order-status {
+    background-color: #fff7e6;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 100%;
+    margin: 0 auto;
+}
+
+.order-item {
+    background-color: #ffffff;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.order-item h3 {
+    margin-top: 0;
+    font-size: 20px;
+    color: #4d2e0b;
+}
+
+.order-item ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.order-item li {
+    font-size: 16px;
+    color: #5a2e0a;
+    margin: 5px 0;
+}
+
+.order-item p {
+    font-weight: bold;
+    color: #4d2e0b;
+}
+
+.order-item p span {
+    font-weight: normal;
+    color: #5a2e0a;
+}
+
+.item-image {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    margin-right: 10px;
+    border-radius: 5px;
+}
+
+.order-item h4 {
+    margin: 0;
+}
+
+.item-details {
+    display: flex;
+    align-items: center;
+}
+
+.item-info {
+    display: flex;
+    flex-direction: column;
+}
+
 header {
     background-color: #4b2e1e;
     color: white;
@@ -168,7 +208,8 @@ header {
     padding: 12px 20px;
     cursor: pointer;
     transition: background-color 0.3s ease;
-    margin-left: 20px; /* Añadir espacio entre el nav y el botón */
+    margin-left: 20px;
+    /* Añadir espacio entre el nav y el botón */
     border-radius: 5px;
 }
 
@@ -176,53 +217,60 @@ header {
     background-color: #573d2d;
 }
 
-#content {
-    background-color: #fff7e6;
-    padding: 40px;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    margin: 20px 0;
-}
 
-h1, h2 {
+
+h1,
+h2 {
     color: #5a2e0a;
 }
 
-.products, .orders {
+.products,
+.orders {
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
     width: 100%;
 }
 
-.product, .order {
+.product,
+.order {
     background-color: #fff;
     border: 1px solid #ddd;
     border-radius: 5px;
     padding: 10px;
     text-align: center;
-    width: 170px; /* Ajusta el tamaño del contenedor */
+    width: 170px;
+    /* Ajusta el tamaño del contenedor */
     box-sizing: border-box;
 }
 
-.product img, .order img {
-    width: 100%; /* La imagen se ajustará al contenedor */
-    height: auto; /* Mantendrá la proporción original */
+.product img,
+.order img {
+    width: 100%;
+    /* La imagen se ajustará al contenedor */
+    height: auto;
+    /* Mantendrá la proporción original */
     border-radius: 5px;
 }
 
-.product-title, .order-title {
+.product-title,
+.order-title {
     font-size: 14px;
     margin: 10px 0;
     color: #4b2e1e;
 }
 
-.product-price, .product-old-price, .product-discount, .order-price, .order-status {
+.product-price,
+.product-old-price,
+.product-discount,
+.order-price,
+.order-status {
     font-size: 12px;
     margin: 5px 0;
 }
 
-.product-button, .order-button {
+.product-button,
+.order-button {
     display: inline-block;
     padding: 5px 10px;
     background-color: #7a5230;
@@ -232,7 +280,8 @@ h1, h2 {
     transition: background-color 0.3s ease;
 }
 
-.product-button:hover, .order-button:hover {
+.product-button:hover,
+.order-button:hover {
     background-color: #573d2d;
 }
 
@@ -276,6 +325,7 @@ footer {
         width: 90%;
     }
 }
+
 .cart-section {
     background-color: white;
     padding: 20px;
@@ -360,6 +410,7 @@ footer {
 .order-button:hover {
     background-color: #573d2d;
 }
+
 .order-history-section {
     padding: 20px;
 }
@@ -401,7 +452,9 @@ footer {
     background-color: #ccc;
     cursor: not-allowed;
 }
-.order-history-section, .order-status-section {
+
+.order-history-section,
+.order-status-section {
     background-color: #fff;
     padding: 20px;
     border-radius: 10px;
@@ -409,17 +462,20 @@ footer {
     margin-bottom: 20px;
 }
 
-.history-list, .order-list {
+.history-list,
+.order-list {
     list-style-type: none;
     padding: 0;
 }
 
-.history-item, .order-item {
+.history-item,
+.order-item {
     padding: 10px;
     border-bottom: 1px solid #ddd;
 }
 
-.item-details, .order-item h3 {
+.item-details,
+.order-item h3 {
     font-size: 16px;
 }
 
@@ -443,21 +499,25 @@ footer {
     background-color: #ddd;
     cursor: not-allowed;
 }
+
 /* CSS para estilizar los pedidos en dos columnas */
 .order-history-section {
     background-color: #fafafa;
     border: 1px solid #ddd;
     padding: 20px;
     border-radius: 5px;
-    max-width: 1000px; /* Aumentar el ancho para acomodar 2 columnas */
+    max-width: 1000px;
+    /* Aumentar el ancho para acomodar 2 columnas */
     margin: 0 auto;
     font-family: Arial, sans-serif;
 }
 
 .order-history-grid {
     display: grid;
-    grid-template-columns: repeat(2, 1fr); /* 2 columnas */
-    gap: 20px; /* Espacio entre columnas */
+    grid-template-columns: repeat(2, 1fr);
+    /* 2 columnas */
+    gap: 20px;
+    /* Espacio entre columnas */
 }
 
 .order-history-item {
@@ -484,23 +544,33 @@ footer {
 .order-history-item p {
     margin: 5px 0;
 }
+
 .history-list {
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-between; /* Para dejar espacio entre columnas */
+    justify-content: space-between;
+    /* Para dejar espacio entre columnas */
 }
 
 .history-item {
-    width: calc(50% - 10px); /* Dos columnas con un pequeño espacio entre ellas */
-    margin-bottom: 20px; /* Espacio entre filas */
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Opción para darle un pequeño efecto de sombra */
-    padding: 10px; /* Espacio interno */
-    border-radius: 5px; /* Bordes redondeados */
+    width: calc(50% - 10px);
+    /* Dos columnas con un pequeño espacio entre ellas */
+    margin-bottom: 20px;
+    /* Espacio entre filas */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    /* Opción para darle un pequeño efecto de sombra */
+    padding: 10px;
+    /* Espacio interno */
+    border-radius: 5px;
+    /* Bordes redondeados */
 }
+
 .order-status-grid {
     display: grid;
-    grid-template-columns: repeat(2, 1fr); /* 2 columnas */
-    gap: 20px; /* Espacio entre columnas */
+    grid-template-columns: repeat(2, 1fr);
+    /* 2 columnas */
+    gap: 20px;
+    /* Espacio entre columnas */
 }
 
 .order-item {
@@ -509,6 +579,7 @@ footer {
     border: 1px solid #ccc;
     border-radius: 5px;
 }
+
 .profile {
     max-width: 600px;
     margin: 20px auto;
@@ -558,127 +629,144 @@ footer {
     padding: 10px 20px;
     border: none;
     border-radius: 5px;
-    background-color: #7a5230; /* Color de fondo */
-    color: white; /* Color del texto */
+    background-color: #7a5230;
+    /* Color de fondo */
+    color: white;
+    /* Color del texto */
     font-size: 16px;
     cursor: pointer;
     transition: background-color 0.3s ease;
 }
 
 .btn:hover {
-    background-color: #7a5230; /* Color de fondo al pasar el mouse */
+    background-color: #7a5230;
+    /* Color de fondo al pasar el mouse */
 }
-        /* Estilos básicos */
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-        .menu-section {
-            margin-bottom: 40px;
-        }
-        .search-bar {
-            margin-bottom: 10px;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-        th, td {
-            padding: 8px;
-            border: 1px solid #ccc;
-            text-align: left;
-        }
-        th {
-            background-color: #f4f4f4;
-        }
-        button {
-            margin: 5px;
-            padding: 5px 10px;
-        }
-                /* Estilo básico para las pestañas */
-                .menu-section {
-                    display: none;
-                }
-        
-                .active {
-                    display: block;
-                }
-        
-                .tab-buttons {
-                    margin-bottom: 20px;
-                }
-        
-                .tab-button {
-                    cursor: pointer;
-                    padding: 10px 15px;
-                    margin-right: 5px;
-                    background-color: #7a5230;
-                    color: white;
-                    border: none;
-                    border-radius: 5px;
-                }
-        
-                .tab-button:hover {
-                    background-color: #573d2d;
-                }
-        
-                .logout-button {
-                    cursor: pointer;
-                    padding: 10px 15px;
-                    background-color: #7a5230;
-                    color: white;
-                    border: none;
-                    border-radius: 5px;
-                }
-        
-                .logout-button:hover {
-                    background-color: #573d2d;
-                }
-                .modal {
-                    display: none; /* Ocultar el modal por defecto */
-                    position: fixed; 
-                    z-index: 1; 
-                    left: 0;
-                    top: 0;
-                    width: 100%; 
-                    height: 100%; 
-                    overflow: auto; 
-                    background-color: rgb(0,0,0); 
-                    background-color: rgba(0,0,0,0.4); 
-                }
-                
-                .modal-content {
-                    background-color: #fefefe;
-                    margin: 15% auto; 
-                    padding: 20px;
-                    border: 1px solid #888;
-                    width: 80%; 
-                }
-                
-                .close {
-                    color: #aaa;
-                    float: right;
-                    font-size: 28px;
-                    font-weight: bold;
-                }
-                
-                .close:hover,
-                .close:focus {
-                    color: black;
-                    text-decoration: none;
-                    cursor: pointer;
-                }
-                .menu-section {
-                    display: none; /* Ocultar todas las secciones por defecto */
-                }
-                
-                .menu-section.active {
-                    display: block; /* Solo la sección activa será visible */
-                }
-               
-  /* Estilos para el fondo del modal */
-  .modal {
+
+/* Estilos básicos */
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.menu-section {
+    margin-bottom: 40px;
+}
+
+.search-bar {
+    margin-bottom: 10px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th,
+td {
+    padding: 8px;
+    border: 1px solid #ccc;
+    text-align: left;
+}
+
+th {
+    background-color: #f4f4f4;
+}
+
+button {
+    margin: 5px;
+    padding: 5px 10px;
+}
+
+/* Estilo básico para las pestañas */
+.menu-section {
+    display: none;
+}
+
+.active {
+    display: block;
+}
+
+.tab-buttons {
+    margin-bottom: 20px;
+}
+
+.tab-button {
+    cursor: pointer;
+    padding: 10px 15px;
+    margin-right: 5px;
+    background-color: #7a5230;
+    color: white;
+    border: none;
+    border-radius: 5px;
+}
+
+.tab-button:hover {
+    background-color: #573d2d;
+}
+
+.logout-button {
+    cursor: pointer;
+    padding: 10px 15px;
+    background-color: #7a5230;
+    color: white;
+    border: none;
+    border-radius: 5px;
+}
+
+.logout-button:hover {
+    background-color: #573d2d;
+}
+
+.modal {
+    display: none;
+    /* Ocultar el modal por defecto */
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgb(0, 0, 0);
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.menu-section {
+    display: none;
+    /* Ocultar todas las secciones por defecto */
+}
+
+.menu-section.active {
+    display: block;
+    /* Solo la sección activa será visible */
+}
+
+/* Estilos para el fondo del modal */
+.modal {
     display: none;
     position: fixed;
     top: 0;
@@ -688,10 +776,10 @@ footer {
     background-color: rgba(0, 0, 0, 0.6);
     justify-content: center;
     align-items: center;
-  }
+}
 
-  /* Estilos para el contenido del modal */
-  .modal-content {
+/* Estilos para el contenido del modal */
+.modal-content {
     background-color: #fff;
     border-radius: 10px;
     padding: 30px;
@@ -701,22 +789,23 @@ footer {
     transform: translateY(0);
     transition: transform 0.3s ease-in-out;
     animation: slideIn 0.3s forwards;
-  }
+}
 
-  /* Animación de entrada */
-  @keyframes slideIn {
+/* Animación de entrada */
+@keyframes slideIn {
     from {
-      transform: translateY(-50px);
-      opacity: 0;
+        transform: translateY(-50px);
+        opacity: 0;
     }
-    to {
-      transform: translateY(0);
-      opacity: 1;
-    }
-  }
 
-  /* Estilo para el botón de cierre */
-  .close {
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+/* Estilo para el botón de cierre */
+.close {
     color: #aaa;
     font-size: 24px;
     font-weight: bold;
@@ -724,30 +813,30 @@ footer {
     top: 15px;
     right: 20px;
     cursor: pointer;
-  }
+}
 
-  .close:hover {
+.close:hover {
     color: #333;
-  }
+}
 
-  /* Estilo para el título */
-  .modal-content h2 {
+/* Estilo para el título */
+.modal-content h2 {
     margin-bottom: 20px;
     font-size: 24px;
     color: #333;
-  }
+}
 
-  /* Estilos para las etiquetas y los inputs */
-  label {
+/* Estilos para las etiquetas y los inputs */
+label {
     display: block;
     margin-bottom: 8px;
     font-size: 14px;
     color: #555;
-  }
+}
 
-  input[type="text"],
-  input[type="email"],
-  select {
+input[type="text"],
+input[type="email"],
+select {
     width: 100%;
     padding: 10px;
     margin-bottom: 20px;
@@ -755,16 +844,16 @@ footer {
     border: 1px solid #ddd;
     box-sizing: border-box;
     transition: border-color 0.3s;
-  }
+}
 
-  input:focus,
-  select:focus {
+input:focus,
+select:focus {
     border-color: #7a5230;
     outline: none;
-  }
+}
 
-  /* Estilos para el botón */
-  button[type="submit"] {
+/* Estilos para el botón */
+button[type="submit"] {
     background-color: #7a5230;
     color: #fff;
     padding: 12px 20px;
@@ -774,11 +863,11 @@ footer {
     font-size: 16px;
     transition: background-color 0.3s;
     width: 100%;
-  }
+}
 
-  button[type="submit"]:hover {
+button[type="submit"]:hover {
     background-color: #7a5230;
-  }
+}
 
 /* Estilos específicos del modal */
 #addProductModal {
@@ -791,10 +880,11 @@ footer {
     background-color: rgba(0, 0, 0, 0.6);
     justify-content: center;
     align-items: center;
-    z-index: 1000; /* Asegúrate de que esté por encima de otros elementos */
-  }
-  
-  #addProductModal .modal-content {
+    z-index: 1000;
+    /* Asegúrate de que esté por encima de otros elementos */
+}
+
+#addProductModal .modal-content {
     background-color: #fff;
     border-radius: 10px;
     padding: 30px;
@@ -803,20 +893,21 @@ footer {
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
     position: relative;
     animation: slideIn 0.3s forwards;
-  }
-  
-  @keyframes slideIn {
+}
+
+@keyframes slideIn {
     from {
-      transform: translateY(-20px);
-      opacity: 0;
+        transform: translateY(-20px);
+        opacity: 0;
     }
+
     to {
-      transform: translateY(0);
-      opacity: 1;
+        transform: translateY(0);
+        opacity: 1;
     }
-  }
-  
-  #addProductModal .close {
+}
+
+#addProductModal .close {
     color: #555;
     font-size: 20px;
     font-weight: bold;
@@ -824,28 +915,28 @@ footer {
     top: 10px;
     right: 15px;
     cursor: pointer;
-  }
-  
-  #addProductModal .close:hover {
+}
+
+#addProductModal .close:hover {
     color: #000;
-  }
-  
-  #addProductModal h3 {
+}
+
+#addProductModal h3 {
     margin-bottom: 20px;
     font-size: 22px;
     color: #333;
     font-weight: bold;
-  }
-  
-  #addProductModal label {
+}
+
+#addProductModal label {
     display: block;
     margin-bottom: 6px;
     font-size: 14px;
     color: #666;
-  }
-  
-  #addProductModal input[type="text"],
-  #addProductModal input[type="number"] {
+}
+
+#addProductModal input[type="text"],
+#addProductModal input[type="number"] {
     width: 100%;
     padding: 10px;
     margin-bottom: 15px;
@@ -853,15 +944,15 @@ footer {
     border-radius: 5px;
     box-sizing: border-box;
     transition: border-color 0.3s;
-  }
-  
-  #addProductModal input[type="text"]:focus,
-  #addProductModal input[type="number"]:focus {
+}
+
+#addProductModal input[type="text"]:focus,
+#addProductModal input[type="number"]:focus {
     border-color: #7a5230;
     outline: none;
-  }
-  
-  #addProductModal button {
+}
+
+#addProductModal button {
     background-color: #7a5230;
     color: #fff;
     padding: 12px 20px;
@@ -871,12 +962,13 @@ footer {
     font-size: 16px;
     transition: background-color 0.3s;
     width: 100%;
-  }
-  
-  #addProductModal button:hover {
+}
+
+#addProductModal button:hover {
     background-color: #7a5230;
-  }
-  /* Estilos específicos del modal de edición */
+}
+
+/* Estilos específicos del modal de edición */
 #editProductModal {
     display: none;
     position: fixed;
@@ -887,10 +979,11 @@ footer {
     background-color: rgba(0, 0, 0, 0.6);
     justify-content: center;
     align-items: center;
-    z-index: 1000; /* Asegúrate de que esté por encima de otros elementos */
-  }
-  
-  #editProductModal .modal-content {
+    z-index: 1000;
+    /* Asegúrate de que esté por encima de otros elementos */
+}
+
+#editProductModal .modal-content {
     background-color: #fff;
     border-radius: 10px;
     padding: 30px;
@@ -899,20 +992,21 @@ footer {
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
     position: relative;
     animation: slideIn 0.3s forwards;
-  }
-  
-  @keyframes slideIn {
+}
+
+@keyframes slideIn {
     from {
-      transform: translateY(-20px);
-      opacity: 0;
+        transform: translateY(-20px);
+        opacity: 0;
     }
+
     to {
-      transform: translateY(0);
-      opacity: 1;
+        transform: translateY(0);
+        opacity: 1;
     }
-  }
-  
-  #editProductModal .close {
+}
+
+#editProductModal .close {
     color: #555;
     font-size: 20px;
     font-weight: bold;
@@ -920,28 +1014,28 @@ footer {
     top: 10px;
     right: 15px;
     cursor: pointer;
-  }
-  
-  #editProductModal .close:hover {
+}
+
+#editProductModal .close:hover {
     color: #000;
-  }
-  
-  #editProductModal h3 {
+}
+
+#editProductModal h3 {
     margin-bottom: 20px;
     font-size: 22px;
     color: #333;
     font-weight: bold;
-  }
-  
-  #editProductModal label {
+}
+
+#editProductModal label {
     display: block;
     margin-bottom: 6px;
     font-size: 14px;
     color: #666;
-  }
-  
-  #editProductModal input[type="text"],
-  #editProductModal input[type="number"] {
+}
+
+#editProductModal input[type="text"],
+#editProductModal input[type="number"] {
     width: 100%;
     padding: 10px;
     margin-bottom: 15px;
@@ -949,15 +1043,15 @@ footer {
     border-radius: 5px;
     box-sizing: border-box;
     transition: border-color 0.3s;
-  }
-  
-  #editProductModal input[type="text"]:focus,
-  #editProductModal input[type="number"]:focus {
+}
+
+#editProductModal input[type="text"]:focus,
+#editProductModal input[type="number"]:focus {
     border-color: #7a5230;
     outline: none;
-  }
-  
-  #editProductModal button {
+}
+
+#editProductModal button {
     background-color: #7a5230;
     color: #fff;
     padding: 12px 20px;
@@ -967,10 +1061,8 @@ footer {
     font-size: 16px;
     transition: background-color 0.3s;
     width: 100%;
-  }
-  
-  #editProductModal button:hover {
+}
+
+#editProductModal button:hover {
     background-color: #7a5230;
-  }
-  
-  
+}
