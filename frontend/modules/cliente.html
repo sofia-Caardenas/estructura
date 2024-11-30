@@ -678,8 +678,8 @@ const historyItemsPerPage = 6;
 async function showOrderHistory() {
     try {
         // Realiza la solicitud GET al endpoint
-        const response = await fetch(`http://localhost:8080/api/v1/HistorialPedidos/getHistorialPedidosSinEntregarCliente/${userId}`);
-
+        // const response = await fetch(`http://localhost:8080/api/v1/HistorialPedidos/getHistorialPedidosSinEntregarCliente/${userId}`);
+        const response = await fetch("http://localhost:8080/api/v1/Pedidos/getPedidos")
         // Verifica si la solicitud fue exitosa
         if (!response.ok) {
             throw new Error(`Error al obtener el historial de pedidos: ${response.statusText}`);
@@ -689,7 +689,7 @@ async function showOrderHistory() {
         const orderHistory = await response.json();
 
         // Filtra los pedidos con estado "Entregado"
-        const deliveredOrders = orderHistory.filter(order => order.estado === "Entregado");
+        const deliveredOrders = orderHistory.filter(order => order.pedidos.estado === "Entregado" && order.id === userId);
 
         const totalHistoryItems = deliveredOrders.length;
         const totalHistoryPages = Math.ceil(totalHistoryItems / historyItemsPerPage);

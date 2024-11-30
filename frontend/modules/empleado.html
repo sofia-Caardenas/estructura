@@ -250,40 +250,46 @@ function llenarTablaProducto(data) {
                 row.style.display = matches ? '' : 'none';
             });
         }
-
-    // Mostrar pedidos
- // Mostrar pedidos
-// Mostrar pedidos
-async function showOrders() {
-    try {
-        // Consumo del endpoint para obtener pedidos no entregados
-        const response = await fetch("http://localhost:8080/api/v1/HistorialPedidos/getHistorialPedidosSinEntregar");
-        if (!response.ok) {
-            throw new Error(`Error al obtener pedidos: ${response.statusText}`);
-        }
-
-        const orders = await response.json();
-
-        // Construcción del contenido
-        let orderContent = `
-            <h2>Pedidos de Clientes</h2>
+        
+        // Mostrar pedidos
+        // Mostrar pedidos
+        // Mostrar pedidos
+        async function showOrders() {
+            try {
+                // Consumo del endpoint para obtener pedidos no entregados
+                const response = await fetch("http://localhost:8080/api/v1/Pedidos/getPedidosSinEntregar");
+                console.log(response)
+                if (!response.ok) {
+                    throw new Error(`Error al obtener pedidos: ${response.statusText}`);
+                }
+                
+                const orders = await response.json();
+                console.log (orders);
+                
+                // Construcción del contenido
+                let orderContent = `
+                <h2>Pedidos de Clientes</h2>
             <ul class="order-list">
-        `;
-
-        orders.forEach(order => {
-            orderContent += `
-                <li>
+                `;
+                
+                // <option value="En camino" ${order.pedidos.estado === 'En camino' ? 'selected' : ''}>En camino</option>
+                // <option value="Entregado" ${order.pedidos.estado === 'Entregado' ? 'selected' : ''}>Entregado</option>
+                // <option value=${order.pedidos.estado === 'Entregado' ? 'selected' : ''}>Entregado</option>
+                // <li><strong>Fecha del Pedido:</strong> ${new Date(order.fechaPedido).toLocaleDateString('es-ES')}</li>
+                function valorSelector(e){
+                    console.log(e.target.value)
+                }
+                orders.forEach(order => {
+                    orderContent += `
+                    <li>
                     <h3>Pedido #${order.pedidos.id}</h3>
-                    <p><strong>Cliente:</strong> ${order.usuarios.nombre}</p>
                     <p><strong>Estado:</strong>
-                        <select onchange="updateOrderStatus(${order.pedidos.id}, '${order.fechaPedido}', ${order.usuarios.id}, this.value)">
-                            <option value="En preparación" ${order.pedidos.estado === 'En preparación' ? 'selected' : ''}>En preparación</option>
-                            <option value="En camino" ${order.pedidos.estado === 'En camino' ? 'selected' : ''}>En camino</option>
-                            <option value="Entregado" ${order.pedidos.estado === 'Entregado' ? 'selected' : ''}>Entregado</option>
+                        <select onchange="updateOrderStatus(${order.pedidos.id}, this.value)">
+                            <option value="En preparación">En preparación</option>
+                            <option value="Entregado">Entregado</option>
                         </select>
                     </p>
                     <ul>
-                        <li><strong>Fecha del Pedido:</strong> ${new Date(order.fechaPedido).toLocaleDateString('es-ES')}</li>
                     </ul>
                 </li>
             `;
@@ -302,28 +308,25 @@ async function showOrders() {
 
 
 
+
 // Actualizar el estado de un pedido
-async function updateOrderStatus(orderId, fechaPedido, userId, newStatus) {
+async function updateOrderStatus(orderId, newStatus) {
+    console.log(newStatus);
     try {
         // Crear objeto de actualización
         const updatedOrder = {
-            pedidos: {
-                id: orderId,
-                estado: newStatus,
-                fechaPedido: fechaPedido, // Fecha original del pedido
-                usuarios: {
-                    id: userId // ID del cliente
-                }
-            }
+            id: orderId,
+            estado: newStatus
         };
 
         // Enviar la actualización al backend
-        const response = await fetch(`http://localhost:8080/api/v1/Pedidos/guardarPedidoDetalle`, {
+        const response = await fetch(`http://localhost:8080/api/v1/Pedidos/actualizarEstadoPedido`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
             },
             body: JSON.stringify(updatedOrder)
+
         });
 
         if (!response.ok) {
