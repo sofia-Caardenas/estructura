@@ -334,7 +334,6 @@ function increaseQuantity(productName) {
         : producto;
     })
     const item = cart.find(item => item.product === productName);
-    console.log(item);
     showCart(); // Actualizar el carrito
 }
 
@@ -488,8 +487,6 @@ function placeOrder() {
             },
         };
     });
-    console.log(newOrder);
-    orders.push(newOrder);
     localStorage.setItem('orders', JSON.stringify(orders));
 
     fetch("http://localhost:8080/api/v1/Pedidos/guardarPedidoDetalle", {
@@ -503,7 +500,6 @@ function placeOrder() {
     })
 
         .then(hola => {
-            console.log(hola);
             cart = [];  // Vaciar el carrito después de realizar el pedido
             showCart(); // Actualizar la vista del carrito
             checkOrderStatus(); // Mostrar el estado del pedido
@@ -545,7 +541,6 @@ async function checkOrderStatus() {
         }
 
         const orders = await response.json();
-        console.log(orders);
         
         // Paginación
         const totalOrderItems = orders.length;
@@ -687,9 +682,11 @@ async function showOrderHistory() {
 
         // Parseamos la respuesta como JSON
         const orderHistory = await response.json();
-
+        console.log(orderHistory);
+        
         // Filtra los pedidos con estado "Entregado"
-        const deliveredOrders = orderHistory.filter(order => order.pedidos.estado === "Entregado" && order.id === userId);
+        const deliveredOrders = orderHistory.filter((order) => {return order.pedidos.estado === "Entregado" && order.pedidos.usuarios.id === parseInt(userId)});
+        console.log(deliveredOrders);
 
         const totalHistoryItems = deliveredOrders.length;
         const totalHistoryPages = Math.ceil(totalHistoryItems / historyItemsPerPage);
@@ -708,10 +705,11 @@ async function showOrderHistory() {
         paginatedHistory.forEach(order => {
             historyContent += `
                 <div class="order-history-item">
-                    <h3>Pedido #${order.id}</h3>
-                    <p><strong>Fecha:</strong> ${new Date(order.fechaPedido).toLocaleDateString('es-ES')}</p>
-                    <p><strong>Estado:</strong> ${order.estado}</p>
-                    <p><strong>Cliente:</strong> ${order.usuarios.nombre}</p>
+                    <h3>Pedido #${order.pedidos.id}</h3>
+                    <p><strong>Producto:</strong> ${order.productos.nombre}</p>
+                    <p><strong>Fecha:</strong> ${new Date(order.pedidos.fechaPedido).toLocaleDateString('es-ES')}</p>
+                    <p><strong>Estado:</strong> ${order.pedidos.estado}</p>
+                    <p><strong>Cliente:</strong> ${order.pedidos.usuarios.nombre}</p>
                 </div>
             `;
         });
