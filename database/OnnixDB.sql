@@ -99,7 +99,7 @@ INSERT INTO Usuarios (nombre, email, clave, id_Rol, estado) VALUES
 ('Maria Gomez', 'maria.gomez@example.com', MD5('password123'), 3, 'Activo'),
 ('Pedro Martinez', 'pedro.martinez@example.com', MD5('password123'), 3, 'Activo'),
 ('Ana Rodriguez', 'ana.rodriguez@example.com', MD5('password123'), 3, 'Activo'),
-('Carlos Sanchez', 'carlos.sanchez@example.com', MD5('password123'), 2, 'Inactivo');
+('Carlos Sanchez', 'carlos.sanchez@example.com', MD5('password123'), 2, 'Activo');
 
 -- Insertar datos iniciales en Contacto
 INSERT INTO Contacto (id_Usuario, telefono1, telefono2, direccion, estado) VALUES
@@ -111,9 +111,9 @@ INSERT INTO Contacto (id_Usuario, telefono1, telefono2, direccion, estado) VALUE
 
 -- Insertar datos iniciales en Productos
 INSERT INTO Productos (nombre, descripcion, precio, stock, fecha_Agregado, ruta_Imagen, estado) VALUES
-('Café Premium', 'Café Colombiano de alta calidad', 1500.00, 50, CURDATE(), 'ruta_imagen_1.jpg', 'Activo'),
-('Tamal', 'Tamal Colombiano', 7000.00, 50, CURDATE(), 'ruta_imagen_2.jpg', 'Activo'),
-('Coca Cola', 'Coca Cola tamaño personal', 5000.00, 50, CURDATE(), 'ruta_imagen_3.jpg', 'Activo');
+('Café Premium', 'Café colombiano de alta calidad', 1500.00, 50, CURDATE(), 'ruta_imagen_1.jpg', 'Activo'),
+('Tamal', 'Tamal colombiano', 7000.00, 50, CURDATE(), 'ruta_imagen_2.jpg', 'Activo'),
+('Coca Cola', 'Coca Cola personal', 4000.00, 50, CURDATE(), 'ruta_imagen_3.jpg', 'Activo');
 
 -- Insertar datos iniciales en Pedidos
 INSERT INTO Pedidos (id_Usuario, estado, total) VALUES
